@@ -1,0 +1,24 @@
+# Logs
+logs
+*.log
+.DS_Store
+
+npm-debug.log*
+*-lock.json
+*.lock
+# Dependency directory
+node_modules
+
+# Optional npm cache directory
+.npm
+
+
+# code testing coverage
+coverage
+
+
+dist/*
+static/*
+
+# redis memory cache
+dump.rdb
