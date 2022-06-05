@@ -15,7 +15,8 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
-    "recoil": "^0.7.3"
+    "recoil": "^0.7.3",
+    "recoil-persist": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

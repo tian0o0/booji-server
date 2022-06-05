@@ -1,14 +1,17 @@
+import { RecoilRoot } from "recoil";
 import { HashRouter } from "react-router-dom";
 import CustomRoutes from "@/routes";
 import { AuthProvider } from "@/context/auth";
 
 function App() {
   return (
-    <AuthProvider>
+    <RecoilRoot>
       <HashRouter>
-        <CustomRoutes />
+        <AuthProvider>
+          <CustomRoutes />
+        </AuthProvider>
       </HashRouter>
-    </AuthProvider>
+    </RecoilRoot>
   );
 }
 
