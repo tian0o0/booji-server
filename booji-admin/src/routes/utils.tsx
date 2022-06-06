@@ -1,7 +1,7 @@
 import { UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-import { Suspense } from "react";
-import { RouteObject } from "react-router-dom";
+import { ReactNode, Suspense } from "react";
+import { Link, RouteObject } from "react-router-dom";
 
 /**
  * 给懒加载路由加loadings
@@ -26,20 +26,31 @@ export function withLoading(routes: RouteObject[]): RouteObject[] {
   return res;
 }
 
-interface MenuObject {
-  icon?: JSX.Element;
+interface MenuItem {
+  key: string;
+  label: ReactNode;
   title: string;
-  to: string;
+  icon: ReactNode;
 }
-export const MENUS: MenuObject[] = [
+export const MENUS: MenuItem[] = [
   {
+    key: "/sys/app",
+    label: (
+      <Link to="/sys/app">
+        <span>App</span>
+      </Link>
+    ),
     icon: <UserOutlined />,
     title: "App",
-    to: "/sys/app",
   },
   {
+    key: "/sys/about",
+    label: (
+      <Link to="/sys/about">
+        <span>About</span>
+      </Link>
+    ),
     icon: <VideoCameraOutlined />,
     title: "About",
-    to: "/sys/about",
   },
 ];
