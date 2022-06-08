@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { Link, Outlet, useLocation, useMatch } from "react-router-dom";
 import { MENUS } from "@/routes/utils";
-import { VITE_APP_LOGO, VITE_APP_TITLE } from "@config/constant";
+import { VITE_APP_LOGO, VITE_APP_TITLE } from "@/config/constant";
 import User from "@/components/User";
 
 const { Header, Sider, Content } = Layout;

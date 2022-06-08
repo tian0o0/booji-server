@@ -1,6 +1,6 @@
 import { message, notification } from "antd";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { VITE_HTTP_URL } from "@config/constant";
+import { VITE_HTTP_URL } from "@/config/constant";
 import { getToken } from "./token";
 
 const instance = axios.create({

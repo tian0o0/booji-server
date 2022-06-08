@@ -9,10 +9,9 @@ import {
   VITE_APP_LEGACY,
   VITE_APP_ANALYZE,
   VITE_APP_COMPRESS_GZIP,
-  VITE_APP_COMPRESS_GZIP_DELETE_FILE,
   VITE_BASE_PATH,
   VITE_DROP_CONSOLE,
-} from "./config/constant";
+} from "./src/config/constant";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
@@ -34,11 +33,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
 
   isBuild && VITE_APP_LEGACY && plugins.push(legacy());
 
-  isBuild &&
-    VITE_APP_COMPRESS_GZIP &&
-    plugins.push(
-      compression({ deleteOriginFile: VITE_APP_COMPRESS_GZIP_DELETE_FILE })
-    );
+  isBuild && VITE_APP_COMPRESS_GZIP && plugins.push(compression());
 
   VITE_APP_ANALYZE &&
     plugins.push(
@@ -62,7 +57,6 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
     resolve: {
       alias: {
         "@": "/src",
-        "@config": "/config",
       },
     },
     build: {
@@ -73,6 +67,10 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
           drop_console: VITE_DROP_CONSOLE,
         },
       },
+    },
+    server: {
+      host: true, // docker required
+      port: 3000,
     },
   };
 });

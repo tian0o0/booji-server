@@ -1,4 +1,4 @@
-import { VITE_APP_LOGO } from "@config/constant";
+import { VITE_APP_LOGO } from "@/config/constant";
 import { Button } from "antd";
 import { useState } from "react";
 import Login from "./Login";
