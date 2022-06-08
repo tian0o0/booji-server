@@ -1,9 +1,13 @@
-FROM node:16
+FROM node:lts-alpine as build
 
-COPY . ./booji/admin
+COPY . ./admin
 
-WORKDIR /booji/admin
+WORKDIR /admin
 
-RUN npm install --registry https://registry.npm.taobao.org
+RUN npm install --registry https://registry.npm.taobao.org && npm run build
 
-CMD npm start
+# web server
+FROM nginx:stable-alpine
+
+COPY --from=build /admin/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /admin/dist /usr/share/nginx/html
