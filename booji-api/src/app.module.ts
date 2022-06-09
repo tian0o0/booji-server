@@ -33,6 +33,7 @@ import { join } from "path";
     ConfigModule.forRoot({
       isGlobal: true, // 设为全局，各模块中直接使用 configService 为不用导入 configModule
       load: [config], // 注入自定义配置文件
+      envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
     // ClientsModule.register(microserviceConfig),
     UserModule,

@@ -2,6 +2,9 @@ import { ClientProviderOptions, Transport } from "@nestjs/microservices";
 
 export const KAFKA_MODULE_PROVIDER = "kafka";
 
+/**
+ * @deprecated
+ */
 export const kafkaConfig: ClientProviderOptions = {
   name: KAFKA_MODULE_PROVIDER,
   transport: Transport.KAFKA,

@@ -2,11 +2,15 @@ import { Module, OnModuleInit } from "@nestjs/common";
 import { ElasticsearchModule } from "@nestjs/elasticsearch";
 import { SearchService } from "./search.service";
 import { SearchController } from "./search.controller";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
-    ElasticsearchModule.register({
-      node: "http://localhost:9200",
+    ElasticsearchModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        node: configService.get("esNode"),
+      }),
+      inject: [ConfigService],
     }),
   ],
   providers: [SearchService],

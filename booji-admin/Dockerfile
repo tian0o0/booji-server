@@ -1,6 +1,6 @@
 FROM node:lts-alpine as build
 
-COPY . ./admin
+COPY . /admin
 
 WORKDIR /admin
 
