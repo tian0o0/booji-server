@@ -1,4 +1,4 @@
-import { LoginForm, RegisterForm } from "@/types";
+import { ApiError, LoginForm, RegisterForm, User } from "@/types";
 import request from "@/utils/request";
 
 enum Api {
@@ -6,8 +6,8 @@ enum Api {
   UserRegister = "/user",
 }
 
-export const login = (data: LoginForm) =>
+export const login = (data: LoginForm): Promise<User & ApiError> =>
   request({ url: Api.UserLogin, method: "POST", data });
 
-export const register = (data: RegisterForm) =>
+export const register = (data: RegisterForm): Promise<User & ApiError> =>
   request({ url: Api.UserRegister, method: "POST", data });

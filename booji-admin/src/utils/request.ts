@@ -1,4 +1,4 @@
-import { message, notification } from "antd";
+import { notification } from "antd";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { VITE_HTTP_URL } from "@/config/constant";
 import { getToken } from "./token";
@@ -20,6 +20,9 @@ instance.interceptors.response.use(
   },
   (err) => {
     notification.error({ message: err.response.data.message });
+    return {
+      error: true,
+    };
   }
 );
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import { Link, Outlet, useLocation, useMatch } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { MENUS } from "@/routes/utils";
 import { VITE_APP_LOGO, VITE_APP_TITLE } from "@/config/constant";
 import User from "@/components/User";
@@ -10,7 +10,6 @@ const { Header, Sider, Content } = Layout;
 
 const BasicLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-
   const selectedKeys = [useLocation().pathname];
 
   return (

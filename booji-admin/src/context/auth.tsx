@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { LoginForm, RegisterForm, User } from "@/types";
 import * as api from "@/api";
 import { setToken } from "@/utils/token";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "@/store";
 import { useNavigate } from "react-router-dom";
 
@@ -24,16 +24,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (form: LoginForm) => {
     setLoading(true);
-    const res = (await api.login(form)) as User;
+    const res = await api.login(form);
     setLoading(false);
-    setUser(res);
-    setToken(res.token);
-    navigate("/");
+    if (!res.error) {
+      setUser(res);
+      setToken(res.token);
+      navigate("/");
+    }
   };
   const register = async (form: RegisterForm) => {
     setLoading(true);
-    await api.register(form);
+    const res = await api.register(form);
     setLoading(false);
+    if (!res.error) {
+      setUser(res);
+      setToken(res.token);
+      navigate("/");
+    }
   };
   const logout = () => {
     setUser(null);
