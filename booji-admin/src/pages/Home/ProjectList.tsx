@@ -1,10 +1,7 @@
-import { useProjectList } from "@/hooks/project";
 import { ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
-import { Button, message, Modal, Space, Table, Typography } from "antd";
+import { Button, message, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { useState } from "react";
-import { delProject } from "@/api";
 
 const ProjectList = ({
   value,
