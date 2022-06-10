@@ -1,5 +1,6 @@
 import { useAddProject, useDelProject, useProjectList } from "@/hooks/project";
 import { ProjectData } from "@/types";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useState } from "react";
 import AddProject from "./AddProject";
@@ -23,10 +24,13 @@ const Home = () => {
     onOpenDel();
   };
   return (
-    <div>
-      <Button className="mb-4" onClick={onOpen}>
-        新建项目
-      </Button>
+    <>
+      <div className="flex justify-between items-center">
+        <h2>项目列表</h2>
+        <Button icon={<PlusOutlined />} className="mb-4" onClick={onOpen}>
+          新建项目
+        </Button>
+      </div>
       <ProjectList value={value} loading={loading} onDelete={onDelete} />
       <AddProject visible={visible} onClose={onClose} onSuccess={retry} />
       {curProject && (
@@ -37,7 +41,7 @@ const Home = () => {
           onSuccess={retry}
         />
       )}
-    </div>
+    </>
   );
 };
 

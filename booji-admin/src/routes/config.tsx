@@ -5,7 +5,7 @@ import { withLoading } from "./utils";
 
 const Auth = React.lazy(() => import("@/pages/Auth"));
 const Home = React.lazy(() => import("@/pages/Home"));
-const About = React.lazy(() => import("@/pages/About"));
+const Issue = React.lazy(() => import("@/pages/Issue"));
 const NotFound = React.lazy(() => import("@/pages/404"));
 
 const routes: RouteObject[] = [
@@ -29,8 +29,8 @@ const routes: RouteObject[] = [
             element: <Home />,
           },
           {
-            path: "about",
-            element: <About />,
+            path: "issue",
+            element: <Issue />,
           },
         ],
       },

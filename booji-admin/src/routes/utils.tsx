@@ -1,4 +1,4 @@
-import { UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { BugOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { ReactNode, Suspense } from "react";
 import { Link, RouteObject } from "react-router-dom";
@@ -40,17 +40,17 @@ export const MENUS: MenuItem[] = [
         <span>App</span>
       </Link>
     ),
-    icon: <UserOutlined />,
+    icon: <UnorderedListOutlined />,
     title: "App",
   },
   {
-    key: "/sys/about",
+    key: "/sys/issue",
     label: (
-      <Link to="/sys/about">
-        <span>About</span>
+      <Link to="/sys/issue">
+        <span>Issue</span>
       </Link>
     ),
-    icon: <VideoCameraOutlined />,
-    title: "About",
+    icon: <BugOutlined />,
+    title: "Issue",
   },
 ];
