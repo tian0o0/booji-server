@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { LoginForm, RegisterForm, User } from "@/types";
+import { LoginForm, RegisterForm } from "@/types";
 import * as api from "@/api";
 import { setToken } from "@/utils/token";
 import { useSetRecoilState } from "recoil";

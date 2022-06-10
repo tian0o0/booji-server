@@ -35,7 +35,7 @@ const BasicLayout: React.FC = () => {
           items={MENUS}
         />
       </Sider>
-      <Layout className="h-16">
+      <Layout>
         <Header className="bg-white h-16 px-4 flex justify-between items-center">
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -45,7 +45,7 @@ const BasicLayout: React.FC = () => {
           )}
           <User />
         </Header>
-        <Content className="m-8 p-4 bg-white min-h-full">
+        <Content className="m-8 p-4 bg-white h-full">
           <Outlet />
         </Content>
       </Layout>
