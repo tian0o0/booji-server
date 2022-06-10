@@ -15,7 +15,7 @@ const ProjectSelect = () => {
   const defaultValue = useMemo(() => value && value[0]?.appKey, [value]);
 
   return (
-    <>
+    <div className="mb-3">
       {!loading && (
         <Space>
           <span>选择项目：</span>
@@ -26,7 +26,7 @@ const ProjectSelect = () => {
           ></Select>
         </Space>
       )}
-    </>
+    </div>
   );
 };
 
