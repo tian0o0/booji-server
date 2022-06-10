@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = React.createContext<
   | {
       loading: boolean;
-      login: (data: LoginForm) => Promise<any>;
-      register: (data: RegisterForm) => Promise<any>;
+      login: (data: LoginForm) => Promise<void>;
+      register: (data: RegisterForm) => Promise<void>;
       logout: () => void;
     }
   | undefined

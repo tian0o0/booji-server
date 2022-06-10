@@ -6,8 +6,8 @@ enum Api {
   UserRegister = "/user",
 }
 
-export const login = (data: LoginForm): Promise<User & ApiError> =>
-  request({ url: Api.UserLogin, method: "POST", data });
+export const login = (data: LoginForm) =>
+  request<User & ApiError>({ url: Api.UserLogin, method: "POST", data });
 
-export const register = (data: RegisterForm): Promise<User & ApiError> =>
-  request({ url: Api.UserRegister, method: "POST", data });
+export const register = (data: RegisterForm) =>
+  request<User & ApiError>({ url: Api.UserRegister, method: "POST", data });

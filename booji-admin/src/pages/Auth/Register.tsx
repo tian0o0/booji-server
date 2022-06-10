@@ -3,6 +3,7 @@ import { Button, Form, Input, message } from "antd";
 
 const Register = () => {
   const { register, loading } = useAuth();
+
   const handleRegister = async ({
     password2,
     ...form
@@ -17,6 +18,7 @@ const Register = () => {
     }
     register(form);
   };
+
   return (
     <Form onFinish={handleRegister}>
       <Form.Item
