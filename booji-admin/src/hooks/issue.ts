@@ -77,7 +77,7 @@ export const useIssueList = (appKey: string, status: string) => {
 
   useEffect(() => {
     retry();
-  }, [params]);
+  }, [params.appKey, params.status]);
 
   useEffect(() => {
     setParams({
