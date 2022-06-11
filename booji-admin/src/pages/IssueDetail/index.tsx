@@ -1,5 +1,6 @@
+import FullScreenSpin from "@/components/FullScreenSpin";
 import { useIssueDetail, useIssueEvents } from "@/hooks/issue-detail";
-import { Divider, Spin, Tabs } from "antd";
+import { Divider, Tabs } from "antd";
 import { useParams } from "react-router-dom";
 import Brief from "./Brief";
 import Chart from "./Chart";
@@ -23,7 +24,7 @@ const IssueDetail = () => {
   return (
     <div className="h-full overflow-scroll">
       {!detail ? (
-        <Spin />
+        <FullScreenSpin />
       ) : (
         <>
           <Header detail={detail} />

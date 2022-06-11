@@ -1,9 +1,9 @@
+import FullScreenSpin from "@/components/FullScreenSpin";
 import {
   BugOutlined,
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Spin } from "antd";
 import { ReactNode, Suspense } from "react";
 import { Link, RouteObject } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export function withLoading(routes: RouteObject[]): RouteObject[] {
     res = routes.map((route: RouteObject) => {
       if (route.element) {
         route.element = (
-          <Suspense fallback={<Spin />}>{route.element}</Suspense>
+          <Suspense fallback={<FullScreenSpin />}>{route.element}</Suspense>
         );
       }
       if (route.children) {

@@ -1,5 +1,5 @@
+import FullScreenSpin from "@/components/FullScreenSpin";
 import { useProjectSelect, useStatusTab } from "@/hooks/issue";
-import { Spin } from "antd";
 import List from "./List";
 import ProjectSelect from "./ProjectSelect";
 import StatusTab from "./StatusTab";
@@ -9,7 +9,7 @@ const About = () => {
   return (
     <>
       {!selectedAppKey ? (
-        <Spin />
+        <FullScreenSpin />
       ) : (
         <>
           <ProjectSelect

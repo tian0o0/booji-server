@@ -1,9 +1,8 @@
-import { updateIssue } from "@/api/issue";
 import { useIssueList, useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
-import { IssueData, UpdateIssueData } from "@/types/issue";
+import { IssueData } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
-import { Button, message, Select, Table } from "antd";
+import { Button, Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
