@@ -1,3 +1,6 @@
+import { SortOrder } from "antd/lib/table/interface";
+import React from "react";
+
 export interface IssueData {
   assigneeId: number;
   category: string;
@@ -19,8 +22,13 @@ export interface IssueData {
 
 export interface IssueParams {
   appKey: string;
-  status: number;
+  status: string;
   page: number;
-  sort?: string;
+  sort?: React.Key | readonly React.Key[];
   order?: "ASC" | "DESC";
+}
+
+export enum Order {
+  ascend = "ASC",
+  descend = "DESC",
 }

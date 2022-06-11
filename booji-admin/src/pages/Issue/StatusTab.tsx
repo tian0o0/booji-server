@@ -11,11 +11,7 @@ const statusList = [
   { label: "已忽略", value: 5 },
 ];
 
-const StatusTab = () => {
-  const onChange = (activeKey: string) => {
-    console.log(activeKey);
-  };
-
+const StatusTab = ({ onChange }: { onChange: (activeKey: string) => void }) => {
   return (
     <Tabs defaultActiveKey="0" onChange={onChange}>
       {statusList.map((item) => (

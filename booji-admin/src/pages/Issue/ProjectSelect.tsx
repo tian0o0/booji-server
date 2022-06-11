@@ -1,31 +1,25 @@
-import { useProjectList } from "@/hooks/project";
 import { Select, Space } from "antd";
-import { useMemo } from "react";
 
-const ProjectSelect = () => {
-  const { value, loading } = useProjectList();
-
-  const options = useMemo(() => {
-    return value?.map((item) => ({
-      label: item.name,
-      value: item.appKey,
-    }));
-  }, [value]);
-
-  const defaultValue = useMemo(() => value && value[0]?.appKey, [value]);
-
+const ProjectSelect = ({
+  options,
+  selectedAppKey,
+  onChange,
+}: {
+  options: { label: string; value: string }[];
+  selectedAppKey: string;
+  onChange: (appKey: string) => void;
+}) => {
   return (
     <div className="mb-3">
-      {!loading && (
-        <Space>
-          <span>选择项目：</span>
-          <Select
-            options={options}
-            defaultValue={defaultValue}
-            className="w-40"
-          ></Select>
-        </Space>
-      )}
+      <Space>
+        <span>选择项目：</span>
+        <Select
+          className="w-40"
+          options={options}
+          defaultValue={selectedAppKey}
+          onChange={onChange}
+        />
+      </Space>
     </div>
   );
 };
