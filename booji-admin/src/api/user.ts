@@ -1,13 +1,11 @@
-import { ApiError, LoginForm, RegisterForm, User } from "@/types";
+import { ApiError, LoginForm, RegisterForm, User, UserData } from "@/types";
 import request from "@/utils/request";
 
-enum Api {
-  UserLogin = "/user/login",
-  UserRegister = "/user",
-}
-
 export const login = (data: LoginForm) =>
-  request<User & ApiError>({ url: Api.UserLogin, method: "POST", data });
+  request<User & ApiError>({ url: "/user/login", method: "POST", data });
 
 export const register = (data: RegisterForm) =>
-  request<User & ApiError>({ url: Api.UserRegister, method: "POST", data });
+  request<User & ApiError>({ url: "/user", method: "POST", data });
+
+export const getUserList = () =>
+  request<UserData[]>({ url: "/user", method: "GET" });

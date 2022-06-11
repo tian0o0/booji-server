@@ -16,3 +16,5 @@ export interface LoginForm {
   email: string;
   password: string;
 }
+
+export type UserData = Omit<User, "token">;

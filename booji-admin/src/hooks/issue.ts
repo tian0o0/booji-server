@@ -64,7 +64,7 @@ export const useIssueList = (appKey: string, status: string) => {
     });
   };
 
-  useEffect(() => {
+  const retry = () => {
     setLoading(true);
     getIssueList(params)
       .then((res) => {
@@ -73,6 +73,10 @@ export const useIssueList = (appKey: string, status: string) => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    retry();
   }, [params]);
 
   useEffect(() => {
@@ -87,5 +91,6 @@ export const useIssueList = (appKey: string, status: string) => {
     loading,
     value,
     onChange,
+    retry,
   };
 };

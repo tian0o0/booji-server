@@ -1,8 +1,11 @@
+import { updateIssue } from "@/api/issue";
 import { useIssueList } from "@/hooks/issue";
-import { IssueData } from "@/types/issue";
+import { useUserList } from "@/hooks/user";
+import { IssueData, UpdateIssueData } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
-import { Button, message, Table } from "antd";
+import { Button, message, Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { statusList } from "./StatusTab";
 
 const List = ({ appKey, status }: { appKey: string; status: string }) => {
   const columns: ColumnsType<IssueData> = [
@@ -75,17 +78,47 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
       title: "负责人",
       width: 120,
       align: "center",
-      render: (text) => text,
+      render: (_, { issueId, assigneeId }) => (
+        <Select
+          className="w-full"
+          placeholder="请选择"
+          options={options}
+          defaultValue={assigneeId}
+          onChange={(newAssigneeId) =>
+            onAssigneeChange(issueId, { assigneeId: newAssigneeId })
+          }
+        />
+      ),
     },
     {
       title: "状态",
       width: 120,
       align: "center",
-      render: (text) => text,
+      render: (_, { issueId, status }) => (
+        <Select
+          className="w-full"
+          placeholder="请选择"
+          options={statusList}
+          defaultValue={status}
+          onChange={(newStatus) =>
+            onAssigneeChange(issueId, { status: newStatus }, true)
+          }
+        />
+      ),
     },
   ];
 
-  const { loading, value, onChange } = useIssueList(appKey, status);
+  const { loading, value, onChange, retry } = useIssueList(appKey, status);
+  const { options } = useUserList();
+
+  const onAssigneeChange = async (
+    issueId: string,
+    data: UpdateIssueData,
+    shouldRetry: boolean = false
+  ) => {
+    await updateIssue(issueId, data);
+    shouldRetry && retry();
+  };
 
   return (
     <Table

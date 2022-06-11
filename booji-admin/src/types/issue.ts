@@ -32,3 +32,8 @@ export enum Order {
   ascend = "ASC",
   descend = "DESC",
 }
+
+export interface UpdateIssueData {
+  assigneeId?: number;
+  status?: number;
+}
