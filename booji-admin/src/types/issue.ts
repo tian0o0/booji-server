@@ -38,7 +38,14 @@ export interface UpdateIssueData {
   status?: number;
 }
 
-export type IssueDetail = IssueData & { tags: any[] };
+export type IssueDetail = IssueData & { tags: Tag[] };
+
+export interface Tag {
+  count: number;
+  id: number;
+  key: string;
+  value: string;
+}
 
 export interface Breadcrumb {
   category: string;

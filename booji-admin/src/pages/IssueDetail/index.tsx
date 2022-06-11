@@ -42,7 +42,7 @@ const IssueDetail = () => {
               )}
             </TabPane>
             <TabPane tab="📈 标签统计" key="2">
-              <Chart />
+              <Chart tags={detail.tags} />
             </TabPane>
             <TabPane tab="⌚️ 事件列表" key="3">
               <Events events={events} />

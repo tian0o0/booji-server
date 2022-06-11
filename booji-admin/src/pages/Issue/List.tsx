@@ -48,16 +48,16 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
     },
     {
       title: "事件数",
-      dataIndex: "users",
-      width: 80,
-      align: "center",
-      render: (text) => text.length,
-    },
-    {
-      title: "用户数",
       dataIndex: "eventCount",
       width: 80,
       align: "center",
+    },
+    {
+      title: "用户数",
+      width: 80,
+      align: "center",
+      dataIndex: "users",
+      render: (text) => text.length,
     },
     {
       title: "等级",
