@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
-    "watch": "nodemon",
+    "watch": "NODE_ENV=development nodemon",
     "build": "nest build",
     "start:test": "NODE_ENV=production node dist/main.js",
     "start": "pm2 start",

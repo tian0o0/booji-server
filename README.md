@@ -7,17 +7,20 @@
 
 ### Features
 
-#### Booji-api
+#### 1.Booji-api
 
 > `Nest.js + MySql + Kafka + ElasticSearch`
 
 - Data report api.
 - Data visualization api.
 
-#### Booji-admin
+#### 2.Booji-admin
 
 > `React Hooks + Recoil + Vite + Tailwind CSS`
 
 - Create `appKey`
 - Data visualization
+
+### Reference
+[Booji SDK](https://github.com/tian0o0/booji/blob/master/README.md)
 

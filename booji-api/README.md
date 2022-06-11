@@ -1,20 +1,48 @@
 ## Booji.js服务端
 
-> 项目基于`NestJS + TypeORM + MYSQL`
+### 技术
+- NestJS
+- TypeORM
+- MySql
+- Kafka
+- ElasticSearch
+- JWT
+- PM2
 
-[Swagger 接口文档地址](http://118.31.127.122/docs)
-
-## 功能
-
+### 核心功能
+- [x] 数据上报
 - [x] User模块
 - [x] Project模块
 - [x] Issue模块
 - [x] Event模块
 - [x] SourceMap模块
+- [x] Search模块
+- [x] Tag模块
+- [ ] performance模块
 
-## 记录问题
+### Dockerfile说明
+```dockerfile
+# 使用lts版本的Node镜像（注意：不使用更加轻量的alpine版本是因为agron2模块依赖python3，而alpine版本不包含python3）
+FROM node:lts
 
-### 一、Nginx配置
+# 拷贝宿主机当前目录至虚拟机/api目录（不存在则会自动创建）
+COPY . /api
+
+# 设置虚拟机工作目录（相当于`cd /api`）
+WORKDIR /api
+
+# 安装依赖及打包
+RUN npm i -g @nestjs/cli pm2 --registry https://registry.npm.taobao.org \
+  && npm install --registry https://registry.npm.taobao.org \
+  && npm run build
+
+# CMD表示容器启动时运行，开启后端服务
+CMD npm run start
+```
+
+### 记录问题
+
+#### 一、Nginx配置
 1. 自定义日志格式
 
 ```nginx
