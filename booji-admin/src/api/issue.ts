@@ -1,4 +1,10 @@
-import { IssueData, IssueParams, UpdateIssueData } from "@/types/issue";
+import {
+  Event,
+  IssueData,
+  IssueDetail,
+  IssueParams,
+  UpdateIssueData,
+} from "@/types/issue";
 import request from "@/utils/request";
 
 export const getIssueList = (params: IssueParams) =>
@@ -13,4 +19,16 @@ export const updateIssue = (issueId: string, data: UpdateIssueData) =>
     url: `/issue/${issueId}`,
     method: "PATCH",
     data,
+  });
+
+export const getIssueDetail = (issueId: string) =>
+  request<IssueDetail>({
+    url: `/issue/${issueId}`,
+    method: "GET",
+  });
+
+export const getIssueEvents = (issueId: string) =>
+  request<{ count: number; data: Event[] }>({
+    url: `/issue/${issueId}/events`,
+    method: "GET",
   });

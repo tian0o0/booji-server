@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import BasicLayout from "@/layouts/BasicLayout";
 import { withLoading } from "./utils";
+import IssueDetail from "@/pages/IssueDetail";
 
 const Auth = React.lazy(() => import("@/pages/Auth"));
 const Home = React.lazy(() => import("@/pages/Home"));
@@ -32,6 +33,10 @@ const routes: RouteObject[] = [
           {
             path: "issue",
             element: <Issue />,
+          },
+          {
+            path: "issue/:issueId",
+            element: <IssueDetail />,
           },
           {
             path: "user",

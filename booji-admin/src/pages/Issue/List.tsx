@@ -1,10 +1,11 @@
 import { updateIssue } from "@/api/issue";
-import { useIssueList } from "@/hooks/issue";
+import { useIssueList, useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
 import { IssueData, UpdateIssueData } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
 import { Button, message, Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
 
 const List = ({ appKey, status }: { appKey: string; status: string }) => {
@@ -14,8 +15,11 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
       dataIndex: "action",
       width: 80,
       align: "center",
-      render: (record) => (
-        <Button type="link" onClick={() => message.warn("todo")}>
+      render: (_, record) => (
+        <Button
+          type="link"
+          onClick={() => navigate(`/sys/issue/${record.issueId}`)}
+        >
           查看
         </Button>
       ),
@@ -85,7 +89,7 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
           options={options}
           defaultValue={assigneeId}
           onChange={(newAssigneeId) =>
-            onAssigneeChange(issueId, { assigneeId: newAssigneeId })
+            update(issueId, { assigneeId: newAssigneeId })
           }
         />
       ),
@@ -100,25 +104,16 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
           placeholder="请选择"
           options={statusList}
           defaultValue={status}
-          onChange={(newStatus) =>
-            onAssigneeChange(issueId, { status: newStatus }, true)
-          }
+          onChange={(newStatus) => update(issueId, { status: newStatus }, true)}
         />
       ),
     },
   ];
 
+  const navigate = useNavigate();
   const { loading, value, onChange, retry } = useIssueList(appKey, status);
   const { options } = useUserList();
-
-  const onAssigneeChange = async (
-    issueId: string,
-    data: UpdateIssueData,
-    shouldRetry: boolean = false
-  ) => {
-    await updateIssue(issueId, data);
-    shouldRetry && retry();
-  };
+  const { update } = useUpdateIssue(retry);
 
   return (
     <Table

@@ -37,3 +37,36 @@ export interface UpdateIssueData {
   assigneeId?: number;
   status?: number;
 }
+
+export type IssueDetail = IssueData & { tags: any[] };
+
+export interface Breadcrumb {
+  category: string;
+  data: string;
+  level: string;
+  timestamp: number;
+  type: string;
+}
+export interface Event {
+  appKey: string;
+  breadcrumbs: Breadcrumb[];
+  category: string;
+  eventHash: string;
+  eventId: string;
+  issueId: string;
+  level: string;
+  locate: any;
+  message: string;
+  timestamp: number;
+  type: string;
+  ua: {
+    browser: any;
+    cpu: any;
+    device: any;
+    engine: any;
+    os: any;
+    ua: string;
+  };
+  url: string;
+  user: { id: string };
+}

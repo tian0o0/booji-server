@@ -1,5 +1,5 @@
-import { getIssueList } from "@/api/issue";
-import { IssueData, IssueParams, Order } from "@/types/issue";
+import { getIssueList, updateIssue } from "@/api/issue";
+import { IssueData, IssueParams, Order, UpdateIssueData } from "@/types/issue";
 import { TableProps } from "antd";
 import { SorterResult } from "antd/lib/table/interface";
 import { useEffect, useState } from "react";
@@ -92,5 +92,20 @@ export const useIssueList = (appKey: string, status: string) => {
     value,
     onChange,
     retry,
+  };
+};
+
+export const useUpdateIssue = (retry?: () => void) => {
+  const update = async (
+    issueId: string,
+    data: UpdateIssueData,
+    shouldRetry: boolean = false
+  ) => {
+    await updateIssue(issueId, data);
+    shouldRetry && retry?.();
+  };
+
+  return {
+    update,
   };
 };
