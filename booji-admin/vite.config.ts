@@ -67,6 +67,16 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
           drop_console: VITE_DROP_CONSOLE,
         },
       },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ["react", "react-dom", "react-router-dom"],
+            antd: ["antd"],
+            echarts: ["echarts"],
+            recoil: ["recoil"],
+          },
+        },
+      },
     },
     server: {
       host: true, // docker required
