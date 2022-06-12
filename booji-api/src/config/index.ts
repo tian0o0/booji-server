@@ -5,4 +5,5 @@ export default () => ({
     port: parseInt(process.env.MYSQL_PORT, 10) || 3306,
   },
   esNode: `http://${process.env.ES_HOST}:${process.env.ES_PORT}`,
+  kafkaBrokers: [process.env.KAFKA_BROKER],
 });

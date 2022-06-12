@@ -11,6 +11,7 @@ import { UserEntity } from "@modules/User/user.entity";
 import { SearchService } from "@modules/Search/search.service";
 import { TagService } from "@modules/Tag/tag.service";
 import { SmService } from "@modules/SourceMap/sm.service";
+import { ConfigService } from "@nestjs/config";
 interface Headers {
   "x-real-ip": string;
   "user-agent": string;
@@ -31,12 +32,13 @@ export class IssueService {
     private readonly userRepository: Repository<UserEntity>,
     private searchService: SearchService,
     private tagService: TagService,
-    private smService: SmService
+    private smService: SmService,
+    private configService: ConfigService
   ) {
-    // console.log(this.configService.get("port"));
+    console.log(this.configService.get("kafkaBrokers"));
     this.kafka = new Kafka({
       // clientId: "aaa",
-      brokers: ["localhost:9092"],
+      brokers: this.configService.get("kafkaBrokers"),
     });
     this.consume();
   }
