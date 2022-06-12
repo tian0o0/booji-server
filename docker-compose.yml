@@ -23,7 +23,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnami/kafka:3.2.0
     container_name: booji-server-kafka
     ports:
       - 9092:9092
@@ -47,7 +47,7 @@ services:
     volumes:
       - elasticsearch-volume:/elasticsearch/data
     environment:
-      bootstrap.memory_lock: true
+      # bootstrap.memory_lock: true
       discovery.type: single-node
     restart: unless-stopped
   
@@ -69,6 +69,7 @@ services:
     depends_on:
       - mysqldb
       - es
+      - kafka
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "http://api:3333"]
@@ -83,9 +84,9 @@ services:
       - 80:80
     restart: unless-stopped
 
-networks:
-  shared-network:
-    driver: bridge
+# networks:
+#   shared-network:
+#     driver: bridge
 
 # required?
 volumes:
