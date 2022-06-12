@@ -7,7 +7,7 @@ import { useProjectList } from "./project";
 
 export const useProjectSelect = () => {
   const [selectedAppKey, setSelectedAppKey] = useState<string>("");
-  const { value } = useProjectList();
+  const { value, loading } = useProjectList();
 
   const options =
     value?.map((item) => ({
@@ -25,6 +25,7 @@ export const useProjectSelect = () => {
   };
 
   return {
+    loading,
     options,
     selectedAppKey,
     onChange,
