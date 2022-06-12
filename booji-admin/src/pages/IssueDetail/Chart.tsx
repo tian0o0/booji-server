@@ -1,8 +1,12 @@
 import { Tag } from "@/types/issue";
 import { useEffect, useRef } from "react";
-import * as echarts from "echarts";
-import "echarts/theme/macarons";
 import { Col, Row } from "antd";
+import * as echarts from "echarts/core";
+import { PieChart } from "echarts/charts";
+import { TooltipComponent, LegendComponent } from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
+import "echarts/theme/macarons";
+echarts.use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer]);
 
 const Chart = ({ tags }: { tags: Tag[] }) => {
   const genChartData = (key: string) => {
@@ -14,7 +18,6 @@ const Chart = ({ tags }: { tags: Tag[] }) => {
       };
     });
   };
-  console.log(genChartData("engine"));
 
   return (
     <>
