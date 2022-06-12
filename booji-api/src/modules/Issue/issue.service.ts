@@ -35,10 +35,9 @@ export class IssueService {
     private smService: SmService,
     private configService: ConfigService
   ) {
-    console.log(this.configService.get("kafkaBrokers"));
     this.kafka = new Kafka({
       // clientId: "aaa",
-      brokers: this.configService.get("kafkaBrokers"),
+      brokers: [this.configService.get("kafkaBroker")],
     });
     this.consume();
   }
