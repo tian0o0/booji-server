@@ -58,6 +58,8 @@ export const useIssueList = (appKey: string, status: string) => {
     sorter
   ) => {
     const { field, order } = sorter as SorterResult<IssueData>;
+    console.log(order);
+
     setParams({
       ...params,
       sort: order ? field : undefined,
@@ -78,7 +80,7 @@ export const useIssueList = (appKey: string, status: string) => {
 
   useEffect(() => {
     retry();
-  }, [params.appKey, params.status]);
+  }, [params.appKey, params.status, params.sort, params.order]);
 
   useEffect(() => {
     setParams({
