@@ -50,7 +50,7 @@ export const useIssueEvents = (issueId: string) => {
   }, [currentEventIndex]);
 
   const disableRight = useMemo(() => {
-    return currentEventIndex === total - 1;
+    return total === 0 || currentEventIndex === total - 1;
   }, [currentEventIndex]);
 
   const onPrevEvent = () => {
