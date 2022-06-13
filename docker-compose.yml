@@ -48,7 +48,7 @@ services:
       - elasticsearch-volume:/elasticsearch/data
     environment:
       discovery.type: single-node
-      # ES_JAVA_OPTS: -Xms2g -Xmx2g
+      ES_JAVA_OPTS: -Xms2g -Xmx2g
     restart: unless-stopped
   
   kibana:
@@ -71,11 +71,11 @@ services:
       - es
       - kafka
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "http://api:3333"]
-      interval: 5s
-      timeout: 3s
-      retries: 6
+    # healthcheck:
+    #   test: ["CMD", "curl", "http://api:3333"]
+    #   interval: 5s
+    #   timeout: 3s
+    #   retries: 6
   
   admin:
     container_name: booji-server-admin
