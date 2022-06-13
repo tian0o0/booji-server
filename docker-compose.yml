@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysqldb:
-    image: mysql:5.7
+    image: mysql
     container_name: booji-server-mysql
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -100,9 +100,9 @@ services:
     networks:
       - shared-network
     # TODO: 如果需要开启https需要挂载证书文件,在当前目录添加证书文件夹
-    volumes:
-      - ./booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
-      - ./booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
+    # volumes:
+    #   - ./booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
+    #   - ./booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
 
 networks:
   shared-network:
