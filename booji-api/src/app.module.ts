@@ -12,8 +12,8 @@ import { ConfigModule } from "@nestjs/config";
 import config from "./config";
 import { PerformanceModule } from "@modules/performance/performance.module";
 import { SmModule } from "@modules/SourceMap/sm.module";
-import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "path";
+// import { ServeStaticModule } from "@nestjs/serve-static";
+// import { join } from "path";
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
@@ -42,9 +42,9 @@ import { join } from "path";
     TagModule,
     PerformanceModule,
     SmModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "static"),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, "..", "static"),
+    // }),
   ],
   controllers: [AppController],
   providers: [],
