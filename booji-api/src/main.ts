@@ -21,7 +21,7 @@ async function bootstrap() {
     .setTitle("Booji Server")
     .setDescription("联系我: xietian19941007@gmail.com")
     .setVersion("1.0")
-    // .setBasePath("booji/v1")
+    .setBasePath("api")
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
