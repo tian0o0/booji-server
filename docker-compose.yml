@@ -13,6 +13,8 @@ services:
     volumes:
       - db-config:/etc/mysql
       - db-data:/var/lib/mysql
+    cap_add:
+      - SYS_NICE
     networks:
       - shared-network
 
@@ -84,9 +86,9 @@ services:
       - shared-network
     healthcheck:
       test: ["CMD", "curl", "http://api:3333/api/health"]
-      interval: 5s
+      interval: 10s
       timeout: 3s
-      retries: 6
+      retries: 100
   
   admin:
     container_name: booji-server-admin
