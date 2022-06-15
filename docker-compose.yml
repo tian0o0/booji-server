@@ -48,7 +48,7 @@ services:
       - elasticsearch-volume:/elasticsearch/data
     environment:
       discovery.type: single-node
-      # ES_JAVA_OPTS: -Xms2g -Xmx2g
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
     restart: unless-stopped
   
   kibana:
@@ -86,8 +86,8 @@ services:
     restart: unless-stopped
     # 如果需要开启https需要挂载证书文件
     volumes:
-      - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
-      - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
+      - /etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt:/etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt
+      - /etc/pki/qingtian.life_nginx/qingtian.life.key:/etc/pki/qingtian.life_nginx/qingtian.life.key
 
 # networks:
 #   shared-network:
