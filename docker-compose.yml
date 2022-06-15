@@ -84,7 +84,6 @@ services:
       - 80:80
       - 443:443
     restart: unless-stopped
-    # 如果需要开启https需要挂载证书文件
     volumes:
       - /etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt:/etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt
       - /etc/pki/qingtian.life_nginx/qingtian.life.key:/etc/pki/qingtian.life_nginx/qingtian.life.key
