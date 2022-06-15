@@ -48,7 +48,6 @@ services:
       - elasticsearch-volume:/elasticsearch/data
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
     restart: unless-stopped
   
   kibana:
@@ -84,9 +83,6 @@ services:
       - 80:80
       - 443:443
     restart: unless-stopped
-    volumes:
-      - /etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt:/etc/pki/qingtian.life_nginx/qingtian.life.key
-      - /etc/pki/qingtian.life_nginx/qingtian.life.key:/etc/pki/qingtian.life_nginx/qingtian.life.key
 
 # networks:
 #   shared-network:
