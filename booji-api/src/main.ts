@@ -11,17 +11,16 @@ async function bootstrap() {
   };
   const app = await NestFactory.create(ApplicationModule, appOptions);
 
-  // replace default logger with winston
   // app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-  // app.setGlobalPrefix('booji/v1');
+  app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle("Booji Server")
     .setDescription("联系我: xietian19941007@gmail.com")
     .setVersion("1.0")
-    // .setBasePath("booji/v1")
+    .setBasePath("api")
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
@@ -30,6 +29,6 @@ async function bootstrap() {
   // app.connectMicroservice(kafkaConfig);
   // await app.startAllMicroservicesAsync();
 
-  await app.listen(3333);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
