@@ -99,8 +99,8 @@ services:
       - shared-network
     # 如果需要开启https需要挂载证书文件
     volumes:
-      - ./booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
-      - ./booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
+      - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
+      - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
 
 networks:
   shared-network:
