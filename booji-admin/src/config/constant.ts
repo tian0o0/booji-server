@@ -8,7 +8,7 @@ export const BASE_URL = {
 // 基本路径
 export const VITE_BASE_PATH = "/";
 // 请求接口地址
-export const VITE_HTTP_URL = "https://qingtian.life/booji";
+export const VITE_HTTP_URL = "http://localhost:3333";
 // 应用名称
 export const VITE_APP_TITLE = "Booji Admin";
 // LOGO
