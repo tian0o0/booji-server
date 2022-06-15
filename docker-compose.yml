@@ -13,36 +13,31 @@ services:
     volumes:
       - db-config:/etc/mysql
       - db-data:/var/lib/mysql
-    networks:
-      - shared-network
 
   zookeeper:
-    image: bitnami/zookeeper:latest
+    image: zookeeper:latest
     container_name: booji-server-zookeeper
     ports:
       - 2181:2181
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-    networks:
-      - shared-network
 
   kafka:
     image: bitnami/kafka:3.2.0
     container_name: booji-server-kafka
     ports:
       - 9092:9092
+      - 9093:9093
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=CLIENT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://kafka:9093
       - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
     depends_on:
       - zookeeper
-    networks:
-      - shared-network
   
   es:
     image: elasticsearch:7.17.1
@@ -53,10 +48,8 @@ services:
       - elasticsearch-volume:/elasticsearch/data
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: -Xms1g -Xmx1g
+      ES_JAVA_OPTS: -Xms2g -Xmx2g
     restart: unless-stopped
-    networks:
-      - shared-network
   
   kibana:
     image: kibana:7.17.1
@@ -67,8 +60,6 @@ services:
       - 5601:5601
     depends_on:
       - es
-    networks:
-      - shared-network
 
   api:
     container_name: booji-server-api
@@ -80,8 +71,6 @@ services:
       - es
       - kafka
     restart: unless-stopped
-    networks:
-      - shared-network
     # healthcheck:
     #   test: ["CMD", "curl", "http://api:3333"]
     #   interval: 5s
@@ -95,16 +84,14 @@ services:
       - 80:80
       - 443:443
     restart: unless-stopped
-    networks:
-      - shared-network
     # 如果需要开启https需要挂载证书文件
     volumes:
       - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
       - /etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
 
-networks:
-  shared-network:
-    driver: bridge
+# networks:
+#   shared-network:
+#     driver: bridge
 
 # required?
 volumes:
