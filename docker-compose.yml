@@ -85,7 +85,7 @@ services:
       - 443:443
     restart: unless-stopped
     volumes:
-      - /etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt:/etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt
+      - /etc/pki/qingtian.life_nginx/qingtian.life_bundle.crt:/etc/pki/qingtian.life_nginx/qingtian.life.key
       - /etc/pki/qingtian.life_nginx/qingtian.life.key:/etc/pki/qingtian.life_nginx/qingtian.life.key
 
 # networks:
