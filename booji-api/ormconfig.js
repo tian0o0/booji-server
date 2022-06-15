@@ -1,4 +1,4 @@
-const SOURCE_PATH = process.env.NODE_ENV === "production" ? "src" : "src";
+const SOURCE_PATH = process.env.NODE_ENV === "production" ? "dist" : "src";
 const PASSWORD = process.env.NODE_ENV === "production" ? "666666" : "";
 
 module.exports = {
