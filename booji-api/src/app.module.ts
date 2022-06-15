@@ -13,7 +13,6 @@ import config from "./config";
 import { PerformanceModule } from "@modules/performance/performance.module";
 import { SmModule } from "@modules/SourceMap/sm.module";
 // import { ServeStaticModule } from "@nestjs/serve-static";
-// import { join } from "path";
 @Module({
   imports: [
     TypeOrmModule.forRoot(),

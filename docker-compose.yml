@@ -88,7 +88,7 @@ services:
       test: ["CMD", "curl", "http://api:3333/api/health"]
       interval: 10s
       timeout: 3s
-      retries: 100
+      retries: 10
   
   admin:
     container_name: booji-server-admin
@@ -99,7 +99,7 @@ services:
     restart: unless-stopped
     networks:
       - shared-network
-    # TODO: 如果需要开启https需要挂载证书文件,在当前目录添加证书文件夹
+    # 如果需要开启https需要挂载证书文件,在当前目录添加证书文件夹
     # volumes:
     #   - ./booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
     #   - ./booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
@@ -108,7 +108,7 @@ networks:
   shared-network:
     driver: bridge
 
-# required?
+# required
 volumes:
   db-config:
   db-data:
