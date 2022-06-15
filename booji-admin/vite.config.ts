@@ -1,23 +1,17 @@
-import { defineConfig, ConfigEnv, UserConfig, PluginOption } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import legacy from "@vitejs/plugin-legacy";
 import visualizer from "rollup-plugin-visualizer";
 import compression from "vite-plugin-compression";
 import vitePluginImp from "vite-plugin-imp";
 
-import {
-  VITE_APP_LEGACY,
-  VITE_APP_ANALYZE,
-  VITE_APP_COMPRESS_GZIP,
-  VITE_BASE_PATH,
-  VITE_DROP_CONSOLE,
-} from "./src/config/constant";
-
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
+export default defineConfig(({ command, mode }) => {
+  const { VITE_BASE_PATH, VITE_APP_LEGACY } = loadEnv(mode, process.cwd());
+
   const isBuild = command === "build";
 
-  const plugins: PluginOption[] = [
+  const plugins = [
     react(),
     vitePluginImp({
       libList: [
@@ -29,20 +23,16 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
         },
       ],
     }),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ];
 
-  isBuild && VITE_APP_LEGACY && plugins.push(legacy());
+  isBuild && VITE_APP_LEGACY === "true" && plugins.push(legacy());
 
-  isBuild && VITE_APP_COMPRESS_GZIP && plugins.push(compression());
-
-  VITE_APP_ANALYZE &&
-    plugins.push(
-      visualizer({
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-      })
-    );
+  isBuild && plugins.push(compression());
 
   return {
     base: VITE_BASE_PATH,
@@ -64,7 +54,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
       terserOptions: {
         compress: {
           keep_infinity: true,
-          drop_console: VITE_DROP_CONSOLE,
+          drop_console: true,
         },
       },
       rollupOptions: {
