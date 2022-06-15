@@ -1,11 +1,10 @@
 import { notification } from "antd";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { VITE_HTTP_URL } from "@/config/constant";
 import { getToken } from "./token";
 import { ApiError } from "@/types";
 
 const instance = axios.create({
-  baseURL: VITE_HTTP_URL,
+  baseURL: import.meta.env.VITE_HTTP_URL,
 });
 
 instance.interceptors.request.use((request) => {
