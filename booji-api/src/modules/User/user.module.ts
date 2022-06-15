@@ -23,13 +23,13 @@ export class UserModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .exclude(
-        { path: "user/login", method: RequestMethod.POST },
-        { path: "user", method: RequestMethod.POST }
+        { path: "api/user/login", method: RequestMethod.POST },
+        { path: "api/user", method: RequestMethod.POST }
       )
       .forRoutes(UserController)
       .apply(CheckOwnMiddleware)
-      .forRoutes({ path: "user/:id(\\d+)", method: RequestMethod.ALL })
+      .forRoutes({ path: "api/user/:id(\\d+)", method: RequestMethod.ALL })
       .apply(CheckAdminMiddleware)
-      .forRoutes({ path: "user/:email", method: RequestMethod.DELETE });
+      .forRoutes({ path: "api/user/:email", method: RequestMethod.DELETE });
   }
 }

@@ -7,7 +7,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, getRepository, Repository } from "typeorm";
 const jwt = require("jsonwebtoken");
 import { validate } from "class-validator";
-import { verify } from "argon2";
+import { verify } from "@utils/other/crypto";
 
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserEntity } from "./user.entity";
@@ -80,7 +80,7 @@ export class UserService {
       return null;
     }
 
-    if (await verify(user.password, password)) {
+    if (verify(user.password, password)) {
       return user;
     }
 

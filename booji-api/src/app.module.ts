@@ -12,7 +12,6 @@ import { ConfigModule } from "@nestjs/config";
 import config from "./config";
 import { PerformanceModule } from "@modules/performance/performance.module";
 import { SmModule } from "@modules/SourceMap/sm.module";
-// import { ServeStaticModule } from "@nestjs/serve-static";
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
@@ -49,5 +48,5 @@ import { SmModule } from "@modules/SourceMap/sm.module";
   providers: [],
 })
 export class ApplicationModule {
-  constructor(private readonly connection: Connection) {}
+  constructor() {}
 }

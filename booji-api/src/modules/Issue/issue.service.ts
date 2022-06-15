@@ -104,7 +104,7 @@ export class IssueService {
     });
     await producer.connect();
     await producer.send({
-      topic: "test",
+      topic: "booji",
       messages: [{ value: JSON.stringify(event) }],
     });
     await producer.disconnect();
@@ -114,7 +114,7 @@ export class IssueService {
     const consumer = this.kafka.consumer({ groupId: "bbb" });
     await consumer.connect();
     await consumer.subscribe({
-      topic: "test",
+      topic: "booji",
       fromBeginning: false,
     });
     await consumer.run({

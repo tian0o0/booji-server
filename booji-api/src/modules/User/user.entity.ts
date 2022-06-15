@@ -1,6 +1,6 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
 import { ProjectEntity } from "@modules/Project/project.entity";
-import { hash } from "argon2";
+import { encrypt } from "@utils/other/crypto";
 import { IsEmail } from "class-validator";
 import {
   BeforeInsert,
@@ -43,8 +43,8 @@ export class UserEntity {
   password: string;
 
   @BeforeInsert()
-  async hashPassword() {
-    this.password = await hash(this.password);
+  hashPassword() {
+    this.password = encrypt(this.password);
   }
 
   @OneToMany(() => IssueEntity, (issue) => issue.assignee)
