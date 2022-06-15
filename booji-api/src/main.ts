@@ -11,9 +11,10 @@ async function bootstrap() {
   };
   const app = await NestFactory.create(ApplicationModule, appOptions);
 
+  // replace default logger with winston
   // app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-  app.setGlobalPrefix("api");
+  // app.setGlobalPrefix('booji/v1');
   app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()

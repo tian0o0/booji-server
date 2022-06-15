@@ -23,9 +23,9 @@ export class AppController {
   //   // });
   // }
 
-  @Get("health")
+  // @Get("/test")
   async init() {
-    return "ok";
+    // this.logger.info();
     // return this.client.emit("test", { foo: "bar" });
   }
 
