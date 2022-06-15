@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development node index.js",
     "watch": "NODE_ENV=development nodemon",
     "build": "nest build",
-    "start:test": "NODE_ENV=production node index.js",
+    "start:test": "NODE_ENV=production node dist/main.js",
     "start": "pm2 start",
     "test": "jest --config=jest.json",
     "test:watch": "jest --watch --config=jest.json",
@@ -73,7 +73,6 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.2.6",
     "@types/jest": "^23.3.13",
     "@types/node": "^10.17.15",
     "@typescript-eslint/parser": "5.9.1",
@@ -85,7 +84,6 @@
     "extend": ">=3.0.2",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
-    "pm2": "^5.2.0",
     "prettier": "2.5.1",
     "supertest": "^3.4.2",
     "ts-jest": "^24.3.0",

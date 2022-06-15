@@ -2,8 +2,7 @@ module.exports = {
   apps: [
     {
       name: "booji",
-      // script: "./dist/main.js",
-      script: "./index.js",
+      script: "./dist/main.js",
       instances: "max",
       exec_mode: "cluster",
       env: {
