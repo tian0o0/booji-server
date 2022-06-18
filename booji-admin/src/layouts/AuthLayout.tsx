@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { MENUS } from "@/routes/utils";
 import { VITE_APP_LOGO, VITE_APP_TITLE } from "@/config/constant";
 import User from "@/components/User";
+import { useAuth } from "@/context/auth";
 
 const { Header, Sider, Content } = Layout;
 
-const BasicLayout: React.FC = () => {
+const AuthLayout: React.FC = () => {
+  const { hasLogin } = useAuth();
+  if (!hasLogin) {
+    return <Navigate to="/auth" />;
+  }
+
   const [collapsed, setCollapsed] = useState(false);
   const selectedKeys = [useLocation().pathname];
 
@@ -31,7 +37,7 @@ const BasicLayout: React.FC = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={selectedKeys}
+          selectedKeys={selectedKeys}
           items={MENUS}
         />
       </Sider>
@@ -53,4 +59,4 @@ const BasicLayout: React.FC = () => {
   );
 };
 
-export default BasicLayout;
+export default AuthLayout;

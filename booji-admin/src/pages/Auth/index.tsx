@@ -13,7 +13,7 @@ const Auth = () => {
         <img src={VITE_APP_LOGO} className="h-12 mb-6" />
         {isLogin ? <Login /> : <Register />}
         <Button type="link" onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
+          {isLogin ? "没有账号？去注册" : "已经有账号了？去登录"}
         </Button>
       </div>
     </div>

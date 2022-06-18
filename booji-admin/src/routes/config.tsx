@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate, RouteObject } from "react-router-dom";
-import BasicLayout from "@/layouts/BasicLayout";
-import { withLoading } from "./utils";
+import AuthLayout from "@/layouts/AuthLayout";
 import IssueDetail from "@/pages/IssueDetail";
+import { withLoading } from "./utils";
 
 const Auth = React.lazy(() => import("@/pages/Auth"));
 const Home = React.lazy(() => import("@/pages/Home"));
@@ -17,7 +17,7 @@ const routes: RouteObject[] = [
   },
   {
     path: "/",
-    element: <BasicLayout />,
+    element: <AuthLayout />,
     children: [
       {
         path: "",

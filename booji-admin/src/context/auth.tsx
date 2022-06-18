@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { LoginForm, RegisterForm } from "@/types";
 import * as api from "@/api";
-import { setToken } from "@/utils/token";
+import { setToken, getToken } from "@/utils/token";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const AuthContext = React.createContext<
       login: (data: LoginForm) => Promise<void>;
       register: (data: RegisterForm) => Promise<void>;
       logout: () => void;
+      hasLogin: boolean;
     }
   | undefined
 >(undefined);
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       children={children}
-      value={{ loading, login, register, logout }}
+      value={{ loading, login, register, logout, hasLogin: !!getToken() }}
     />
   );
 };
