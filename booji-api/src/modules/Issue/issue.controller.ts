@@ -69,7 +69,7 @@ export class IssueController {
   @ApiOperation({ title: "上报" })
   @Post("booji")
   @HttpCode(204)
-  report(@Body() body: ReportDto, @Headers() headers): Promise<void> {
-    return this.issueService.beforeProduce(body, headers);
+  report(@Body() body: ReportDto, @Headers() headers) {
+    this.issueService.beforeProduce(body, headers);
   }
 }

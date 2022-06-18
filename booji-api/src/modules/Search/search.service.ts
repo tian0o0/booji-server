@@ -80,17 +80,21 @@ export class SearchService {
     return { data, count: body.hits.total.value };
   }
 
-  async save(data: any) {
-    this.esService.bulk(
-      {
-        index: "booji",
-        body: [{ index: { _index: "booji" } }, data],
-      },
-      (err) => {
-        if (err) {
-          console.error(err);
+  async save(data: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.esService.bulk(
+        {
+          index: "booji",
+          body: [{ index: { _index: "booji" } }, data],
+        },
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
         }
-      }
-    );
+      );
+    });
   }
 }
