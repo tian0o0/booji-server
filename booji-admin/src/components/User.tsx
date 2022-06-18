@@ -7,20 +7,20 @@ import { useAuth } from "@/context/auth";
 const User: React.FC = () => {
   const user = useRecoilValue(userState);
   const { logout } = useAuth();
+  const items = [
+    {
+      key: "logout",
+      label: (
+        <Button type={"link"} onClick={logout}>
+          退出登录
+        </Button>
+      ),
+    },
+  ];
   return (
-    <Dropdown
-      overlay={
-        <Menu>
-          <Menu.Item key={"logout"}>
-            <Button type={"link"} onClick={logout}>
-              登出
-            </Button>
-          </Menu.Item>
-        </Menu>
-      }
-    >
+    <Dropdown overlay={<Menu items={items} />}>
       <Button type={"link"} onClick={(e) => e.preventDefault()}>
-        Hi, {user?.name}
+        Hello, {user?.name}
       </Button>
     </Dropdown>
   );
