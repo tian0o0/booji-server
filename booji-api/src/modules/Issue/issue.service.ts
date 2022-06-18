@@ -1,6 +1,5 @@
-import { Kafka } from "kafkajs";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { parseLocate, parseUa } from "@utils/HeaderParser";
+import { parseLocate, parseUa } from "@utils/header-parser";
 import { ReportDto, UpdateIssueDto } from "./dto";
 import { IssueEntity } from "./issue.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -11,7 +10,8 @@ import { UserEntity } from "@modules/User/user.entity";
 import { SearchService } from "@modules/Search/search.service";
 import { TagService } from "@modules/Tag/tag.service";
 import { SmService } from "@modules/SourceMap/sm.service";
-import { ConfigService } from "@nestjs/config";
+import { KafkaService } from "@modules/Kafka/kafka.service";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 interface Headers {
   "x-real-ip": string;
   "user-agent": string;
@@ -22,7 +22,6 @@ type Order = "ASC" | "DESC";
 
 @Injectable()
 export class IssueService {
-  private kafka: Kafka;
   constructor(
     @InjectRepository(IssueEntity)
     private readonly issueRepository: Repository<IssueEntity>,
@@ -33,13 +32,14 @@ export class IssueService {
     private searchService: SearchService,
     private tagService: TagService,
     private smService: SmService,
-    private configService: ConfigService
-  ) {
-    this.kafka = new Kafka({
-      // clientId: "aaa",
-      brokers: [this.configService.get("kafkaBroker")],
-    });
-    this.consume();
+    private kafkaService: KafkaService,
+    private eventEmitter: EventEmitter2
+  ) {}
+  onInit() {
+    this.eventEmitter.on("booji", this.report);
+  }
+  onDestory() {
+    this.eventEmitter.off("booji", this.report);
   }
   async getIssueList(
     perPage: number,
@@ -83,7 +83,7 @@ export class IssueService {
     const ip = headers["x-real-ip"];
     const userAgent = headers["user-agent"];
 
-    // const locate = parseLocate("171.113.29.179");
+    // 171.113.29.179
     const locate = parseLocate(ip);
     const ua = parseUa(userAgent);
 
@@ -93,45 +93,18 @@ export class IssueService {
       ua,
     };
 
-    this.produce(event);
+    this.kafkaService.send(event);
 
     return;
   }
 
-  async produce(event) {
-    const producer = this.kafka.producer({
-      allowAutoTopicCreation: false,
-    });
-    await producer.connect();
-    await producer.send({
-      topic: "booji",
-      messages: [{ value: JSON.stringify(event) }],
-    });
-    await producer.disconnect();
-  }
-
-  async consume() {
-    const consumer = this.kafka.consumer({ groupId: "bbb" });
-    await consumer.connect();
-    await consumer.subscribe({
-      topic: "booji",
-      fromBeginning: false,
-    });
-    await consumer.run({
-      eachMessage: async ({ topic, partition, message }) => {
-        this.report(message.value.toString());
-      },
-    });
-  }
-
-  async report(data: string) {
-    const parsedData = JSON.parse(data);
-    console.log(parsedData);
-    // 每一个 event 写入 es
-    this.searchService.save(parsedData);
+  async report(event: string) {
+    const parsedData = JSON.parse(event);
+    // 每一个 event 写入 es(写入失败终止流程)
+    await this.searchService.save(parsedData);
 
     // 根据 issueId 判断是否是属于同一issue（是则issue count +1, 否则新增issue）
-    const issue = await await this.issueRepository.findOne({
+    const issue = await this.issueRepository.findOne({
       issueId: parsedData.issueId,
     });
     if (issue) {

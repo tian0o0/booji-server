@@ -24,6 +24,6 @@ export class ProjectModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(ProjectController)
       .apply(CheckAdminMiddleware)
-      .forRoutes({ path: "project/:id(\\d+)", method: RequestMethod.ALL });
+      .forRoutes({ path: "api/project/:id(\\d+)", method: RequestMethod.ALL });
   }
 }

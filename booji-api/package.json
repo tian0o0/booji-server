@@ -38,6 +38,7 @@
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^7.0.2",
     "@nestjs/elasticsearch": "7",
+    "@nestjs/event-emitter": "^1.1.1",
     "@nestjs/microservices": "^7.0.2",
     "@nestjs/platform-express": "^7.0.2",
     "@nestjs/serve-static": "^2.2.2",
@@ -54,7 +55,6 @@
     "kafkajs": "^1.16.0",
     "module-alias": "^2.2.2",
     "mysql": "^2.18.1",
-    "nest-winston": "^1.6.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "path-to-regexp": "^6.1.0",
@@ -68,7 +68,7 @@
     "typeorm": "^0.2.22",
     "typescript": "^4.3.5",
     "ua-parser-js": "^1.0.2",
-    "winston": "^3.6.0"
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.6",

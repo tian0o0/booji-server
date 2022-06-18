@@ -22,8 +22,8 @@ export class PerformanceModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckProjectExistMiddleware)
-      .forRoutes("booji/performance")
+      .forRoutes("api/booji/performance")
       .apply(AuthMiddleware)
-      .forRoutes("/performances");
+      .forRoutes("api/performances");
   }
 }

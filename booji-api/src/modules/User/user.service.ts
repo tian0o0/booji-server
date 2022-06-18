@@ -7,7 +7,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, getRepository, Repository } from "typeorm";
 const jwt = require("jsonwebtoken");
 import { validate } from "class-validator";
-import { verify } from "@utils/other/crypto";
+import { verify } from "@utils/crypto";
 
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserEntity } from "./user.entity";

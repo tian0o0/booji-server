@@ -1,6 +1,6 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
 import { ProjectEntity } from "@modules/Project/project.entity";
-import { encrypt } from "@utils/other/crypto";
+import { encrypt } from "@utils/crypto";
 import { IsEmail } from "class-validator";
 import {
   BeforeInsert,

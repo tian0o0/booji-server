@@ -13,6 +13,8 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
+  OnModuleDestroy,
+  OnModuleInit,
   RequestMethod,
 } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -41,12 +43,21 @@ import { IssueService } from "./issue.service";
   providers: [IssueService],
   exports: [IssueService],
 })
-export class IssueModule implements NestModule {
+export class IssueModule implements NestModule, OnModuleInit, OnModuleDestroy {
+  constructor(private issueService: IssueService) {}
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckProjectExistMiddleware)
-      .forRoutes("booji")
+      .forRoutes("api/booji")
       .apply(AuthMiddleware)
-      .forRoutes({ path: "issue", method: RequestMethod.ALL });
+      .forRoutes({ path: "api/issue", method: RequestMethod.ALL });
+  }
+
+  onModuleInit() {
+    this.issueService.onInit();
+  }
+
+  onModuleDestroy() {
+    this.issueService.onDestory();
   }
 }
