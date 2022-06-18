@@ -22,7 +22,9 @@ const Brief = ({
   return (
     <>
       <div className="flex justify-between item-center">
-        <Tag>EventId: {currentEvent.eventId}</Tag>
+        <Tag color="purple" className="leading-8">
+          EventId: {currentEvent.eventId}
+        </Tag>
         <Space>
           <Button
             shape="circle"
