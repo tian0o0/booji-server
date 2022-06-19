@@ -1,6 +1,14 @@
 import { useAddProject } from "@/hooks/project";
 import { AddProjectForm } from "@/types";
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, Select } from "antd";
+import { DefaultOptionType } from "antd/lib/select";
+
+const platforms = [
+  { label: "JavaScript", value: "js" },
+  { label: "React", value: "react" },
+  { label: "Vue", value: "vue" },
+  { label: "Angular", value: "angular" },
+];
 
 const AddProject = ({
   visible,
@@ -38,9 +46,9 @@ const AddProject = ({
         </Form.Item>
         <Form.Item
           name={"platform"}
-          rules={[{ required: true, message: "请输入平台" }]}
+          rules={[{ required: true, message: "请选择平台" }]}
         >
-          <Input placeholder={"平台"} type="text" id={"platform"} />
+          <Select placeholder={"平台"} options={platforms} id={"platform"} />
         </Form.Item>
         <Form.Item name={"desc"}>
           <Input placeholder={"备注"} type="text" id={"desc"} />
