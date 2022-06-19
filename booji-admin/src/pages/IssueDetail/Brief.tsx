@@ -1,5 +1,4 @@
 import { Breadcrumb, Event, IssueDetail } from "@/types/issue";
-import { timeFormat } from "@/utils/common";
 import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";

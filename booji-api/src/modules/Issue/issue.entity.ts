@@ -54,7 +54,8 @@ export class IssueEntity {
 
   @Column({
     comment: "错误栈，用于解析sourcemap",
-    default: "",
+    type: "longtext",
+    nullable: true,
   })
   stack: string;
 
@@ -92,9 +93,12 @@ export class IssueEntity {
 
   @ManyToOne(() => ProjectEntity, (project) => project.issues)
   @JoinColumn({
-    name: "appKey",
+    name: "project",
   })
   project: ProjectEntity;
+
+  @RelationId((issue: IssueEntity) => issue.project)
+  appKey?: string;
 
   @ManyToOne(() => UserEntity, (user) => user.issues)
   assignee?: UserEntity;

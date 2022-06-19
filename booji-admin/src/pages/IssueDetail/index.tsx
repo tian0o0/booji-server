@@ -6,6 +6,7 @@ import Brief from "./Brief";
 import Chart from "./Chart";
 import Events from "./Events";
 import Header from "./Header";
+import SourceMap from "./SourceMap";
 
 const { TabPane } = Tabs;
 
@@ -28,6 +29,8 @@ const IssueDetail = () => {
       ) : (
         <>
           <Header detail={detail} />
+          <Divider />
+          <SourceMap source={detail.source} />
           <Divider />
           <Tabs defaultActiveKey="1">
             <TabPane tab="🔎 摘要" key="1">

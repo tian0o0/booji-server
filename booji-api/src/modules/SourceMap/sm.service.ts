@@ -5,6 +5,7 @@ import { getRepository, Repository } from "typeorm";
 import { Request } from "express";
 import axios from "axios";
 import { SmEntity } from "./sm.entity";
+const StackTracey = require("stacktracey");
 const sourceMap = require("source-map");
 const SourceMapConsumer = sourceMap.SourceMapConsumer;
 
@@ -48,17 +49,12 @@ export class SmService {
     };
   }
 
-  async parseSourceMap({
-    appKey,
-    stack,
-    row,
-    col,
-    release,
-  }: any): Promise<string> {
+  async parseSourceMap({ appKey, stack, release }: any): Promise<string> {
     if (!stack) return "";
 
     // 找到当前appKey/release(默认取最新的release, 如果booji SDK初始化时传了release，那么根据传入的release寻找)
     const smList = await this.smRepository.find({ project: appKey });
+
     const sm =
       smList.find((sm) => sm.release === release) || smList[smList.length - 1];
 
@@ -70,31 +66,31 @@ export class SmService {
       const fileContent = res.data;
       const consumer = await new SourceMapConsumer(fileContent);
 
-      const originalPosition = consumer.originalPositionFor({
-        line: row,
-        column: col,
-      });
-      if (!originalPosition.source || originalPosition.column === 0) return "";
+      // const originalPosition = consumer.originalPositionFor({
+      //   // line: row,
+      //   // column: col,
+      // });
+      // if (!originalPosition.source || originalPosition.column === 0) return "";
 
-      const sourceContent = consumer.sourceContentFor(originalPosition.source);
-      return sourceContent;
+      // const sourceContent = consumer.sourceContentFor(originalPosition.source);
+      // return sourceContent;
+      const tracey = new StackTracey(stack);
+      for (const frame of tracey.items) {
+        // 这里的frame就是stack中的一行所解析出来的内容
+        // originalPosition不仅仅是行列信息，还有错误发生的文件 originalPosition.source
+        const originalPosition = consumer.originalPositionFor({
+          line: frame.line,
+          column: frame.column,
+        });
+        const sourceContent = consumer.sourceContentFor(
+          originalPosition.source
+        );
+        return sourceContent;
+      }
     });
 
-    // const tracey = new Stacktracey(stack); // 废弃：booji sdk目前会收集row/col
-    //   for (const frame of tracey.items) {
-    //     // 这里的frame就是stack中的一行所解析出来的内容
-    //     // originalPosition不仅仅是行列信息，还有错误发生的文件 originalPosition.source
-    //     const originalPosition = consumer.originalPositionFor({
-    //       line: frame.line,
-    //       column: frame.column,
-    //     });
-    //     const sourceContent = consumer.sourceContentFor(
-    //       originalPosition.source
-    //     );
-    //     return sourceContent;
-    //   }
-    // });
     const data = await Promise.all(promises);
+
     return data[0];
   }
 }

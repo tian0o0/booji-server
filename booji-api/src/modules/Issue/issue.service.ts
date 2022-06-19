@@ -65,34 +65,16 @@ export class IssueService {
     return await this.searchService.search(from, size, issueId);
   }
 
-  beforeProduce(body: ReportDto, headers: Headers) {
-    const ip = headers["x-real-ip"];
-    const userAgent = headers["user-agent"];
-
-    // 171.113.29.179
-    const locate = parseLocate(ip);
-    const ua = parseUa(userAgent);
-
-    const event = {
-      ...body,
-      locate,
-      ua,
-    };
-
-    this.kafkaService.send(event);
-  }
-
   async getIssueDetail(id: string): Promise<IssueEntity> {
     const issue = await this.issueRepository.findOne({ issueId: id });
     if (!issue) {
       throw new NotFoundException("issueId不存在");
     }
+
     // 解析sourcemap
     const source = await this.smService.parseSourceMap({
-      appKey: issue.project,
+      appKey: issue.appKey,
       stack: issue.stack,
-      row: issue.row,
-      col: issue.col,
       release: issue.release,
     });
     return {
@@ -110,5 +92,22 @@ export class IssueService {
     issue.assignee = assignee || null;
     issue.status = status;
     return await this.issueRepository.save(issue);
+  }
+
+  beforeProduce(body: ReportDto, headers: Headers) {
+    const ip = headers["x-real-ip"];
+    const userAgent = headers["user-agent"];
+
+    // 171.113.29.179
+    const locate = parseLocate(ip);
+    const ua = parseUa(userAgent);
+
+    const event = {
+      ...body,
+      locate,
+      ua,
+    };
+
+    this.kafkaService.send(event);
   }
 }
