@@ -89,8 +89,12 @@ export class SmService {
       }
     });
 
-    const data = await Promise.all(promises);
-
-    return data[0];
+    try {
+      const data = await Promise.all(promises);
+      return data[0];
+    } catch (e) {
+      console.log("SourceMap解析失败，请确保可以访问SourceMap文件");
+      return "";
+    }
   }
 }

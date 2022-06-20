@@ -1,6 +1,6 @@
 import FullScreenSpin from "@/components/FullScreenSpin";
 import { useIssueDetail, useIssueEvents } from "@/hooks/issue-detail";
-import { Divider, Tabs } from "antd";
+import { Tabs } from "antd";
 import { useParams } from "react-router-dom";
 import Brief from "./Brief";
 import Chart from "./Chart";
@@ -29,9 +29,7 @@ const IssueDetail = () => {
       ) : (
         <>
           <Header detail={detail} />
-          <Divider />
           <SourceMap source={detail.source} />
-          <Divider />
           <Tabs defaultActiveKey="1">
             <TabPane tab="🔎 摘要" key="1">
               {currentEvent && (

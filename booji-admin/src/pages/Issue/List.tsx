@@ -1,3 +1,4 @@
+import { defaultLang } from "@/config/constant";
 import { useIssueList, useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
 import { IssueData } from "@/types/issue";
@@ -6,6 +7,8 @@ import { Button, Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
+
+const lang = localStorage.getItem("lang") || defaultLang;
 
 const List = ({ appKey, status }: { appKey: string; status: string }) => {
   const columns: ColumnsType<IssueData> = [
@@ -17,7 +20,7 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
       render: (_, record) => (
         <Button
           type="link"
-          onClick={() => navigate(`/sys/issue/${record.issueId}`)}
+          onClick={() => navigate(`/${lang}/issue/${record.issueId}`)}
         >
           查看
         </Button>
