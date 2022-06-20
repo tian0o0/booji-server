@@ -1,11 +1,16 @@
 import FullScreenSpin from "@/components/FullScreenSpin";
+import { defaultLang } from "@/config/constant";
 import {
   BugOutlined,
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { ReactNode, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, RouteObject } from "react-router-dom";
+import { routes } from "./config";
+
+const lang = localStorage.getItem("lang") || defaultLang;
 
 /**
  * 给懒加载路由加loadings
@@ -33,38 +38,42 @@ export function withLoading(routes: RouteObject[]): RouteObject[] {
 interface MenuItem {
   key: string;
   label: ReactNode;
-  title: string;
-  icon: ReactNode;
+  title: string | undefined;
+  icon?: ReactNode;
 }
-export const MENUS: MenuItem[] = [
-  {
-    key: "/sys/app",
-    label: (
-      <Link to="/sys/app">
-        <span>App</span>
-      </Link>
-    ),
-    icon: <UnorderedListOutlined />,
-    title: "App",
-  },
-  {
-    key: "/sys/issue",
-    label: (
-      <Link to="/sys/issue">
-        <span>Issue</span>
-      </Link>
-    ),
-    icon: <BugOutlined />,
-    title: "Issue",
-  },
-  {
-    key: "/sys/user",
-    label: (
-      <Link to="/sys/user">
-        <span>User</span>
-      </Link>
-    ),
-    icon: <UserOutlined />,
-    title: "User",
-  },
-];
+
+/**
+ * 根据路由配置生成左侧菜单
+ * @returns MenuItem[]
+ */
+export const generateMenus = () => {
+  const { t } = useTranslation();
+  return routes
+    .find((route) => route.path === "/")
+    ?.children?.find((route) => route.path === lang)
+    ?.children?.filter((route) => !route.path?.includes("/"))
+    .map((route) => {
+      const path = route.path as string;
+      const menuItem: MenuItem = {
+        key: `/${lang}/${path}`,
+        label: (
+          <Link to={`/${lang}/${path}`}>
+            <span>{t(path)}</span>
+          </Link>
+        ),
+        title: path,
+      };
+      switch (path) {
+        case "app":
+          menuItem.icon = <UnorderedListOutlined />;
+          break;
+        case "issue":
+          menuItem.icon = <BugOutlined />;
+          break;
+        case "user":
+          menuItem.icon = <UserOutlined />;
+          break;
+      }
+      return menuItem;
+    });
+};

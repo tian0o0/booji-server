@@ -3,14 +3,16 @@ import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "@/layouts/AuthLayout";
 import IssueDetail from "@/pages/IssueDetail";
 import { withLoading } from "./utils";
+import { defaultLang } from "@/config/constant";
 
+const lang = localStorage.getItem("lang") || defaultLang;
 const Auth = React.lazy(() => import("@/pages/Auth"));
 const Home = React.lazy(() => import("@/pages/Home"));
 const Issue = React.lazy(() => import("@/pages/Issue"));
 const User = React.lazy(() => import("@/pages/User"));
 const NotFound = React.lazy(() => import("@/pages/404"));
 
-const routes: RouteObject[] = [
+export const routes: RouteObject[] = [
   {
     path: "/auth",
     element: <Auth />,
@@ -21,10 +23,10 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "",
-        element: <Navigate to="/sys/app" />,
+        element: <Navigate to={`/${lang}/app`} />,
       },
       {
-        path: "sys",
+        path: lang,
         children: [
           {
             path: "app",

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Space } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { MENUS } from "@/routes/utils";
-import { VITE_APP_LOGO, VITE_APP_TITLE } from "@/config/constant";
+import { generateMenus } from "@/routes/utils";
+import { VITE_APP_LOGO } from "@/config/constant";
 import User from "@/components/User";
 import { useAuth } from "@/context/auth";
+import Lang from "@/components/Lang";
+import { useTranslation } from "react-i18next";
 
 const { Header, Sider, Content } = Layout;
 
 const AuthLayout: React.FC = () => {
+  const { t } = useTranslation();
   const { hasLogin } = useAuth();
   if (!hasLogin) {
     return <Navigate to="/auth" />;
@@ -30,7 +33,7 @@ const AuthLayout: React.FC = () => {
           <img src={VITE_APP_LOGO} className="h-8" />
           {!collapsed && (
             <h2 className="text-slate-600 text-xl font-bold ml-1">
-              {VITE_APP_TITLE}
+              {t("title")}
             </h2>
           )}
         </div>
@@ -38,7 +41,7 @@ const AuthLayout: React.FC = () => {
           theme="light"
           mode="inline"
           selectedKeys={selectedKeys}
-          items={MENUS}
+          items={generateMenus()}
         />
       </Sider>
       <Layout>
@@ -49,7 +52,10 @@ const AuthLayout: React.FC = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <User />
+          <Space>
+            <Lang />
+            <User />
+          </Space>
         </Header>
         <Content className="m-8 p-4 bg-white h-full">
           <Outlet />
