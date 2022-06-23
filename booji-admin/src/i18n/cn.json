@@ -5,5 +5,47 @@
 
     "app": "应用",
     "issue": "问题",
-    "user": "用户"
+    "user": "用户",
+
+    "logout": "退出登录",
+
+    "projectList": "项目列表",
+    "addProject": "新建项目",
+    "projectName": "项目名",
+    "platform": "平台",
+    "appKey": "AppKey",
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "operation": "操作",
+    "usage": "使用示例",
+    "delete": "删除",
+    "remark": "备注",
+    "tip": "提示",
+    "deleteTip": "确定删除{{ message }}吗？",
+
+    "ToBeHandled": "待处理",
+    "Handling": "处理中",
+    "Handled": "已处理",
+    "Closed": "已关闭",
+    "Reopened": "重新打开",
+    "Ignored": "已忽略",
+
+    "check": "查看",
+    "type": "类型",
+    "category": "分类",
+    "info": "信息",
+    "eventCount": "事件数",
+    "userCount": "用户数",
+    "level": "等级",
+    "assignee": "负责人",
+    "status": "状态",
+    "plzSelect": "请选择",
+
+    "name": "姓名",
+    "email": "邮箱",
+
+    "brief": "摘要",
+    "tags": "标签统计",
+    "events": "事件列表",
+    "breadcrumbs": "触发轨迹"
 }

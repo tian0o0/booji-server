@@ -2,6 +2,8 @@ import { Breadcrumb, Event, IssueDetail } from "@/types/issue";
 import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
 import { Button, Divider, Space, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Brief = ({
   detail,
@@ -46,6 +48,7 @@ const Brief = ({
 };
 
 const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) => {
+  const { t } = useTranslation();
   const columns: ColumnsType<Breadcrumb> = [
     {
       title: "TYPE",
@@ -75,7 +78,7 @@ const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) => {
   ];
   return (
     <>
-      <Divider orientation="left">👋 触发轨迹</Divider>
+      <Divider orientation="left">{`👋 ${t("breadcrumbs")}`}</Divider>
       <Table
         rowKey="timestamp"
         columns={columns}
@@ -89,7 +92,7 @@ const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) => {
 const Tags = ({ currentEvent }: { currentEvent: Event }) => {
   return (
     <>
-      <Divider orientation="left">🏷️ 标签</Divider>
+      <Divider orientation="left">{`🏷️ ${t("tags")}`}</Divider>
       <div className="mb-3">
         <div className="text-xl text-cyan-700 mb-2">Headers</div>
         <div className="flex item-center">

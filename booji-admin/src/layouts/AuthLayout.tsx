@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { createElement, useState, useTransition } from "react";
 import { Layout, Menu, Space } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 
 const { Header, Sider, Content } = Layout;
 
-const AuthLayout: React.FC = () => {
+const AuthLayout = () => {
   const { t } = useTranslation();
   const { hasLogin } = useAuth();
   if (!hasLogin) {
@@ -46,12 +46,9 @@ const AuthLayout: React.FC = () => {
       </Sider>
       <Layout>
         <Header className="bg-white h-16 px-4 flex justify-between items-center">
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
+          {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            onClick: () => setCollapsed(!collapsed),
+          })}
           <Space>
             <Lang />
             <User />

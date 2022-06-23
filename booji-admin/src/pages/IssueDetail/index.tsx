@@ -1,6 +1,7 @@
 import FullScreenSpin from "@/components/FullScreenSpin";
 import { useIssueDetail, useIssueEvents } from "@/hooks/issue-detail";
 import { Tabs } from "antd";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Brief from "./Brief";
 import Chart from "./Chart";
@@ -11,6 +12,7 @@ import SourceMap from "./SourceMap";
 const { TabPane } = Tabs;
 
 const IssueDetail = () => {
+  const { t } = useTranslation();
   const { issueId } = useParams();
   const { detail } = useIssueDetail(issueId!);
   const {
@@ -31,7 +33,7 @@ const IssueDetail = () => {
           <Header detail={detail} />
           <SourceMap source={detail.source} />
           <Tabs defaultActiveKey="1">
-            <TabPane tab="🔎 摘要" key="1">
+            <TabPane tab={`🔎 ${t("brief")}`} key="1">
               {currentEvent && (
                 <Brief
                   detail={detail}
@@ -43,10 +45,10 @@ const IssueDetail = () => {
                 />
               )}
             </TabPane>
-            <TabPane tab="📈 标签统计" key="2">
+            <TabPane tab={`📈 ${t("tags")}`} key="2">
               <Chart tags={detail.tags} />
             </TabPane>
-            <TabPane tab="⌚️ 事件列表" key="3">
+            <TabPane tab={`⌚️ ${t("events")}`} key="3">
               <Events events={events} />
             </TabPane>
           </Tabs>

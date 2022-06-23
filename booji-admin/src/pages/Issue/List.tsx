@@ -5,15 +5,18 @@ import { IssueData } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
 import { Button, Select, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
 
 const lang = localStorage.getItem("lang") || defaultLang;
 
 const List = ({ appKey, status }: { appKey: string; status: string }) => {
+  const { t } = useTranslation();
+
   const columns: ColumnsType<IssueData> = [
     {
-      title: "操作",
+      title: t("operation"),
       dataIndex: "action",
       width: 80,
       align: "center",
@@ -22,7 +25,7 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
           type="link"
           onClick={() => navigate(`/${lang}/issue/${record.issueId}`)}
         >
-          查看
+          {t("check")}
         </Button>
       ),
     },
@@ -33,61 +36,61 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
       align: "center",
     },
     {
-      title: "类型",
+      title: t("type"),
       dataIndex: "type",
       width: 110,
       align: "center",
     },
     {
-      title: "分类",
+      title: t("category"),
       dataIndex: "category",
       width: 80,
       align: "center",
     },
     {
-      title: "信息",
+      title: t("info"),
       dataIndex: "message",
     },
     {
-      title: "事件数",
+      title: t("eventCount"),
       dataIndex: "eventCount",
       width: 80,
       align: "center",
     },
     {
-      title: "用户数",
+      title: t("userCount"),
       width: 80,
       align: "center",
       dataIndex: "users",
       render: (text) => text.length,
     },
     {
-      title: "等级",
+      title: t("level"),
       dataIndex: "level",
       width: 80,
       align: "center",
       sorter: true,
     },
     {
-      title: "生成时间",
+      title: t("createdAt"),
       width: 160,
       align: "center",
       render: (text) => timeFormat(text),
     },
     {
-      title: "更新时间",
+      title: t("updatedAt"),
       width: 160,
       align: "center",
       render: (text) => timeFormat(text),
     },
     {
-      title: "负责人",
+      title: t("assignee"),
       width: 120,
       align: "center",
       render: (_, { issueId, assigneeId }) => (
         <Select
           className="w-full"
-          placeholder="请选择"
+          placeholder={t("plzSelect")}
           options={options}
           defaultValue={assigneeId}
           onChange={(newAssigneeId) =>
@@ -97,13 +100,13 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
       ),
     },
     {
-      title: "状态",
+      title: t("status"),
       width: 120,
       align: "center",
       render: (_, { issueId, status }) => (
         <Select
           className="w-full"
-          placeholder="请选择"
+          placeholder={t("plzSelect")}
           options={statusList}
           defaultValue={status}
           onChange={(newStatus) => update(issueId, { status: newStatus }, true)}

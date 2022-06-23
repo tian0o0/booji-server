@@ -3,9 +3,11 @@ import { useUserList } from "@/hooks/user";
 import { IssueDetail } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
 import { Divider, Select, Space, Tag } from "antd";
+import { useTranslation } from "react-i18next";
 import { statusList } from "../Issue/StatusTab";
 
 const Header = ({ detail }: { detail: IssueDetail }) => {
+  const { t } = useTranslation();
   const { update } = useUpdateIssue();
   const { options } = useUserList();
 
@@ -18,36 +20,40 @@ const Header = ({ detail }: { detail: IssueDetail }) => {
             <span className="leading-5">{detail.message}</span>
           </Space>
           <Space className="text-xs text-gray-400 mt-3">
-            <span>创建时间：{timeFormat(detail.createdAt)}</span>
-            <span>更新时间：{timeFormat(detail.updatedAt)}</span>
+            <span>
+              {t("createdAt")}: {timeFormat(detail.createdAt)}
+            </span>
+            <span>
+              {t("updatedAt")}: {timeFormat(detail.updatedAt)}
+            </span>
           </Space>
         </div>
         <div className="flex justify-end items-center w-2/4">
           <div>
-            <div className="text-gray-400 mb-2">分类</div>
+            <div className="text-gray-400 mb-2">{t("category")}</div>
             <Tag>{detail.category}</Tag>
           </div>
           <Divider type="vertical" />
           <div>
-            <div className="text-gray-400 mb-2">等级</div>
+            <div className="text-gray-400 mb-2">{t("level")}</div>
             <Tag>{detail.level}</Tag>
           </div>
           <Divider type="vertical" />
           <div>
-            <div className="text-gray-400 mb-2">事件数</div>
+            <div className="text-gray-400 mb-2">{t("eventCount")}</div>
             <span>{detail.eventCount}</span>
           </div>
           <Divider type="vertical" />
           <div>
-            <div className="text-gray-400 mb-2">用户数</div>
+            <div className="text-gray-400 mb-2">{t("userCount")}</div>
             <span>{detail.users.length}</span>
           </div>
           <Divider type="vertical" />
           <div>
-            <div className="text-gray-400 mb-2">负责人</div>
+            <div className="text-gray-400 mb-2">{t("assignee")}</div>
             <Select
               className="w-full"
-              placeholder="请选择"
+              placeholder={t("plzSelect")}
               options={options}
               defaultValue={detail.assigneeId}
               onChange={(newAssigneeId) =>
@@ -60,7 +66,7 @@ const Header = ({ detail }: { detail: IssueDetail }) => {
             <div className="text-gray-400 mb-2">状态</div>
             <Select
               className="w-full"
-              placeholder="请选择"
+              placeholder={t("plzSelect")}
               options={statusList}
               defaultValue={detail.status}
               onChange={(newStatus) =>

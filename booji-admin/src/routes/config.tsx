@@ -1,4 +1,4 @@
-import React from "react";
+import { lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "@/layouts/AuthLayout";
 import IssueDetail from "@/pages/IssueDetail";
@@ -6,11 +6,11 @@ import { withLoading } from "./utils";
 import { defaultLang } from "@/config/constant";
 
 const lang = localStorage.getItem("lang") || defaultLang;
-const Auth = React.lazy(() => import("@/pages/Auth"));
-const Home = React.lazy(() => import("@/pages/Home"));
-const Issue = React.lazy(() => import("@/pages/Issue"));
-const User = React.lazy(() => import("@/pages/User"));
-const NotFound = React.lazy(() => import("@/pages/404"));
+const Auth = lazy(() => import("@/pages/Auth"));
+const Home = lazy(() => import("@/pages/Home"));
+const Issue = lazy(() => import("@/pages/Issue"));
+const User = lazy(() => import("@/pages/User"));
+const NotFound = lazy(() => import("@/pages/404"));
 
 export const routes: RouteObject[] = [
   {

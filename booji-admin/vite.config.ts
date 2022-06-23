@@ -6,7 +6,7 @@ import compression from "vite-plugin-compression";
 import vitePluginImp from "vite-plugin-imp";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(async ({ command, mode }) => {
   const { VITE_BASE_PATH, VITE_APP_LEGACY } = loadEnv(mode, process.cwd());
 
   const isBuild = command === "build";

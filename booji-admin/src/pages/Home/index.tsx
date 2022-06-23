@@ -3,11 +3,13 @@ import { ProjectData } from "@/types";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import AddProject from "./AddProject";
 import DelProject from "./DelProject";
 import ProjectList from "./ProjectList";
 
 const Home = () => {
+  const { t } = useTranslation();
   const { value, loading, retry } = useProjectList();
 
   const { visible, onOpen, onClose } = useAddProject();
@@ -26,9 +28,9 @@ const Home = () => {
   return (
     <>
       <div className="flex justify-between items-center">
-        <h2>项目列表</h2>
+        <h2>{t("projectList")}</h2>
         <Button icon={<PlusOutlined />} className="mb-4" onClick={onOpen}>
-          新建项目
+          {t("addProject")}
         </Button>
       </div>
       <ProjectList value={value} loading={loading} onDelete={onDelete} />

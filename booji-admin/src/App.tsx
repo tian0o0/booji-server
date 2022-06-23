@@ -3,7 +3,7 @@ import { HashRouter } from "react-router-dom";
 import CustomRoutes from "@/routes";
 import { AuthProvider } from "@/context/auth";
 
-function App() {
+const App = () => {
   return (
     <RecoilRoot>
       <HashRouter>
@@ -13,6 +13,6 @@ function App() {
       </HashRouter>
     </RecoilRoot>
   );
-}
+};
 
 export default App;

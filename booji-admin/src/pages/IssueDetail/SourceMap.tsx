@@ -8,7 +8,7 @@ const SourceMap = ({ source }: { source: string }) => {
   return (
     <>
       <details className="cursor-pointer">
-        <summary>报错源码</summary>
+        <summary>SourceMap</summary>
         <SyntaxHighlighter
           language="javascript"
           style={vscDarkPlus}

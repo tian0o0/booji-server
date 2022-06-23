@@ -2,8 +2,10 @@ import { useUserList } from "@/hooks/user";
 import { UserData } from "@/types";
 import { Button, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { useTranslation } from "react-i18next";
 
 const User = () => {
+  const { t } = useTranslation();
   const columns: ColumnsType<UserData> = [
     {
       title: "ID",
@@ -11,22 +13,22 @@ const User = () => {
       align: "center",
     },
     {
-      title: "姓名",
+      title: t("na me"),
       dataIndex: "name",
       align: "center",
     },
     {
-      title: "邮箱",
+      title: t("email"),
       dataIndex: "email",
       align: "center",
     },
     {
-      title: "操作",
+      title: t("operation"),
       key: "action",
       align: "center",
       render: (_, record) => (
         <Button type="link" danger onClick={() => {}}>
-          删除
+          {t("delete")}
         </Button>
       ),
     },

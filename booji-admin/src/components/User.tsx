@@ -1,10 +1,11 @@
-import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/store";
 import { useAuth } from "@/context/auth";
+import { useTranslation } from "react-i18next";
 
-const User: React.FC = () => {
+const User = () => {
+  const { t } = useTranslation();
   const user = useRecoilValue(userState);
   const { logout } = useAuth();
   const items = [
@@ -12,7 +13,7 @@ const User: React.FC = () => {
       key: "logout",
       label: (
         <Button type={"link"} onClick={logout}>
-          退出登录
+          {t("logout")}
         </Button>
       ),
     },

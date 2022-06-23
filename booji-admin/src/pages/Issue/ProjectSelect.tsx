@@ -1,4 +1,5 @@
 import { Select, Space } from "antd";
+import { useTranslation } from "react-i18next";
 
 const ProjectSelect = ({
   options,
@@ -9,10 +10,11 @@ const ProjectSelect = ({
   selectedAppKey: string;
   onChange: (appKey: string) => void;
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="mb-3">
       <Space>
-        <span>选择项目：</span>
+        <span>{t("projectName")}:</span>
         <Select
           className="w-40"
           options={options}

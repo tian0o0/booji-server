@@ -1,6 +1,7 @@
 import { useDelProject } from "@/hooks/project";
 import { ProjectData } from "@/types";
 import { Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 const DelProject = ({
   project,
@@ -13,6 +14,8 @@ const DelProject = ({
   onClose: () => void;
   onSuccess: () => void;
 }) => {
+  const { t } = useTranslation();
+
   const { loading, onDelete } = useDelProject();
 
   const onOk = async () => {
@@ -23,13 +26,13 @@ const DelProject = ({
 
   return (
     <Modal
-      title="提示"
+      title={t("tip")}
       visible={visible}
       onOk={onOk}
       confirmLoading={loading}
       onCancel={onClose}
     >
-      {`确定删除[${project.name}]吗？`}
+      {t("deleteTip", { message: project.name })}
     </Modal>
   );
 };

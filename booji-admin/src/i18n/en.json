@@ -2,7 +2,50 @@
     "title": "Booji Admin",
     "cn": "Chinese",
     "en": "English",
+
     "app": "App",
     "issue": "Issue",
-    "user": "User"
+    "user": "User",
+
+    "logout": "Logout",
+
+    "projectList": "Projects",
+    "addProject": "New Project",
+    "projectName": "Project Name",
+    "platform": "Platform",
+    "appKey": "AppKey",
+    "createdAt": "CreatedAt",
+    "updatedAt": "UpdatedAt",
+    "operation": "Operation",
+    "usage": "Usage",
+    "delete": "Delete",
+    "remark": "Remark",
+    "tip": "Tip",
+    "deleteTip": "Confirm delete {{ message }}？",
+
+    "ToBeHandled": "ToBeHandled",
+    "Handling": "Handling",
+    "Handled": "Handled",
+    "Closed": "Closed",
+    "Reopened": "Reopened",
+    "Ignored": "Ignored",
+
+    "check": "Check",
+    "type": "Type",
+    "category": "Category",
+    "info": "Info",
+    "eventCount": "EventCount",
+    "userCount": "UserCount",
+    "level": "Level",
+    "assignee": "Assignee",
+    "status": "Status",
+    "plzSelect": "Please Select",
+
+    "name": "Name",
+    "email": "Email",
+
+    "brief": "Brief",
+    "tags": "Tags",
+    "events": "Events",
+    "breadcrumbs": "Breadcrumbs"
 }

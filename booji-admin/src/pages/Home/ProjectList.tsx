@@ -2,6 +2,7 @@ import { ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
 import { Button, message, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { useTranslation } from "react-i18next";
 
 const ProjectList = ({
   value,
@@ -12,44 +13,45 @@ const ProjectList = ({
   loading: boolean;
   onDelete: (project: ProjectData) => void;
 }) => {
+  const { t } = useTranslation();
   const columns: ColumnsType<ProjectData> = [
     {
-      title: "项目名",
+      title: t("projectName"),
       dataIndex: "name",
       key: "name",
       align: "center",
     },
     {
-      title: "平台",
+      title: t("platform"),
       dataIndex: "platform",
       key: "platform",
       align: "center",
     },
     {
-      title: "AppKey",
+      title: t("appKey"),
       dataIndex: "appKey",
       key: "appKey",
       align: "center",
       render: (text) => <Typography.Text copyable>{text}</Typography.Text>,
     },
     {
-      title: "创建时间",
+      title: t("createdAt"),
       key: "createdAt",
       align: "center",
       dataIndex: "createdAt",
       render: (text) => timeFormat(text),
     },
     {
-      title: "操作",
+      title: t("operation"),
       key: "action",
       align: "center",
       render: (_, record) => (
         <Space size="middle">
           <Button type="link" onClick={() => message.warn("todo")}>
-            使用示例
+            {t("usage")}
           </Button>
           <Button type="link" danger onClick={() => onDelete(record)}>
-            删除
+            {t("delete")}
           </Button>
         </Space>
       ),

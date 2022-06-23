@@ -6,7 +6,6 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "@/store";
 import { useNavigate } from "react-router-dom";
 
-// 定义全局 auth context
 const AuthContext = React.createContext<
   | {
       loading: boolean;

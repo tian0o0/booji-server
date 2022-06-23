@@ -1,7 +1,7 @@
 import { useAddProject } from "@/hooks/project";
 import { AddProjectForm } from "@/types";
 import { Form, Input, Modal, Select } from "antd";
-import { DefaultOptionType } from "antd/lib/select";
+import { useTranslation } from "react-i18next";
 
 const platforms = [
   { label: "JavaScript", value: "js" },
@@ -19,6 +19,7 @@ const AddProject = ({
   onClose: () => void;
   onSuccess: () => void;
 }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm<AddProjectForm>();
   const { loading, onAdd } = useAddProject(form);
 
@@ -30,7 +31,7 @@ const AddProject = ({
 
   return (
     <Modal
-      title="新增项目"
+      title={t("addProject")}
       destroyOnClose
       visible={visible}
       onOk={onOk}
@@ -40,18 +41,22 @@ const AddProject = ({
       <Form form={form}>
         <Form.Item
           name={"name"}
-          rules={[{ required: true, message: "请输入项目名" }]}
+          rules={[{ required: true, message: t("projectName") }]}
         >
-          <Input placeholder={"项目名"} type="text" id={"name"} />
+          <Input placeholder={t("projectName")} type="text" id={"name"} />
         </Form.Item>
         <Form.Item
           name={"platform"}
-          rules={[{ required: true, message: "请选择平台" }]}
+          rules={[{ required: true, message: t("platform") }]}
         >
-          <Select placeholder={"平台"} options={platforms} id={"platform"} />
+          <Select
+            placeholder={t("platform")}
+            options={platforms}
+            id={"platform"}
+          />
         </Form.Item>
         <Form.Item name={"desc"}>
-          <Input placeholder={"备注"} type="text" id={"desc"} />
+          <Input placeholder={t("remark")} type="text" id={"desc"} />
         </Form.Item>
       </Form>
     </Modal>

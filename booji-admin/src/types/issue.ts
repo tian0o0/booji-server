@@ -1,5 +1,4 @@
-import { SortOrder } from "antd/lib/table/interface";
-import React from "react";
+import { Key } from "react";
 
 export interface IssueData {
   assigneeId: number;
@@ -24,7 +23,7 @@ export interface IssueParams {
   appKey: string;
   status: string;
   page: number;
-  sort?: React.Key | readonly React.Key[];
+  sort?: Key | readonly Key[];
   order?: "ASC" | "DESC";
 }
 
