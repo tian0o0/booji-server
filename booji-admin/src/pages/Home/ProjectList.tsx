@@ -1,10 +1,12 @@
 import { defaultLang } from "@/config/constant";
+import { userState } from "@/store";
 import { Pagination, Platform, ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
 import { Button, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 const lang = localStorage.getItem("lang") || defaultLang;
 
 const ProjectList = ({
@@ -23,6 +25,8 @@ const ProjectList = ({
   const toUsage = (platform: Platform) => {
     navigate(`/${lang}/usage/${platform}`);
   };
+  const user = useRecoilValue(userState);
+
   const columns: ColumnsType<ProjectData> = [
     {
       title: t("projectName"),
@@ -59,9 +63,11 @@ const ProjectList = ({
           <Button type="link" onClick={() => toUsage(record.platform)}>
             {t("usage")}
           </Button>
-          <Button type="link" danger onClick={() => onDelete(record)}>
-            {t("delete")}
-          </Button>
+          {user?.isAdmin && (
+            <Button type="link" danger onClick={() => onDelete(record)}>
+              {t("delete")}
+            </Button>
+          )}
         </Space>
       ),
     },

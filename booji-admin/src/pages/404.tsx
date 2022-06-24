@@ -1,8 +1,11 @@
+import { Empty } from "antd";
+
 const NoFond = () => {
   return (
-    <div>
-      <h2>404</h2>
-    </div>
+    <Empty
+      description={false}
+      className="h-screen w-full flex justify-center items-center"
+    />
   );
 };
 export default NoFond;
