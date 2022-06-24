@@ -10,6 +10,7 @@ const Auth = lazy(() => import("@/pages/Auth"));
 const Home = lazy(() => import("@/pages/Home"));
 const Issue = lazy(() => import("@/pages/Issue"));
 const User = lazy(() => import("@/pages/User"));
+const Usage = lazy(() => import("@/pages/Usage"));
 const NotFound = lazy(() => import("@/pages/404"));
 
 export const routes: RouteObject[] = [
@@ -43,6 +44,10 @@ export const routes: RouteObject[] = [
           {
             path: "user",
             element: <User />,
+          },
+          {
+            path: "usage/:platform",
+            element: <Usage />,
           },
         ],
       },

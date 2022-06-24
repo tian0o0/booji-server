@@ -47,5 +47,9 @@
     "brief": "摘要",
     "tags": "标签统计",
     "events": "事件列表",
-    "breadcrumbs": "触发轨迹"
+    "breadcrumbs": "触发轨迹",
+
+    "importJS": "导入JS脚本",
+    "install": "安装",
+    "init": "初始化"
 }

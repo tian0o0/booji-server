@@ -5,7 +5,7 @@ import DelUser from "./DelUser";
 import UserList from "./UserList";
 
 const User = () => {
-  const { value, loading, retry } = useUserList();
+  const { value, loading, setPage, retry } = useUserList();
   const { visible, onOpen, onClose } = useDelUser();
 
   const [curUser, setCurUser] = useState<UserData>();
@@ -17,7 +17,12 @@ const User = () => {
 
   return (
     <>
-      <UserList value={value} loading={loading} onDelete={onDelete} />
+      <UserList
+        value={value}
+        loading={loading}
+        onDelete={onDelete}
+        onChange={setPage}
+      />
       {curUser && (
         <DelUser
           user={curUser}

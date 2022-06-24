@@ -8,10 +8,11 @@ const lang = localStorage.getItem("lang") || defaultLang;
 
 const Lang = () => {
   const { t } = useTranslation();
-  const pathname = useLocation().pathname.split("/")[2];
+  const pathname = useLocation().pathname.split(/(en|cn)/)[2];
+
   const setLang = (lang: string) => {
     localStorage.setItem("lang", lang);
-    location.hash = `/${lang}/${pathname}`;
+    location.hash = `/${lang}${pathname}`;
     location.reload();
   };
   const items = [

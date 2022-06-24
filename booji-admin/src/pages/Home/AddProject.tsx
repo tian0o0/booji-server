@@ -1,14 +1,13 @@
 import { useAddProject } from "@/hooks/project";
-import { AddProjectForm } from "@/types";
+import { AddProjectForm, Platform } from "@/types";
 import { Form, Input, Modal, Select } from "antd";
 import { useTranslation } from "react-i18next";
 
-const platforms = [
-  { label: "JavaScript", value: "js" },
-  { label: "React", value: "react" },
-  { label: "Vue", value: "vue" },
-  { label: "Angular", value: "angular" },
-];
+// enum2Array
+const platforms = Object.keys(Platform).map((item) => ({
+  label: item,
+  value: Platform[item as keyof typeof Platform],
+}));
 
 const AddProject = ({
   visible,

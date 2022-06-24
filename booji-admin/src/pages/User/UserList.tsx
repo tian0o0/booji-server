@@ -9,10 +9,12 @@ const UserList = ({
   value,
   loading,
   onDelete,
+  onChange,
 }: {
   value?: Pagination<UserData>;
   loading: boolean;
   onDelete: (user: UserData) => void;
+  onChange: (page: number) => void;
 }) => {
   const { t } = useTranslation();
 
@@ -61,7 +63,7 @@ const UserList = ({
       columns={columns}
       dataSource={value?.data}
       loading={loading}
-      pagination={{ total: value?.count }}
+      pagination={{ total: value?.count, onChange }}
       scroll={{ y: "calc(100vh - 260px)" }}
     />
   );

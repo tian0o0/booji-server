@@ -47,5 +47,9 @@
     "brief": "Brief",
     "tags": "Tags",
     "events": "Events",
-    "breadcrumbs": "Breadcrumbs"
+    "breadcrumbs": "Breadcrumbs",
+
+    "importJS": "Import JS",
+    "install": "Install",
+    "init": "Init"
 }

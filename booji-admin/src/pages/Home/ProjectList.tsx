@@ -1,8 +1,11 @@
-import { Pagination, ProjectData } from "@/types";
+import { defaultLang } from "@/config/constant";
+import { Pagination, Platform, ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
-import { Button, message, Space, Table, Typography } from "antd";
+import { Button, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+const lang = localStorage.getItem("lang") || defaultLang;
 
 const ProjectList = ({
   value,
@@ -16,6 +19,10 @@ const ProjectList = ({
   onChange: (page: number) => void;
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const toUsage = (platform: Platform) => {
+    navigate(`/${lang}/usage/${platform}`);
+  };
   const columns: ColumnsType<ProjectData> = [
     {
       title: t("projectName"),
@@ -49,7 +56,7 @@ const ProjectList = ({
       align: "center",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => message.warn("todo")}>
+          <Button type="link" onClick={() => toUsage(record.platform)}>
             {t("usage")}
           </Button>
           <Button type="link" danger onClick={() => onDelete(record)}>
