@@ -22,7 +22,7 @@ export class UserController {
 
   @ApiOperation({ title: "获取用户列表" })
   @Get()
-  async findAll(@Query() query): Promise<UserEntity[]> {
+  async findAll(@Query() query): Promise<any> {
     const { perPage = 10, page = 1 } = query;
     const _perPage = Math.max(perPage * 1, 1);
     const _page = Math.max(page * 1, 1) - 1;
@@ -54,8 +54,8 @@ export class UserController {
   }
 
   @ApiOperation({ title: "删除用户" })
-  @Delete(":email")
-  async delete(@Param("email") email: string) {
-    return await this.userService.delete(email);
+  @Delete(":id")
+  async delete(@Param("id") id: number) {
+    return await this.userService.delete(id);
   }
 }

@@ -1,3 +1,4 @@
+import { Pagination } from "@/types";
 import {
   Event,
   IssueData,
@@ -8,7 +9,7 @@ import {
 import request from "@/utils/request";
 
 export const getIssueList = (params: IssueParams) =>
-  request<{ count: number; data: IssueData[] }>({
+  request<Pagination<IssueData>>({
     url: "/issue",
     method: "GET",
     params,
@@ -27,8 +28,15 @@ export const getIssueDetail = (issueId: string) =>
     method: "GET",
   });
 
-export const getIssueEvents = (issueId: string) =>
-  request<{ count: number; data: Event[] }>({
+export const getIssueEvents = ({
+  issueId,
+  page,
+}: {
+  issueId: string;
+  page: number;
+}) =>
+  request<Pagination<Event>>({
     url: `/issue/${issueId}/events`,
     method: "GET",
+    params: { page },
   });

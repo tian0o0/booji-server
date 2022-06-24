@@ -1,4 +1,4 @@
-import { ProjectData } from "@/types";
+import { Pagination, ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
 import { Button, message, Space, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
@@ -8,10 +8,12 @@ const ProjectList = ({
   value,
   loading,
   onDelete,
+  onChange,
 }: {
-  value: ProjectData[] | undefined;
+  value: Pagination<ProjectData> | undefined;
   loading: boolean;
   onDelete: (project: ProjectData) => void;
+  onChange: (page: number) => void;
 }) => {
   const { t } = useTranslation();
   const columns: ColumnsType<ProjectData> = [
@@ -62,7 +64,8 @@ const ProjectList = ({
     <Table
       rowKey="appKey"
       columns={columns}
-      dataSource={value}
+      dataSource={value?.data}
+      pagination={{ total: value?.count, onChange: onChange }}
       loading={loading}
       scroll={{ y: "calc(100vh - 310px)" }}
     />

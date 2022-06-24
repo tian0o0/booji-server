@@ -1,48 +1,32 @@
-import { useUserList } from "@/hooks/user";
+import { useDelUser, useUserList } from "@/hooks/user";
 import { UserData } from "@/types";
-import { Button, Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import DelUser from "./DelUser";
+import UserList from "./UserList";
 
 const User = () => {
-  const { t } = useTranslation();
-  const columns: ColumnsType<UserData> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      align: "center",
-    },
-    {
-      title: t("na me"),
-      dataIndex: "name",
-      align: "center",
-    },
-    {
-      title: t("email"),
-      dataIndex: "email",
-      align: "center",
-    },
-    {
-      title: t("operation"),
-      key: "action",
-      align: "center",
-      render: (_, record) => (
-        <Button type="link" danger onClick={() => {}}>
-          {t("delete")}
-        </Button>
-      ),
-    },
-  ];
-  const { value, loading } = useUserList();
+  const { value, loading, retry } = useUserList();
+  const { visible, onOpen, onClose } = useDelUser();
+
+  const [curUser, setCurUser] = useState<UserData>();
+
+  const onDelete = (user: UserData) => {
+    setCurUser(user);
+    onOpen();
+  };
 
   return (
-    <Table
-      rowKey="id"
-      columns={columns}
-      dataSource={value}
-      loading={loading}
-      scroll={{ y: "calc(100vh - 260px)" }}
-    />
+    <>
+      <UserList value={value} loading={loading} onDelete={onDelete} />
+      {curUser && (
+        <DelUser
+          user={curUser}
+          visible={visible}
+          onClose={onClose}
+          onSuccess={retry}
+        />
+      )}
+    </>
   );
 };
 

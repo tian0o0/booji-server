@@ -1,8 +1,16 @@
 import { Event } from "@/types/issue";
-import { ColumnsType } from "antd/lib/table";
+import { ColumnsType, TableProps } from "antd/lib/table";
 import { Table } from "antd";
 
-const Events = ({ events }: { events: Event[] }) => {
+const Events = ({
+  events,
+  total,
+  onChange,
+}: {
+  events?: Event[];
+  total?: number;
+  onChange: TableProps<Event>["onChange"];
+}) => {
   const columns: ColumnsType<Event> = [
     {
       title: "EeventID",
@@ -30,7 +38,15 @@ const Events = ({ events }: { events: Event[] }) => {
       render: (_, record) => record.ua.device.type,
     },
   ];
-  return <Table rowKey="timestamp" columns={columns} dataSource={events} />;
+  return (
+    <Table
+      rowKey="timestamp"
+      columns={columns}
+      dataSource={events}
+      pagination={{ pageSize: 10, total }}
+      onChange={onChange}
+    />
+  );
 };
 
 export default Events;

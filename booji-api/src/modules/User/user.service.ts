@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -27,13 +28,17 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
   ) {}
-  async findAll(perPage: number, page: number): Promise<UserEntity[]> {
-    return await getRepository(UserEntity)
+  async findAll(perPage: number, page: number): Promise<any> {
+    const [data, count] = await getRepository(UserEntity)
       .createQueryBuilder("user")
       .take(perPage)
       .skip(page * perPage)
       .cache(true)
-      .getMany();
+      .getManyAndCount();
+    return {
+      data,
+      count,
+    };
   }
 
   async create(dto: CreateUserDto): Promise<UserRO> {
@@ -91,8 +96,15 @@ export class UserService {
     return await this.userRepository.findOne(id);
   }
 
-  async delete(email: string): Promise<DeleteResult> {
-    return await this.userRepository.delete({ email: email });
+  async delete(id: number): Promise<DeleteResult> {
+    let res;
+    try {
+      res = await this.userRepository.delete(id);
+    } catch (e) {
+      throw new ForbiddenException("某个Issue的负责人为该用户");
+    }
+
+    return res;
   }
 
   public generateJWT(user) {

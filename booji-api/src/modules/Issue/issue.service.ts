@@ -24,8 +24,7 @@ export class IssueService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private searchService: SearchService,
-    private smService: SmService,
-    private kafkaService: KafkaService
+    private smService: SmService // private kafkaService: KafkaService
   ) {}
   async getIssueList(
     perPage: number,
@@ -108,6 +107,6 @@ export class IssueService {
       ua,
     };
 
-    this.kafkaService.send(event);
+    // this.kafkaService.send(event);
   }
 }

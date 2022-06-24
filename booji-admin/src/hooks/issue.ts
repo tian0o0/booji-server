@@ -2,21 +2,22 @@ import { getIssueList, updateIssue } from "@/api/issue";
 import { IssueData, IssueParams, Order, UpdateIssueData } from "@/types/issue";
 import { TableProps } from "antd";
 import { SorterResult } from "antd/lib/table/interface";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAsyncRetry } from "react-use";
 import { useProjectList } from "./project";
 
 export const useProjectSelect = () => {
   const [selectedAppKey, setSelectedAppKey] = useState<string>("");
-  const { value, loading } = useProjectList();
+  const { value, loading } = useProjectList(100);
 
   const options =
-    value?.map((item) => ({
+    value?.data.map((item) => ({
       label: item.name,
       value: item.appKey,
     })) || [];
 
   useEffect(() => {
-    const defaultAppKey = (value && value[0]?.appKey) || "";
+    const defaultAppKey = (value && value?.data[0]?.appKey) || "";
     setSelectedAppKey(defaultAppKey);
   }, [value]);
 
@@ -45,56 +46,44 @@ export const useStatusTab = () => {
 };
 
 export const useIssueList = (appKey: string, status: string) => {
-  const [value, setValue] = useState<IssueData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState<IssueParams>({
-    appKey,
-    status,
-    page: 1,
-  });
+  const [page, setPage] = useState(1);
+  const [state, setState] = useState<Pick<IssueParams, "sort" | "order">>();
+
+  const params = useMemo<IssueParams>(() => {
+    return {
+      appKey,
+      status,
+      page,
+      ...state,
+    };
+  }, [appKey, status, page, state]);
+
+  const res = useAsyncRetry(async () => {
+    return await getIssueList(params);
+  }, [params]);
+
+  // tabel改变
   const onChange: TableProps<IssueData>["onChange"] = (
     pagination,
     filters,
     sorter
   ) => {
-    const { field, order } = sorter as SorterResult<IssueData>;
-    console.log(order);
+    const { current } = pagination;
+    setPage(current || 1);
 
-    setParams({
-      ...params,
+    const { field, order } = sorter as SorterResult<IssueData>;
+    setState({
       sort: order ? field : undefined,
       order: order ? Order[order] : undefined,
     });
   };
 
-  const retry = () => {
-    setLoading(true);
-    getIssueList(params)
-      .then((res) => {
-        setValue(res.data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    retry();
-  }, [params.appKey, params.status, params.sort, params.order]);
-
-  useEffect(() => {
-    setParams({
-      ...params,
-      appKey,
-      status,
-    });
-  }, [appKey, status]);
-
   return {
-    loading,
-    value,
+    ...res,
+    page,
+    setPage,
+    setState,
     onChange,
-    retry,
   };
 };
 

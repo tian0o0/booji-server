@@ -1,6 +1,8 @@
 import { getIssueDetail, getIssueEvents } from "@/api/issue";
 import { Event, IssueDetail } from "@/types/issue";
+import { TableProps } from "antd";
 import { useEffect, useMemo, useState } from "react";
+import { useAsyncRetry } from "react-use";
 
 export const useIssueDetail = (issueId: string) => {
   const [loading, setLoading] = useState(false);
@@ -24,34 +26,29 @@ export const useIssueDetail = (issueId: string) => {
 };
 
 export const useIssueEvents = (issueId: string) => {
-  const [loading, setLoading] = useState(false);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [total, setTotal] = useState(0);
-  let [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    setLoading(true);
-    getIssueEvents(issueId)
-      .then((res) => {
-        setEvents(res.data);
-        setTotal(res.count);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const { loading, value } = useAsyncRetry(async () => {
+    return await getIssueEvents({
+      issueId,
+      page,
+    });
+  }, [issueId, page]);
 
   const currentEvent = useMemo(() => {
-    return events[currentEventIndex];
-  }, [events, currentEventIndex]);
+    return value?.count && value.data[currentEventIndex];
+  }, [value, currentEventIndex]);
 
   const disableLeft = useMemo(() => {
     return currentEventIndex === 0;
   }, [currentEventIndex]);
 
   const disableRight = useMemo(() => {
-    return total === 0 || currentEventIndex === total - 1;
-  }, [currentEventIndex, total]);
+    return (
+      value?.count === 0 || currentEventIndex === (value?.data.length || 1) - 1
+    );
+  }, [currentEventIndex, value]);
 
   const onPrevEvent = () => {
     setCurrentEventIndex(currentEventIndex - 1);
@@ -61,13 +58,19 @@ export const useIssueEvents = (issueId: string) => {
     setCurrentEventIndex(currentEventIndex + 1);
   };
 
+  const onChange: TableProps<Event>["onChange"] = (pagination) => {
+    const { current } = pagination;
+    setPage(current || 1);
+  };
+
   return {
     loading,
-    events,
+    value,
     currentEvent,
     disableLeft,
     disableRight,
     onPrevEvent,
     onNextEvent,
+    onChange,
   };
 };

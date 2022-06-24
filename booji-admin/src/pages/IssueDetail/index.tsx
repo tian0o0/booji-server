@@ -16,12 +16,13 @@ const IssueDetail = () => {
   const { issueId } = useParams();
   const { detail } = useIssueDetail(issueId!);
   const {
-    events,
+    value,
     currentEvent,
     disableLeft,
     disableRight,
     onPrevEvent,
     onNextEvent,
+    onChange,
   } = useIssueEvents(issueId!);
 
   return (
@@ -49,7 +50,11 @@ const IssueDetail = () => {
               <Chart tags={detail.tags} />
             </TabPane>
             <TabPane tab={`⌚️ ${t("events")}`} key="3">
-              <Events events={events} />
+              <Events
+                events={value?.data}
+                total={value?.count}
+                onChange={onChange}
+              />
             </TabPane>
           </Tabs>
         </>

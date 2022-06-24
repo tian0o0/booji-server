@@ -21,7 +21,7 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
     EventEmitterModule.forRoot(),
-    KafkaModule,
+    // KafkaModule,
     UserModule,
     ProjectModule,
     IssueModule,

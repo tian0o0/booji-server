@@ -10,13 +10,17 @@ export class ProjectService {
     private readonly projectRepository: Repository<ProjectEntity>
   ) {}
 
-  async findAll(perPage: number, page: number): Promise<ProjectEntity[]> {
-    return await getRepository(ProjectEntity)
+  async findAll(perPage: number, page: number): Promise<any> {
+    const [data, count] = await getRepository(ProjectEntity)
       .createQueryBuilder("project")
       .take(perPage)
       .skip(page * perPage)
-      .cache(true)
-      .getMany();
+      .getManyAndCount();
+
+    return {
+      data,
+      count,
+    };
   }
 
   async create(dto: any): Promise<ProjectEntity> {

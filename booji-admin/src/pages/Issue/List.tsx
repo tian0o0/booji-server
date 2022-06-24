@@ -1,17 +1,30 @@
 import { defaultLang } from "@/config/constant";
-import { useIssueList, useUpdateIssue } from "@/hooks/issue";
+import { useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
+import { Pagination } from "@/types";
 import { IssueData } from "@/types/issue";
 import { timeFormat } from "@/utils/common";
 import { Button, Select, Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
+import { ColumnsType, TableProps } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
 
 const lang = localStorage.getItem("lang") || defaultLang;
 
-const List = ({ appKey, status }: { appKey: string; status: string }) => {
+const List = ({
+  loading,
+  value,
+  page,
+  retry,
+  onChange,
+}: {
+  loading: boolean;
+  value: Pagination<IssueData>;
+  page: number;
+  retry: () => void;
+  onChange: TableProps<IssueData>["onChange"];
+}) => {
   const { t } = useTranslation();
 
   const columns: ColumnsType<IssueData> = [
@@ -116,16 +129,20 @@ const List = ({ appKey, status }: { appKey: string; status: string }) => {
   ];
 
   const navigate = useNavigate();
-  const { loading, value, onChange, retry } = useIssueList(appKey, status);
-  const { options } = useUserList();
+  const { options } = useUserList(100);
   const { update } = useUpdateIssue(retry);
 
   return (
     <Table
       rowKey="issueId"
       columns={columns}
-      dataSource={value}
+      dataSource={value?.data}
       loading={loading}
+      pagination={{
+        total: value?.count,
+        current: page,
+        pageSize: 10,
+      }}
       scroll={{ y: "calc(100vh - 360px)" }}
       onChange={onChange}
     />

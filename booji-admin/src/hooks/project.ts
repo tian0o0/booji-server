@@ -4,10 +4,18 @@ import { FormInstance } from "antd";
 import { useState } from "react";
 import { useAsyncRetry } from "react-use";
 
-export const useProjectList = () => {
-  return useAsyncRetry(async () => {
-    return await getProjectList();
-  });
+export const useProjectList = (perPage: number = 10) => {
+  const [page, setPage] = useState(1);
+
+  const res = useAsyncRetry(async () => {
+    return await getProjectList(page, perPage);
+  }, [page, perPage]);
+
+  return {
+    ...res,
+    page,
+    setPage,
+  };
 };
 
 export const useDelProject = () => {

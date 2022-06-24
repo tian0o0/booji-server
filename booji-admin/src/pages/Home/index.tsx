@@ -10,7 +10,7 @@ import ProjectList from "./ProjectList";
 
 const Home = () => {
   const { t } = useTranslation();
-  const { value, loading, retry } = useProjectList();
+  const { value, loading, setPage, retry } = useProjectList();
 
   const { visible, onOpen, onClose } = useAddProject();
   const {
@@ -33,7 +33,12 @@ const Home = () => {
           {t("addProject")}
         </Button>
       </div>
-      <ProjectList value={value} loading={loading} onDelete={onDelete} />
+      <ProjectList
+        value={value}
+        loading={loading}
+        onDelete={onDelete}
+        onChange={setPage}
+      />
       <AddProject visible={visible} onClose={onClose} onSuccess={retry} />
       {curProject && (
         <DelProject
