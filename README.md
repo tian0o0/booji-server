@@ -16,7 +16,7 @@
 
 #### 2.booji-admin（开放平台）
 
-> `React Hooks + Recoil + Vite + Tailwind CSS`
+> `React Hooks + Vite + Tailwind CSS`
 
 - 新建项目（appKey）
 - 数据可视化
@@ -25,10 +25,20 @@
 
 > 首先需要安装Docker
 
-克隆本项目，进入项目后仅需一行命令即可完成部署:
+
+克隆本项目:
+```sh
+git clone git@github.com:tian0o0/booji-server.git && cd booji-server
+```
+> - 注意修改生产环境地址`VITE_HOST`
+> - 其它配置例如`Dockerfile`/`nginx.conf`/`docker-compose.yml`等可根据需要自行修改
+
+进入项目后仅需一行命令即可完成部署:
 ```shell
 docker-compose up -d
 ```
+
+
 
 ### Reference
 [Booji SDK](https://github.com/tian0o0/booji/blob/master/README.md)
