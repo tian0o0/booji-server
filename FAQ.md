@@ -14,13 +14,15 @@ service docker restart
 ```
 
 #### docker-compose up报错：unknown flag: iidfile
-
+<del>
 版本问题，一开始使用 `pip3 install docker-compose` 安装的版本是`1.29.2`，后来降级成`1.26.2`，命令如下
+
 ```sh
 sudo pip3 install -U --upgrade pip
 
 pip3 install docker-compose==1.26.2
 ```
+</del>
 
 推荐使用以下方式直接安装：
 ```sh
@@ -46,4 +48,8 @@ yum install docker-ce
 
 node内存溢出导致，可手动增加node内存 [(参考)](https://rollupjs.org/guide/en/#error-javascript-heap-out-of-memory)
 
-> 如果服务器的内存过小比如只有2G，那么增加node内存也几乎没用，可能需要升级服务器...
+> 如果服务器的内存过小比如只有2G，那么增加node内存也几乎没用，需要升级服务器
+
+#### docker-compose up服务器cpu和内存飙升
+
+Booji的服务依赖了kafka/es等镜像，jvm内存占用较高，因此建议服务器最低配置为`4核8G`。
