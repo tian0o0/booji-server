@@ -8,6 +8,7 @@ import { UserEntity } from "@modules/User/user.entity";
 import { SearchService } from "@modules/Search/search.service";
 import { SmService } from "@modules/SourceMap/sm.service";
 import { KafkaService } from "@modules/Kafka/kafka.service";
+import { Pagination } from "@type/index";
 interface Headers {
   "x-real-ip": string;
   "user-agent": string;
@@ -24,7 +25,8 @@ export class IssueService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private searchService: SearchService,
-    private smService: SmService // private kafkaService: KafkaService
+    private smService: SmService,
+    private kafkaService: KafkaService
   ) {}
   async getIssueList(
     perPage: number,
@@ -33,7 +35,7 @@ export class IssueService {
     status: number,
     sort: SortBy,
     order: Order
-  ): Promise<any> {
+  ): Promise<Pagination<IssueEntity>> {
     const [data, count] = await getRepository(IssueEntity)
       .createQueryBuilder("issue")
       .take(perPage)
@@ -45,7 +47,6 @@ export class IssueService {
         "issue.level"
       )
       .orderBy(`issue.${sort}`, order)
-      .cache(true)
       .getManyAndCount();
 
     return {
@@ -58,7 +59,7 @@ export class IssueService {
     perPage: number,
     page: number,
     issueId: number
-  ): Promise<any> {
+  ): Promise<Pagination<IssueEntity>> {
     const from = page * perPage;
     const size = perPage;
     return await this.searchService.search(from, size, issueId);
@@ -107,6 +108,6 @@ export class IssueService {
       ua,
     };
 
-    // this.kafkaService.send(event);
+    this.kafkaService.send(event);
   }
 }

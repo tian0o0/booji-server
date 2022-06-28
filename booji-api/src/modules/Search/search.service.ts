@@ -1,5 +1,7 @@
+import { IssueEntity } from "@modules/Issue/issue.entity";
 import { Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
+import { Pagination } from "@type/index";
 
 @Injectable()
 export class SearchService {
@@ -58,7 +60,11 @@ export class SearchService {
     );
   }
 
-  async search(from: number, size: number, issueId: number) {
+  async search(
+    from: number,
+    size: number,
+    issueId: number
+  ): Promise<Pagination<IssueEntity>> {
     let data = [];
     const { body } = await this.esService.search({
       index: "booji",

@@ -7,9 +7,11 @@ import {
   Post,
   Query,
 } from "@nestjs/common";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
 import { SmService } from "./sm.service";
 
+@ApiBearerAuth()
+@ApiUseTags("sourcemap")
 @Controller("sourcemap")
 export class SmController {
   constructor(private smService: SmService) {}
@@ -27,7 +29,7 @@ export class SmController {
     return this.smService.list(appKey);
   }
 
-  @ApiOperation({ title: "解析sourcemap" })
+  @ApiOperation({ title: "解析sourcemap", deprecated: true })
   @Get("parse")
   parse() {
     const STACK = `

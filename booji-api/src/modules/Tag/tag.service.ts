@@ -14,25 +14,6 @@ export class TagService {
     private readonly issueRepository: Repository<IssueEntity>
   ) {}
 
-  // async init() {
-  //   const tags = await this.tagRepository.find();
-  //   if (tags.length) return;
-  //   const initData: TagEntity[] = [
-  //     { key: "os", values: [] },
-  //     { key: "browser", values: [] },
-  //     { key: "engine", values: [] },
-  //     { key: "type", values: [] },
-  //     { key: "country", values: [] },
-  //     { key: "region", values: [] },
-  //     { key: "city", values: [] },
-  //   ];
-  //   await getRepository(TagEntity)
-  //     .createQueryBuilder("tag")
-  //     .insert()
-  //     .values(initData)
-  //     .execute();
-  // }
-
   async save(issueId: string, data: CreateTagDto): Promise<TagEntity> {
     if (!data.key) return;
     const tag = await this.tagRepository.findOne({ value: data.value });

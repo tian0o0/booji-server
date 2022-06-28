@@ -6,7 +6,7 @@ import { ProjectModule } from "@modules/Project/project.module";
 import { IssueModule } from "@modules/Issue/issue.module";
 import { TagModule } from "@modules/Tag/tag.module";
 import { ConfigModule } from "@nestjs/config";
-import { PerformanceModule } from "@modules/performance/performance.module";
+import { PerformanceModule } from "@modules/Performance/performance.module";
 import { SmModule } from "@modules/SourceMap/sm.module";
 import { KafkaModule } from "@modules/Kafka/kafka.module";
 import config from "./config";
@@ -21,7 +21,7 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
     EventEmitterModule.forRoot(),
-    // KafkaModule,
+    KafkaModule,
     UserModule,
     ProjectModule,
     IssueModule,

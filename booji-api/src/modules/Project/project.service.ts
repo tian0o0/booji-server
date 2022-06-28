@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Pagination } from "@type/index";
 import { DeleteResult, getRepository, Repository } from "typeorm";
 import { ProjectEntity } from "./project.entity";
 
@@ -10,7 +11,10 @@ export class ProjectService {
     private readonly projectRepository: Repository<ProjectEntity>
   ) {}
 
-  async findAll(perPage: number, page: number): Promise<any> {
+  async findAll(
+    perPage: number,
+    page: number
+  ): Promise<Pagination<ProjectEntity>> {
     const [data, count] = await getRepository(ProjectEntity)
       .createQueryBuilder("project")
       .take(perPage)

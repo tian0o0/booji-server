@@ -8,6 +8,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
+import { Pagination } from "@type/index";
 import { ProjectEntity } from "./project.entity";
 import { ProjectService } from "./project.service";
 
@@ -19,7 +20,7 @@ export class ProjectController {
 
   @ApiOperation({ title: "获取项目列表" })
   @Get()
-  async findAll(@Query() query): Promise<ProjectEntity[]> {
+  async findAll(@Query() query): Promise<Pagination<ProjectEntity>> {
     const { perPage = 10, page = 1 } = query;
     const _perPage = Math.max(perPage * 1, 1);
     const _page = Math.max(page * 1, 1) - 1;

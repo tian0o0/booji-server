@@ -10,9 +10,10 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
-import { CreateUserDto, LoginUserDto, UpdateUserDto } from "./dto";
 import { UserEntity } from "./user.entity";
 import { UserRO, UserService } from "./user.service";
+import { Pagination } from "@type/index";
+import { CreateUserDto, LoginUserDto, UpdateUserDto } from "./dto";
 
 @ApiBearerAuth()
 @ApiUseTags("user")
@@ -22,7 +23,7 @@ export class UserController {
 
   @ApiOperation({ title: "获取用户列表" })
   @Get()
-  async findAll(@Query() query): Promise<any> {
+  async findAll(@Query() query): Promise<Pagination<UserEntity>> {
     const { perPage = 10, page = 1 } = query;
     const _perPage = Math.max(perPage * 1, 1);
     const _page = Math.max(page * 1, 1) - 1;

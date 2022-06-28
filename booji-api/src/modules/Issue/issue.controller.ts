@@ -10,7 +10,9 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
+import { Pagination } from "@type/index";
 import { ReportDto, UpdateIssueDto } from "./dto";
+import { IssueEntity } from "./issue.entity";
 import { IssueService } from "./issue.service";
 
 @ApiBearerAuth()
@@ -21,7 +23,7 @@ export class IssueController {
 
   @ApiOperation({ title: "获取issue列表" })
   @Get("issue")
-  async issue(@Query() query: any): Promise<any> {
+  async issue(@Query() query: any): Promise<Pagination<IssueEntity>> {
     const {
       perPage = 10,
       page = 1,
@@ -44,13 +46,16 @@ export class IssueController {
 
   @ApiOperation({ title: "获取issue详情" })
   @Get("issue/:id")
-  async detail(@Param("id") issueId: string) {
+  async detail(@Param("id") issueId: string): Promise<IssueEntity> {
     return await this.issueService.getIssueDetail(issueId);
   }
 
   @ApiOperation({ title: "获取issue下的event列表" })
   @Get("issue/:id/events")
-  async event(@Param("id") issueId: number, @Query() query: any): Promise<any> {
+  async event(
+    @Param("id") issueId: number,
+    @Query() query: any
+  ): Promise<Pagination<IssueEntity>> {
     const { perPage = 10, page = 1 } = query;
     const _perPage = Math.max(perPage * 1, 1);
     const _page = Math.max(page * 1, 1) - 1;
@@ -62,7 +67,7 @@ export class IssueController {
   async update(
     @Param("id") issueId: string,
     @Body() body: UpdateIssueDto
-  ): Promise<any> {
+  ): Promise<IssueEntity> {
     return await this.issueService.update(issueId, body);
   }
 

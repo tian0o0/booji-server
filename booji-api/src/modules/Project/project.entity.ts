@@ -1,5 +1,5 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
-import { PerformanceEntity } from "@modules/performance/performance.entity";
+import { PerformanceEntity } from "@modules/Performance/performance.entity";
 import { SmEntity } from "@modules/SourceMap/sm.entity";
 import { UserEntity } from "@modules/User/user.entity";
 import {

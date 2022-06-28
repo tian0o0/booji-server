@@ -1,6 +1,7 @@
 import { ProjectEntity } from "@modules/Project/project.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Pagination } from "@type/index";
 import { getRepository, Repository } from "typeorm";
 import { PerformanceEntity } from "./performance.entity";
 
@@ -18,14 +19,7 @@ export class PerformanceService {
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>
   ) {}
-  async report({ appKey, data, url }: Payload): Promise<any> {
-    // const p = await this.performanceRepository.findOne({ url });
-    // // if(p) {
-    // //   p.visitCount++;
-
-    // // }
-    const project = await this.projectRepository.findOne(appKey);
-
+  async report({ appKey, data, url }: Payload): Promise<void> {
     let performance = new PerformanceEntity();
     performance.url = url;
     performance.dns = data.dns;
@@ -36,16 +30,15 @@ export class PerformanceService {
     performance.load = data.load;
     performance.project = await this.projectRepository.findOne(appKey);
 
-    return await this.performanceRepository.save(performance);
+    await this.performanceRepository.save(performance);
   }
 
-  async getList(appKey: string) {
+  async getList(appKey: string): Promise<Pagination<PerformanceEntity>> {
     const [data, count] = await getRepository(PerformanceEntity)
       .createQueryBuilder("p")
       // .take(perPage)
       // .skip(page * perPage)
       .where("p.project = :appKey", { appKey })
-      .cache(true)
       .getManyAndCount();
 
     return {

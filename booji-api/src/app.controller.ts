@@ -1,4 +1,5 @@
 import { Controller, Get, Inject } from "@nestjs/common";
+import { ApiUseTags } from "@nestjs/swagger";
 // import {
 //   Ctx,
 //   EventPattern,
@@ -8,6 +9,7 @@ import { Controller, Get, Inject } from "@nestjs/common";
 // import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 // import { Logger } from "winston";
 
+@ApiUseTags("health")
 @Controller()
 export class AppController {
   @Get("health")

@@ -13,6 +13,7 @@ import { verify } from "@utils/crypto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserEntity } from "./user.entity";
 import { LoginUserDto, UpdateUserDto } from "./dto";
+import { Pagination } from "@type/index";
 
 export interface UserRO {
   id: number;
@@ -28,12 +29,14 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
   ) {}
-  async findAll(perPage: number, page: number): Promise<any> {
+  async findAll(
+    perPage: number,
+    page: number
+  ): Promise<Pagination<UserEntity>> {
     const [data, count] = await getRepository(UserEntity)
       .createQueryBuilder("user")
       .take(perPage)
       .skip(page * perPage)
-      .cache(true)
       .getManyAndCount();
     return {
       data,
