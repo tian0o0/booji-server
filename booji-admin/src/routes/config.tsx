@@ -3,9 +3,8 @@ import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "@/layouts/AuthLayout";
 import IssueDetail from "@/pages/IssueDetail";
 import { withLoading } from "./utils";
-import { defaultLang } from "@/config/constant";
+import { lang } from "@/config/constant";
 
-const lang = localStorage.getItem("lang") || defaultLang;
 const Auth = lazy(() => import("@/pages/Auth"));
 const Home = lazy(() => import("@/pages/Home"));
 const Issue = lazy(() => import("@/pages/Issue"));

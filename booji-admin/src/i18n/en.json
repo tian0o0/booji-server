@@ -8,6 +8,17 @@
     "user": "User",
 
     "logout": "Logout",
+    "toLogin": "Have an account already? Click to sign in",
+    "toRegister": "Doesn't have an account? Click to sign up",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "enterName": "Please input name",
+    "enterEmail": "Please input email",
+    "enterPassword": "Please input password",
+    "passwordIsDiff": "The password you input is diffrent",
 
     "projectList": "Projects",
     "addProject": "New Project",
@@ -40,9 +51,6 @@
     "assignee": "Assignee",
     "status": "Status",
     "plzSelect": "Please Select",
-
-    "name": "Name",
-    "email": "Email",
 
     "brief": "Brief",
     "tags": "Tags",

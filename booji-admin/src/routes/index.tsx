@@ -1,8 +1,8 @@
 import { useRoutes } from "react-router-dom";
-import routes from "./config";
+import config from "./config";
 
 const CustomRoutes = () => {
-  const element = useRoutes(routes);
+  const element = useRoutes(config);
   return element;
 };
 

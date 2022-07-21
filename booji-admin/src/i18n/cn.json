@@ -8,6 +8,17 @@
     "user": "用户",
 
     "logout": "退出登录",
+    "toLogin": "已经有账号了？去登录",
+    "toRegister": "没有账号？去注册",
+    "signin": "登录",
+    "signup": "注册",
+    "name": "姓名",
+    "email": "邮箱",
+    "password": "密码",
+    "enterName": "请输入姓名",
+    "enterEmail": "请输入邮箱",
+    "enterPassword": "请输入密码",
+    "passwordIsDiff": "两次密码不一致",
 
     "projectList": "项目列表",
     "addProject": "新建项目",
@@ -40,9 +51,6 @@
     "assignee": "负责人",
     "status": "状态",
     "plzSelect": "请选择",
-
-    "name": "姓名",
-    "email": "邮箱",
 
     "brief": "摘要",
     "tags": "标签统计",

@@ -1,10 +1,12 @@
 import { VITE_APP_LOGO } from "@/config/constant";
 import { Button } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Login from "./Login";
 import Register from "./Register";
 
 const Auth = () => {
+  const { t } = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
 
   return (
@@ -13,7 +15,7 @@ const Auth = () => {
         <img src={VITE_APP_LOGO} className="h-12 mb-6" />
         {isLogin ? <Login /> : <Register />}
         <Button type="link" onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? "没有账号？去注册" : "已经有账号了？去登录"}
+          {isLogin ? t("toRegister") : t("toLogin")}
         </Button>
       </div>
     </div>

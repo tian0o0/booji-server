@@ -1,10 +1,8 @@
-import { defaultLang } from "@/config/constant";
+import { lang } from "@/config/constant";
 import { FontColorsOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-
-const lang = localStorage.getItem("lang") || defaultLang;
 
 const Lang = () => {
   const { t } = useTranslation();

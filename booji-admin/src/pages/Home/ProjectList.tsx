@@ -1,4 +1,4 @@
-import { defaultLang } from "@/config/constant";
+import { lang } from "@/config/constant";
 import { userState } from "@/store";
 import { Pagination, Platform, ProjectData } from "@/types";
 import { timeFormat } from "@/utils/common";
@@ -7,7 +7,6 @@ import { ColumnsType } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-const lang = localStorage.getItem("lang") || defaultLang;
 
 const ProjectList = ({
   value,

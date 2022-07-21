@@ -1,4 +1,4 @@
-import { defaultLang } from "@/config/constant";
+import { lang } from "@/config/constant";
 import { useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
 import { Pagination } from "@/types";
@@ -9,8 +9,6 @@ import { ColumnsType, TableProps } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { statusList } from "./StatusTab";
-
-const lang = localStorage.getItem("lang") || defaultLang;
 
 const List = ({
   loading,

@@ -1,7 +1,9 @@
 import { useAuth } from "@/context/auth";
 import { Button, Form, Input, message } from "antd";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+  const { t } = useTranslation();
   const { register, loading } = useAuth();
 
   const handleRegister = async ({
@@ -14,7 +16,7 @@ const Register = () => {
     password2: string;
   }) => {
     if (form.password !== password2) {
-      return message.error("两次密码不一致");
+      return message.error(t("passwordIsDiff"));
     }
     register(form);
   };
@@ -23,31 +25,31 @@ const Register = () => {
     <Form onFinish={handleRegister}>
       <Form.Item
         name={"name"}
-        rules={[{ required: true, message: "请输入用户名" }]}
+        rules={[{ required: true, message: t("enterName") }]}
       >
-        <Input placeholder={"用户名"} type="text" id={"name"} />
+        <Input placeholder={t("name")} type="text" id={"name"} />
       </Form.Item>
       <Form.Item
         name={"email"}
-        rules={[{ required: true, message: "请输入邮箱" }]}
+        rules={[{ required: true, message: t("enterEmail") }]}
       >
-        <Input placeholder={"邮箱"} type="text" id={"email"} />
+        <Input placeholder={t("email")} type="text" id={"email"} />
       </Form.Item>
       <Form.Item
         name={"password"}
-        rules={[{ required: true, message: "请输入密码" }]}
+        rules={[{ required: true, message: t("enterPassword") }]}
       >
-        <Input placeholder={"密码"} type="password" id={"password"} />
+        <Input placeholder={t("password")} type="password" id={"password"} />
       </Form.Item>
       <Form.Item
         name={"password2"}
-        rules={[{ required: true, message: "请确认密码" }]}
+        rules={[{ required: true, message: t("enterPassword") }]}
       >
-        <Input placeholder={"密码"} type="password" id={"password2"} />
+        <Input placeholder={t("password")} type="password" id={"password2"} />
       </Form.Item>
       <Form.Item>
         <Button loading={loading} htmlType={"submit"} className="w-full">
-          注册
+          {t("signup")}
         </Button>
       </Form.Item>
     </Form>
