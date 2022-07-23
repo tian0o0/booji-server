@@ -2,14 +2,26 @@ version: '3.8'
 
 services:
   mysqldb:
-    image: mysql
-    container_name: booji-server-mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:latest
+    container_name: booji-mysql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --sync-binlog=1
+      --log-slave-updates=ON
+      --gtid-mode=ON
+      --enforce-gtid-consistency=ON
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --read-only=OFF
+      --binlog-rows-query-log-events=ON
     environment:
       MYSQL_ROOT_PASSWORD: 666666
       MYSQL_DATABASE: booji
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - db-config:/etc/mysql
       - db-data:/var/lib/mysql
@@ -20,9 +32,9 @@ services:
 
   zookeeper:
     image: bitnami/zookeeper:latest
-    container_name: booji-server-zookeeper
+    container_name: booji-zookeeper
     ports:
-      - 2181:2181
+      - 2182:2181
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
@@ -30,9 +42,9 @@ services:
 
   kafka:
     image: bitnami/kafka:3.2.0
-    container_name: booji-server-kafka
+    container_name: booji-kafka
     ports:
-      - 9092:9092
+      - 9093:9092
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -48,9 +60,9 @@ services:
   
   es:
     image: elasticsearch:7.17.1
-    container_name: booji-server-es
+    container_name: booji-es
     ports:
-      - 9200:9200
+      - 9201:9200
     volumes:
       - elasticsearch-volume:/elasticsearch/data
     environment:
@@ -62,21 +74,21 @@ services:
   
   kibana:
     image: kibana:7.17.1
-    container_name: booji-server-kibana
+    container_name: booji-kibana
     environment:
       ELASTICSEARCH_HOSTS: http://es:9200
     ports:
-      - 5601:5601
+      - 5602:5601
     depends_on:
       - es
     networks:
       - shared-network
 
   api:
-    container_name: booji-server-api
+    container_name: booji-api
     build: booji-api
     ports:
-      - 3333:3333
+      - 3334:3333
     depends_on:
       - mysqldb
       - es
@@ -91,7 +103,7 @@ services:
       retries: 10
   
   admin:
-    container_name: booji-server-admin
+    container_name: booji-admin
     build: booji-admin
     ports:
       - 80:80
@@ -103,6 +115,48 @@ services:
     # volumes:
     #   - ./booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life_bundle.crt
     #   - ./booji.qingtian.life_nginx/booji.qingtian.life.key:/etc/pki/booji.qingtian.life_nginx/booji.qingtian.life.key
+  
+
+  # bug太多，文档不全，接入困难，遂放弃该方案
+  # canal-server:
+  #   image: canal/canal-server:latest
+  #   container_name: booji-canal-server
+  #   ports:
+  #     - 11112:11111
+  #   environment:
+  #     - canal.auto.scan=false
+  #     - canal.instance.master.address=mysqldb:3306
+  #     - canal.instance.dbUsername=root
+  #     - canal.instance.dbPassword=666666
+  #     - canal.instance.filter.regex=booji.issue
+  #     - canal.instance.connectionCharset=UTF-8
+  #     - canal.instance.tsdb.enable=true
+  #     - canal.instance.gtidon=false
+  #   volumes:
+  #     - canal-example:/home/admin/canal-server/conf/example
+  #     - canal-logs:/home/admin/canal-server/logs
+  #   depends_on:
+  #     - mysqldb
+  #   networks:
+  #     - shared-network
+  # canal-adapter:
+  #   image: slpcat/canal-adapter:v1.1.5
+  #   container_name: booji-canal-adapter
+  #   volumes:
+  #     - ./canal-adapter/conf:/opt/canal-adapter/conf
+  #     - ./canal-adapter/lib/client-adapter.launcher-1.1.6.jar:/opt/canal-adapter/lib/client-adapter.launcher-1.1.6.jar
+  #     - ./canal-adapter/plugin/client-adapter.es7x-1.1.6-jar-with-dependencies.jar:/opt/canal-adapter/plugin/client-adapter.es7x-1.1.6-jar-with-dependencies.jar
+  #   depends_on:
+  #     - mysqldb
+  #     - es
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "curl", "http://es:9200/_cat/health"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 50
+  #   networks:
+  #     - shared-network
 
 networks:
   shared-network:
@@ -113,4 +167,6 @@ volumes:
   db-config:
   db-data:
   elasticsearch-volume:
+  canal-example:
+  canal-logs:
   

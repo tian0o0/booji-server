@@ -9,11 +9,17 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CompressionTypes, Consumer, Kafka, Producer } from "kafkajs";
 import { Repository } from "typeorm";
 
+const MYSQL_TOPIC = "mysql";
+const ES_TOPIC = "es";
+
+type Topic = typeof MYSQL_TOPIC | typeof ES_TOPIC;
+
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private kafka: Kafka;
   private producer: Producer;
   private consumer: Consumer;
+  private consumerOfBinlog: Consumer;
 
   constructor(
     @InjectRepository(IssueEntity)
@@ -34,16 +40,31 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
       allowAutoTopicCreation: false,
     });
     this.consumer = this.kafka.consumer({
-      groupId: "consumer-group",
+      groupId: "mysql-group",
+    });
+    this.consumerOfBinlog = this.kafka.consumer({
+      groupId: "es-group",
     });
     await this.connect();
 
-    await this.consumer.subscribe({ topic: "booji", fromBeginning: false });
+    await this.consumer.subscribe({ topic: MYSQL_TOPIC, fromBeginning: false });
+    await this.consumerOfBinlog.subscribe({
+      topic: ES_TOPIC,
+      fromBeginning: false,
+    });
 
-    await this.consumer.run({
+    this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         // console.log(partition); // kafkajs默认有4个分区
-        this.onConsume(message.value.toString());
+        console.log(topic);
+        await this.writeToMysql(message.value.toString());
+      },
+    });
+
+    this.consumerOfBinlog.run({
+      eachMessage: async ({ topic, partition, message }) => {
+        console.log(topic);
+        await this.writeToES(message.value.toString());
       },
     });
   }
@@ -65,11 +86,11 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   /**
    * 向kafka发送消息
    */
-  async send(event: any) {
+  async send(topic: Topic, event: any) {
     await this.producer.connect();
     const metadata = await this.producer
       .send({
-        topic: "booji",
+        topic,
         /**
          * acks: 0
          * 表示生产者在成功写入消息之前不会等待任何来自服务器的响应.
@@ -90,13 +111,14 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * 消费kafka消息后入库操作
+   * 写入mysql
    */
-  async onConsume(event: string) {
+  async writeToMysql(event: string) {
     const parsedData = JSON.parse(event);
 
     // 每一个 event 写入 es(写入失败终止流程)
-    await this.searchService.save(parsedData);
+    // TODO: 改为监听binlog
+    // await this.searchService.save(parsedData);
 
     // 根据 issueId 判断是否是属于同一issue（是则issue count +1, 否则新增issue）
     const issue = await this.issueRepository.findOne({
@@ -132,6 +154,14 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     }
 
     return await this.issueRepository.save(newIssue);
+  }
+
+  /**
+   * 写入ES
+   */
+  async writeToES(event: string) {
+    const parsedData = JSON.parse(event);
+    await this.searchService.save(parsedData);
   }
 
   async generateTags(parsedData): Promise<TagEntity[]> {

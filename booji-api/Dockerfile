@@ -1,8 +1,8 @@
 FROM node:lts-alpine
 
-COPY . /api
+COPY . /
 
-WORKDIR /api
+WORKDIR /
 
 RUN npm install --force --registry https://registry.npm.taobao.org
 

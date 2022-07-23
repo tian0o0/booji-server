@@ -108,6 +108,6 @@ export class IssueService {
       ua,
     };
 
-    this.kafkaService.send(event);
+    this.kafkaService.send("mysql", event);
   }
 }

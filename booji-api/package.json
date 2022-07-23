@@ -46,6 +46,7 @@
     "@nestjs/testing": "^7.0.2",
     "@nestjs/typeorm": "^6.3.1",
     "@nestjs/websockets": "^7.0.2",
+    "@rodrigogs/mysql-events": "^0.6.0",
     "axios": "^0.26.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.9.1",
