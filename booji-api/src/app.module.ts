@@ -9,7 +9,6 @@ import { ConfigModule } from "@nestjs/config";
 import { PerformanceModule } from "@modules/Performance/performance.module";
 import { SmModule } from "@modules/SourceMap/sm.module";
 import { KafkaModule } from "@modules/Kafka/kafka.module";
-import { BinlogModule } from "@modules/Binlog/binlog.module";
 import config from "./config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 
@@ -23,7 +22,6 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
     }),
     EventEmitterModule.forRoot(),
     KafkaModule,
-    BinlogModule,
     UserModule,
     ProjectModule,
     IssueModule,

@@ -4,10 +4,11 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  PrimaryColumn,
   RelationId,
   OneToMany,
   JoinColumn,
+  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from "typeorm";
 import { UserEntity } from "@modules/User/user.entity";
 import { ProjectEntity } from "@modules/Project/project.entity";
@@ -32,7 +33,10 @@ export enum Severity {
 
 @Entity("issue")
 export class IssueEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
   issueId: string;
 
   @Column({
@@ -60,18 +64,6 @@ export class IssueEntity {
   stack: string;
 
   @Column({
-    comment: "错误所在行",
-    default: 0,
-  })
-  row: number;
-
-  @Column({
-    comment: "错误所在列",
-    default: 0,
-  })
-  col: number;
-
-  @Column({
     comment: "解析sourcemap后的得到的原始错误串",
     default: "",
   })
@@ -97,8 +89,9 @@ export class IssueEntity {
   })
   project: ProjectEntity;
 
-  @RelationId((issue: IssueEntity) => issue.project)
-  appKey?: string;
+  // @RelationId((issue: IssueEntity) => issue.project)
+  @Column()
+  appKey: string;
 
   @ManyToOne(() => UserEntity, (user) => user.issues)
   assignee?: UserEntity;

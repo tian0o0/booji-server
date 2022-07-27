@@ -16,21 +16,30 @@ export class TagService {
 
   async save(issueId: string, data: CreateTagDto): Promise<TagEntity> {
     if (!data.key) return;
-    const tag = await this.tagRepository.findOne({ value: data.value });
+
+    const tag = await this.tagRepository.findOne({
+      where: {
+        value: data.value,
+        issueId: issueId,
+      },
+    });
+    let savedTag: TagEntity;
 
     if (tag) {
       // 如果 tag 存在，此时 count + 1
       tag.count++;
-      await this.tagRepository.save(tag);
+      savedTag = await this.tagRepository.save(tag);
     } else {
       // 如果 tag 不存在，此时新增 tag
       const newTag = new TagEntity();
       newTag.key = data.key;
       newTag.value = data.value;
-      newTag.issue = await this.issueRepository.findOne(issueId);
-      await this.tagRepository.save(newTag);
+      newTag.issueId = issueId;
+      newTag.issue = await this.issueRepository.findOne({ issueId });
+
+      savedTag = await this.tagRepository.save(newTag);
     }
 
-    return await this.tagRepository.findOne({ value: data.value });
+    return savedTag;
   }
 }

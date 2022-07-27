@@ -35,23 +35,23 @@ export class SearchService {
               },
             },
           },
-          mappings: {
-            properties: {
-              title: {
-                type: "text",
-                fields: {
-                  complete: {
-                    type: "text",
-                    analyzer: "autocomplete_analyzer",
-                    search_analyzer: "autocomplete_search_analyzer",
-                  },
-                },
-              },
-              year: { type: "integer" },
-              genres: { type: "nested" },
-              actors: { type: "nested" },
-            },
-          },
+          // mappings: {
+          //   properties: {
+          //     title: {
+          //       type: "text",
+          //       fields: {
+          //         complete: {
+          //           type: "text",
+          //           analyzer: "autocomplete_analyzer",
+          //           search_analyzer: "autocomplete_search_analyzer",
+          //         },
+          //       },
+          //     },
+          //     year: { type: "integer" },
+          //     genres: { type: "nested" },
+          //     actors: { type: "nested" },
+          //   },
+          // },
         },
       },
       (err) => {

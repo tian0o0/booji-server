@@ -10,16 +10,14 @@ import { CompressionTypes, Consumer, Kafka, Producer } from "kafkajs";
 import { Repository } from "typeorm";
 
 const MYSQL_TOPIC = "mysql";
-const ES_TOPIC = "es";
 
-type Topic = typeof MYSQL_TOPIC | typeof ES_TOPIC;
+type Topic = typeof MYSQL_TOPIC;
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private kafka: Kafka;
   private producer: Producer;
   private consumer: Consumer;
-  private consumerOfBinlog: Consumer;
 
   constructor(
     @InjectRepository(IssueEntity)
@@ -42,29 +40,21 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     this.consumer = this.kafka.consumer({
       groupId: "mysql-group",
     });
-    this.consumerOfBinlog = this.kafka.consumer({
-      groupId: "es-group",
-    });
     await this.connect();
 
     await this.consumer.subscribe({ topic: MYSQL_TOPIC, fromBeginning: false });
-    await this.consumerOfBinlog.subscribe({
-      topic: ES_TOPIC,
-      fromBeginning: false,
-    });
 
     this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         // console.log(partition); // kafkajs默认有4个分区
-        console.log(topic);
-        await this.writeToMysql(message.value.toString());
-      },
-    });
+        const event = JSON.parse(message.value.toString());
 
-    this.consumerOfBinlog.run({
-      eachMessage: async ({ topic, partition, message }) => {
-        console.log(topic);
-        await this.writeToES(message.value.toString());
+        try {
+          await this.writeToMysql(event);
+          await this.writeToES(event);
+        } catch (e) {
+          console.error("数据写入失败", e);
+        }
       },
     });
   }
@@ -96,8 +86,18 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
          * 表示生产者在成功写入消息之前不会等待任何来自服务器的响应.
          * 换句话说，一旦出现了问题导致服务器没有收到消息，那么生产者就无从得知，消息也就丢失了.
          * 改配置由于不需要等到服务器的响应，所以可以以网络支持的最大速度发送消息，从而达到很高的吞吐量
+         *
+         * acks: 1
+         * 表示只要集群的leader分区副本接收到了消息，就会向生产者发送一个成功响应的ack，
+         * 此时生产者接收到ack之后就可以认为该消息是写入成功的.
+         * 一旦消息无法写入leader分区副本(比如网络原因、leader节点崩溃),生产者会收到一个错误响应，
+         * 当生产者接收到该错误响应之后，为了避免数据丢失，会重新发送数据
+         *
+         * acks: -1
+         * 需要所有节点确认，安全级别最高
+         *
          */
-        acks: 0,
+        acks: -1,
         /**
          * 消息压缩方式：GZIP
          * The consumers know how to decompress GZIP, so no further work is necessary.
@@ -113,44 +113,40 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   /**
    * 写入mysql
    */
-  async writeToMysql(event: string) {
-    const parsedData = JSON.parse(event);
-
-    // 每一个 event 写入 es(写入失败终止流程)
-    // TODO: 改为监听binlog
-    // await this.searchService.save(parsedData);
-
+  async writeToMysql(event) {
     // 根据 issueId 判断是否是属于同一issue（是则issue count +1, 否则新增issue）
     const issue = await this.issueRepository.findOne({
-      issueId: parsedData.issueId,
+      issueId: event.issueId,
     });
     if (issue) {
-      if (!issue.users.includes(parsedData.user.id)) {
-        issue.users.push(parsedData.user.id);
+      if (!issue.users.includes(event.user.id)) {
+        issue.users.push(event.user.id);
       }
       issue.eventCount++;
-      issue.tags = [...issue.tags, ...(await this.generateTags(parsedData))];
+      // issue.tags = [...issue.tags, ...(await this.generateTags(event))];
+      issue.tags = await this.generateTags(event);
       return await this.issueRepository.save(issue);
     }
 
     let newIssue = new IssueEntity();
-    newIssue.type = parsedData.type;
-    newIssue.category = parsedData.category;
-    newIssue.level = parsedData.level;
-    newIssue.message = parsedData.message;
-    newIssue.stack = parsedData.stack;
-    newIssue.row = parsedData.row;
-    newIssue.col = parsedData.col;
-    newIssue.release = parsedData.release;
-    newIssue.issueId = parsedData.issueId;
+    newIssue.type = event.type;
+    newIssue.category = event.category;
+    newIssue.level = event.level;
+    newIssue.message = event.message;
+    newIssue.stack = event.stack;
+    newIssue.release = event.release;
+    newIssue.issueId = event.issueId;
     newIssue.eventCount = 1;
-    newIssue.project = await this.projectRepository.findOne(parsedData.appKey);
-    newIssue.tags = await this.generateTags(parsedData);
+    newIssue.appKey = event.appKey;
+    newIssue.project = await this.projectRepository.findOne({
+      appKey: event.appKey,
+    });
+    newIssue.tags = await this.generateTags(event);
     // 保存 userId, 用于统计 issue 影响的用户数量
     if (newIssue.users?.length) {
-      newIssue.users.push(parsedData.user.id);
+      newIssue.users.push(event.user.id);
     } else {
-      newIssue.users = [parsedData.user.id];
+      newIssue.users = [event.user.id];
     }
 
     return await this.issueRepository.save(newIssue);
@@ -159,12 +155,11 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   /**
    * 写入ES
    */
-  async writeToES(event: string) {
-    const parsedData = JSON.parse(event);
-    await this.searchService.save(parsedData);
+  async writeToES(event) {
+    await this.searchService.save(event);
   }
 
-  async generateTags(parsedData): Promise<TagEntity[]> {
+  async generateTags(event): Promise<TagEntity[]> {
     let tags: TagEntity[] = [];
 
     // ua: {
@@ -175,27 +170,31 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     //   device: { vendor: 'Apple', model: 'iPhone', type: 'mobile' },
     //   cpu: {}
     // }
-    for (let key in parsedData.ua) {
+    for (let key in event.ua) {
       if (key === "ua") continue;
-      const val = parsedData.ua[key];
+      const val = event.ua[key];
       let tag: any = {};
 
       if (["browser", "engine", "os"].includes(key)) {
         tag.key = key;
         tag.value = `${val.name} ${val.version}`;
       } else if (key === "device") {
-        // pc浏览器上报时此对象为空，设置默认值
-        if (Object.keys(val).length === 0) {
+        // pc浏览器上报时，设置默认值
+        if (
+          Object.keys(val).length === 0 ||
+          Object.values(val).filter((item) => item).length === 0
+        ) {
           tag.key = "type";
           tag.value = "pc";
         }
         for (let deviceKey in val) {
+          if (!val[deviceKey]) continue;
           tag.key = deviceKey;
           tag.value = val[deviceKey];
         }
       }
 
-      const savedTag = await this.tagService.save(parsedData.issueId, tag);
+      const savedTag = await this.tagService.save(event.issueId, tag);
       savedTag && tags.push(savedTag);
     }
 
@@ -210,16 +209,16 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     //   metro: 0,
     //   area: 1
     // }
-    if (parsedData.locate) {
+    if (event.locate) {
       const ignoredKeys = ["range", "eu", "timezone", "metro", "area", "ll"];
-      for (let key in parsedData.locate) {
+      for (let key in event.locate) {
         if (ignoredKeys.includes(key)) continue;
-        const val = parsedData.locate[key];
+        const val = event.locate[key];
         let tag: any = {};
         tag.key = key;
         tag.value = val;
 
-        const savedTag = await this.tagService.save(parsedData.issueId, tag);
+        const savedTag = await this.tagService.save(event.issueId, tag);
         savedTag && tags.push(savedTag);
       }
     }

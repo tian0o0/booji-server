@@ -40,7 +40,7 @@ export class IssueService {
       .createQueryBuilder("issue")
       .take(perPage)
       .skip(page * perPage)
-      .where("issue.project = :appKey", { appKey })
+      .where("issue.appKey = :appKey", { appKey })
       .andWhere("issue.status = :status", { status })
       .addSelect(
         "case when issue.level='critical' then 1 when issue.level='error' then 2 when issue.level='warn' then 3 when issue.level='log' then 4 when issue.level='info' then 5 when issue.level='debug' then 6 else null end",
@@ -109,5 +109,6 @@ export class IssueService {
     };
 
     this.kafkaService.send("mysql", event);
+    // this.kafkaService.writeToMysql(event);
   }
 }

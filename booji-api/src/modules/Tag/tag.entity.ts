@@ -36,9 +36,12 @@ export class TagEntity {
 
   @ManyToOne(() => IssueEntity, (issue) => issue.tags)
   @JoinColumn({
-    name: "issueId",
+    name: "fk_issue_id",
   })
   issue: IssueEntity;
+
+  @Column()
+  issueId: string;
 
   @CreateDateColumn({ type: "datetime" })
   createdAt: Date;

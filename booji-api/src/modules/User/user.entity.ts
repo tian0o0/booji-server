@@ -53,10 +53,6 @@ export class UserEntity {
   @ManyToMany(() => ProjectEntity, (project) => project.users)
   @JoinTable({
     name: "users_projects",
-    inverseJoinColumn: {
-      name: "appKey",
-      referencedColumnName: "appKey",
-    },
   })
   projects: ProjectEntity[];
 

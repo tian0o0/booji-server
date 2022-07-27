@@ -3,6 +3,10 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 const MySQLEvents = require("@rodrigogs/mysql-events");
 
+/**
+ * @deprecated
+ * 无法监听tag表的变化，放弃改方案
+ */
 @Injectable()
 export class BinlogService {
   private connector: any;
@@ -18,8 +22,8 @@ export class BinlogService {
 
     this.connector = new MySQLEvents(dsn, {
       startAtEnd: true,
-      excludedSchemas: {
-        mysql: true,
+      includeSchema: {
+        booji: ["issue"],
       },
     });
 
@@ -27,11 +31,11 @@ export class BinlogService {
 
     this.connector.addTrigger({
       name: "TEST",
-      expression: "booji.issue", // 仅监听issue表
+      expression: "*",
       statement: MySQLEvents.STATEMENTS.ALL,
       onEvent: (e) => {
         const event = e.affectedRows[0]?.after;
-        this.kafkaService.send("es", event);
+        // this.kafkaService.send("es", event);
       },
     });
 

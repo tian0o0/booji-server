@@ -6,6 +6,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Generated,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -22,7 +23,13 @@ enum Platform {
 
 @Entity("project")
 export class ProjectEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    comment: "项目唯一标识",
+  })
+  @Generated("uuid")
   appKey: string;
 
   @Column({

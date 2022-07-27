@@ -28,7 +28,7 @@ export class PerformanceService {
     performance.response = data.response;
     performance.processing = data.processing;
     performance.load = data.load;
-    performance.project = await this.projectRepository.findOne(appKey);
+    performance.project = await this.projectRepository.findOne({ appKey });
 
     await this.performanceRepository.save(performance);
   }
