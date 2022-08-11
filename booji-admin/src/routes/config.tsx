@@ -8,6 +8,7 @@ import { lang } from "@/config/constant";
 const Auth = lazy(() => import("@/pages/Auth"));
 const Home = lazy(() => import("@/pages/Home"));
 const Issue = lazy(() => import("@/pages/Issue"));
+const Performance = lazy(() => import("@/pages/Performance"));
 const User = lazy(() => import("@/pages/User"));
 const Usage = lazy(() => import("@/pages/Usage"));
 const NotFound = lazy(() => import("@/pages/404"));
@@ -39,6 +40,10 @@ export const routes: RouteObject[] = [
           {
             path: "issue/:issueId",
             element: <IssueDetail />,
+          },
+          {
+            path: "performance",
+            element: <Performance />,
           },
           {
             path: "user",

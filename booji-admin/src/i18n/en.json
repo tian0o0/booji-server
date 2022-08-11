@@ -5,6 +5,7 @@
 
     "app": "App",
     "issue": "Issue",
+    "performance": "Performance",
     "user": "User",
 
     "logout": "Logout",

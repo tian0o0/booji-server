@@ -4,6 +4,7 @@ import {
   BugOutlined,
   UnorderedListOutlined,
   UserOutlined,
+  BulbOutlined,
 } from "@ant-design/icons";
 import { ReactNode, Suspense } from "react";
 import { useTranslation } from "react-i18next";
@@ -69,6 +70,9 @@ export const generateMenus = () => {
           break;
         case "issue":
           menuItem.icon = <BugOutlined />;
+          break;
+        case "performance":
+          menuItem.icon = <BulbOutlined />;
           break;
         case "user":
           menuItem.icon = <UserOutlined />;
