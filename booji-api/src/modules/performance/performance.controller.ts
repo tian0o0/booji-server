@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpCode, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Query,
+  UseInterceptors,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
 import { Pagination } from "@type/index";
 import { PerformanceEntity } from "./performance.entity";
@@ -12,9 +21,13 @@ export class PerformanceController {
 
   @ApiOperation({ title: "性能上报" })
   @Post("booji/performance")
+  @UseInterceptors(FileInterceptor("")) // Handle FormData
   @HttpCode(204)
   report(@Body() body: any): Promise<void> {
-    return this.performanceService.report(body);
+    return this.performanceService.report({
+      ...body,
+      data: JSON.parse(body.data),
+    });
   }
 
   @ApiOperation({ title: "获取性能数据" })

@@ -35,9 +35,6 @@ export class PerformanceEntity {
   load: number;
 
   @ManyToOne(() => ProjectEntity, (project) => project.performances)
-  @JoinColumn({
-    name: "appKey",
-  })
   project: ProjectEntity;
 
   @CreateDateColumn({ type: "datetime" })

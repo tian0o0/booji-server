@@ -6,4 +6,4 @@ WORKDIR /
 
 RUN npm install --force --registry https://registry.npm.taobao.org
 
-CMD npm run start:test
+CMD npm run start
