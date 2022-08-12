@@ -9,8 +9,8 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
-import { PerformanceEntity, UrlEntity } from "./performance.entity";
-import { PerformanceService } from "./performance.service";
+import { UrlEntity } from "./performance.entity";
+import { PerformanceData, PerformanceService } from "./performance.service";
 
 @ApiBearerAuth()
 @ApiUseTags("performance")
@@ -37,7 +37,7 @@ export class PerformanceController {
 
   @ApiOperation({ title: "获取某个url下的性能数据列表" })
   @Get("url/:id/performances")
-  list(@Param("id") urlId: number): Promise<PerformanceEntity[]> {
+  list(@Param("id") urlId: number): Promise<PerformanceData> {
     return this.performanceService.getList(urlId);
   }
 }

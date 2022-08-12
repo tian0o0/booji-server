@@ -41,7 +41,7 @@ const Performance = () => {
             <FullScreenSpin />
           ) : (
             <>
-              {value?.length ? (
+              {value ? (
                 <Chart data={value} />
               ) : (
                 <Empty className="h-full flex flex-col justify-center items-center" />

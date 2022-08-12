@@ -8,7 +8,7 @@ export const getUrlList = (appKey: string) =>
   });
 
 export const getPerformanceList = (urlId: number) =>
-  request<PerformanceData[]>({
+  request<PerformanceData>({
     url: `/url/${urlId}/performances`,
     method: "GET",
   });

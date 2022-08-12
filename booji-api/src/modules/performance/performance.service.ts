@@ -10,6 +10,16 @@ interface Payload {
   url: string;
 }
 
+export interface PerformanceData {
+  axis: Date[];
+  dns: number[];
+  tcp: number[];
+  request: number[];
+  response: number[];
+  processing: number[];
+  load: number[];
+}
+
 @Injectable()
 export class PerformanceService {
   constructor(
@@ -45,7 +55,31 @@ export class PerformanceService {
     return await this.urlRepository.find({ appKey: appKey });
   }
 
-  async getList(urlId: any): Promise<PerformanceEntity[]> {
-    return await this.performanceRepository.find({ url: urlId });
+  async getList(urlId: any): Promise<PerformanceData> {
+    const data = await this.performanceRepository.find({ url: urlId });
+    return transformRowData(data);
   }
+}
+
+function transformRowData(arr: PerformanceEntity[]): PerformanceData {
+  let res: PerformanceData = {
+    axis: [],
+    dns: [],
+    tcp: [],
+    request: [],
+    response: [],
+    processing: [],
+    load: [],
+  };
+  arr.forEach((item) => {
+    res.axis.push(item.createdAt);
+    res.dns.push(item.dns);
+    res.tcp.push(item.tcp);
+    res.request.push(item.request);
+    res.response.push(item.response);
+    res.processing.push(item.processing);
+    res.load.push(item.load);
+  });
+
+  return res;
 }
