@@ -1,12 +1,7 @@
 import { Tag } from "@/types/issue";
 import { useEffect, useRef } from "react";
 import { Col, Row } from "antd";
-import * as echarts from "echarts/core";
-import { PieChart } from "echarts/charts";
-import { TooltipComponent, LegendComponent } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
-import "echarts/theme/macarons";
-echarts.use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer]);
+import initEcharts from "@/utils/echarts";
 
 const Chart = ({ tags }: { tags: Tag[] }) => {
   const genChartData = (key: string) => {
@@ -68,7 +63,7 @@ const BaseChart = ({
 
   const initChart = () => {
     if (!echartRef.current || !data.length) return;
-    const chart = echarts.init(echartRef.current, "macarons");
+    const chart = initEcharts(echartRef.current, "macarons");
 
     chart.setOption({
       tooltip: {

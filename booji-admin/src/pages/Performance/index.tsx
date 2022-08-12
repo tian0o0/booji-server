@@ -1,26 +1,54 @@
 import FullScreenSpin from "@/components/FullScreenSpin";
 import { useProjectSelect } from "@/hooks/issue";
+import { usePerformanceList, useUrlSelect } from "@/hooks/performance";
+import { Space, Empty } from "antd";
 import ProjectSelect from "../Issue/ProjectSelect";
+import Chart from "./Chart";
+import UrlSelect from "./UrlSelect";
 
 const Performance = () => {
   const { options, selectedAppKey, loading, onChange } = useProjectSelect();
-  const onProjectSelect = (appKey: string) => {
-    onChange(appKey);
-  };
+  const {
+    options: urlOptions,
+    selectedUrlId,
+    onChange: onUrlChange,
+  } = useUrlSelect(selectedAppKey);
+  const { value, loading: loadingChart } = usePerformanceList(selectedUrlId);
+
   return (
     <>
       {loading ? (
         <FullScreenSpin />
       ) : (
-        selectedAppKey && (
-          <div>
-            <ProjectSelect
-              options={options}
-              selectedAppKey={selectedAppKey}
-              onChange={onProjectSelect}
-            />
-          </div>
-        )
+        <>
+          {selectedAppKey && (
+            <div className="flex">
+              <Space>
+                <ProjectSelect
+                  options={options}
+                  selectedAppKey={selectedAppKey}
+                  onChange={onChange}
+                />
+                <UrlSelect
+                  options={urlOptions}
+                  selectedUrlId={selectedUrlId}
+                  onChange={onUrlChange}
+                />
+              </Space>
+            </div>
+          )}
+          {loadingChart ? (
+            <FullScreenSpin />
+          ) : (
+            <>
+              {value?.length ? (
+                <Chart data={value} />
+              ) : (
+                <Empty className="h-full flex flex-col justify-center items-center" />
+              )}
+            </>
+          )}
+        </>
       )}
     </>
   );

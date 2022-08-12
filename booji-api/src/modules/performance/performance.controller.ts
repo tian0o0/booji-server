@@ -3,14 +3,13 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
-  Query,
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
-import { Pagination } from "@type/index";
-import { PerformanceEntity } from "./performance.entity";
+import { PerformanceEntity, UrlEntity } from "./performance.entity";
 import { PerformanceService } from "./performance.service";
 
 @ApiBearerAuth()
@@ -30,9 +29,15 @@ export class PerformanceController {
     });
   }
 
-  @ApiOperation({ title: "获取性能数据" })
-  @Get("performances")
-  list(@Query() query: any): Promise<Pagination<PerformanceEntity>> {
-    return this.performanceService.getList(query.appKey);
+  @ApiOperation({ title: "获取某个项目下的url列表" })
+  @Get("project/:appKey/urls")
+  listUrl(@Param("appKey") appKey: string): Promise<UrlEntity[]> {
+    return this.performanceService.getUrlList(appKey);
+  }
+
+  @ApiOperation({ title: "获取某个url下的性能数据列表" })
+  @Get("url/:id/performances")
+  list(@Param("id") urlId: number): Promise<PerformanceEntity[]> {
+    return this.performanceService.getList(urlId);
   }
 }

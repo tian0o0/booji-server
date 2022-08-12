@@ -1,5 +1,8 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
-import { PerformanceEntity } from "@modules/Performance/performance.entity";
+import {
+  PerformanceEntity,
+  UrlEntity,
+} from "@modules/Performance/performance.entity";
 import { SmEntity } from "@modules/SourceMap/sm.entity";
 import { UserEntity } from "@modules/User/user.entity";
 import {
@@ -55,10 +58,8 @@ export class ProjectEntity {
   @ManyToMany(() => UserEntity, (user) => user.projects)
   users: UserEntity[];
 
-  @OneToMany(() => PerformanceEntity, (performance) => performance.project, {
-    eager: true,
-  })
-  performances: PerformanceEntity[];
+  @OneToMany(() => UrlEntity, (url) => url.project)
+  urls: UrlEntity[];
 
   @OneToMany(() => SmEntity, (sm) => sm.project)
   sourcemaps?: SmEntity[];

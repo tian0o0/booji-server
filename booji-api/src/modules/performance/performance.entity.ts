@@ -5,16 +5,35 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-@Entity("performance")
-export class PerformanceEntity {
+@Entity("url")
+export class UrlEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   url: string;
+
+  @ManyToOne(() => ProjectEntity, (project) => project.urls)
+  @JoinColumn({
+    name: "projectId",
+  })
+  project: ProjectEntity;
+
+  @Column()
+  appKey: string;
+
+  @OneToMany(() => PerformanceEntity, (p) => p.url)
+  performances: PerformanceEntity[];
+}
+
+@Entity("performance")
+export class PerformanceEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   dns: number;
@@ -34,8 +53,11 @@ export class PerformanceEntity {
   @Column()
   load: number;
 
-  @ManyToOne(() => ProjectEntity, (project) => project.performances)
-  project: ProjectEntity;
+  @ManyToOne(() => UrlEntity, (url) => url.performances)
+  @JoinColumn({
+    name: "urlId",
+  })
+  url: UrlEntity;
 
   @CreateDateColumn({ type: "datetime" })
   createdAt: Date;

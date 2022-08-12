@@ -60,5 +60,7 @@
 
     "importJS": "导入JS脚本",
     "install": "安装",
-    "init": "初始化"
+    "init": "初始化",
+
+    "url": "页面URL"
 }

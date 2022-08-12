@@ -4,7 +4,7 @@ import legacy from "@vitejs/plugin-legacy";
 import visualizer from "rollup-plugin-visualizer";
 import compression from "vite-plugin-compression";
 import vitePluginImp from "vite-plugin-imp";
-
+import commonjs from "vite-plugin-commonjs";
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
   const { VITE_BASE_PATH, VITE_APP_LEGACY } = loadEnv(mode, process.cwd());
@@ -28,6 +28,7 @@ export default defineConfig(async ({ command, mode }) => {
       gzipSize: true,
       brotliSize: true,
     }),
+    commonjs(),
   ];
 
   isBuild && VITE_APP_LEGACY === "true" && plugins.push(legacy());

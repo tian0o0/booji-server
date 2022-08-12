@@ -6,12 +6,12 @@ import { UserModule } from "@modules/User/user.module";
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PerformanceController } from "./performance.controller";
-import { PerformanceEntity } from "./performance.entity";
+import { UrlEntity, PerformanceEntity } from "./performance.entity";
 import { PerformanceService } from "./performance.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PerformanceEntity, ProjectEntity]),
+    TypeOrmModule.forFeature([UrlEntity, PerformanceEntity, ProjectEntity]),
     ProjectModule,
     UserModule,
   ],
@@ -24,6 +24,6 @@ export class PerformanceModule implements NestModule {
       .apply(CheckProjectExistMiddleware)
       .forRoutes("api/booji/performance")
       .apply(AuthMiddleware)
-      .forRoutes("api/performances");
+      .exclude("api/booji/performance");
   }
 }

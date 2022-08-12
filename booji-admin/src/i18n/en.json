@@ -60,5 +60,7 @@
 
     "importJS": "Import JS",
     "install": "Install",
-    "init": "Init"
+    "init": "Init",
+
+    "url": "URL"
 }
