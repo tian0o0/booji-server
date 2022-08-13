@@ -17,10 +17,6 @@ export const useUrlSelect = (appKey: string) => {
     setSelectedUrlId(defaultUrlId);
   }, [value]);
 
-  //   useEffect(() => {
-  //     console.log(appKey);
-  //   }, [appKey]);
-
   const onChange = (urlId: number) => {
     setSelectedUrlId(urlId);
   };

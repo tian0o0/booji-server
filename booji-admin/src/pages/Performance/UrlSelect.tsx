@@ -1,4 +1,3 @@
-import { useUrlSelect } from "@/hooks/performance";
 import { Select, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -13,12 +12,6 @@ const UrlSelect = ({
   onChange: (urlId: number) => void;
 }) => {
   const { t } = useTranslation();
-  //   const { options, selectedUrlId, loading, onChange } =
-  //     useUrlSelect(selectedAppKey);
-  //   const _onSelectUrl = (id: number) => {
-  //     onChange(id);
-  //     onSelectUrl(id);
-  //   };
 
   return (
     <>

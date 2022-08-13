@@ -14,6 +14,15 @@ export interface UrlData {
 //   createdAt: string;
 // }
 
+export interface Average {
+  dns: number;
+  tcp: number;
+  request: number;
+  response: number;
+  processing: number;
+  load: number;
+}
+
 export interface PerformanceData {
   axis: Date[];
   dns: number[];
@@ -22,4 +31,5 @@ export interface PerformanceData {
   response: number[];
   processing: number[];
   load: number[];
+  average: Average;
 }

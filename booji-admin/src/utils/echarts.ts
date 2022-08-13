@@ -1,5 +1,5 @@
 import * as echarts from "echarts/core";
-import { PieChart, LineChart } from "echarts/charts";
+import { PieChart, LineChart, BarChart } from "echarts/charts";
 import {
   TooltipComponent,
   LegendComponent,
@@ -11,6 +11,7 @@ import "echarts/theme/macarons";
 echarts.use([
   PieChart,
   LineChart,
+  BarChart,
   TooltipComponent,
   LegendComponent,
   CanvasRenderer,

@@ -62,5 +62,7 @@
     "install": "Install",
     "init": "Init",
 
-    "url": "URL"
+    "url": "URL",
+    "average": "Average Load Time",
+    "realTime": "RealTime Load"
 }

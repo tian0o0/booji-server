@@ -18,6 +18,14 @@ export interface PerformanceData {
   response: number[];
   processing: number[];
   load: number[];
+  average: {
+    dns: number;
+    tcp: number;
+    request: number;
+    response: number;
+    processing: number;
+    load: number;
+  };
 }
 
 @Injectable()
@@ -70,6 +78,14 @@ function transformRowData(arr: PerformanceEntity[]): PerformanceData {
     response: [],
     processing: [],
     load: [],
+    average: {
+      dns: 0,
+      tcp: 0,
+      request: 0,
+      response: 0,
+      processing: 0,
+      load: 0,
+    },
   };
   arr.forEach((item) => {
     res.axis.push(item.createdAt);
@@ -79,7 +95,17 @@ function transformRowData(arr: PerformanceEntity[]): PerformanceData {
     res.response.push(item.response);
     res.processing.push(item.processing);
     res.load.push(item.load);
+    res.average.dns = calcAverage(res.dns);
+    res.average.tcp = calcAverage(res.tcp);
+    res.average.request = calcAverage(res.request);
+    res.average.response = calcAverage(res.response);
+    res.average.processing = calcAverage(res.processing);
+    res.average.load = calcAverage(res.load);
   });
 
   return res;
+}
+
+function calcAverage(nums: number[]) {
+  return nums.reduce((a, b) => a + b) / nums.length;
 }
