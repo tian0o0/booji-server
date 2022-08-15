@@ -31,15 +31,17 @@ export class NotifyService {
   }
 
   async notify(event) {
-    console.log(event);
-
     const project = await this.projectRepository.findOne({
       where: {
         appKey: event.appKey,
       },
       relations: ["users"],
     });
-    const yes = await this.shouldNotify(event);
+    const rule = {
+      minute: project.ruleMinute,
+      count: project.ruleCount,
+    };
+    const yes = await this.shouldNotify(event, rule);
     console.log(yes);
 
     if (!yes) return;
@@ -74,7 +76,7 @@ export class NotifyService {
 
   async shouldNotify(
     { level, issueId },
-    rule: NotifyRule = { minute: 1, count: 5 }
+    { minute, count }: NotifyRule
   ): Promise<boolean> {
     // 非错误
     if (
@@ -86,9 +88,7 @@ export class NotifyService {
     // 紧急错误
     if (level === Severity.Critical) return true;
     // 常规错误（根据告警规则通知）
-    const count = await this.esService.searchEventCount(issueId, rule.minute);
-    console.log(count);
-
-    return count + 1 >= rule.count;
+    const existedCount = await this.esService.searchEventCount(issueId, minute);
+    return existedCount + 1 >= count;
   }
 }

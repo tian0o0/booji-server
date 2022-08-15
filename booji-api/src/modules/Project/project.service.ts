@@ -5,7 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Pagination } from "@type/index";
 import { DeleteResult, getRepository, Repository } from "typeorm";
 import { ProjectEntity } from "./project.entity";
-import { UserEntity } from "@modules/User/user.entity";
+import { AddProjectDto, UpdateProjectDto } from "./dto";
 
 @Injectable()
 export class ProjectService {
@@ -33,7 +33,7 @@ export class ProjectService {
     };
   }
 
-  async create(dto: any): Promise<ProjectEntity> {
+  async create(dto: AddProjectDto): Promise<ProjectEntity> {
     // check uniqueness of username/email
     const { name, platform, desc } = dto;
     const qb = await getRepository(ProjectEntity)
@@ -59,15 +59,21 @@ export class ProjectService {
     return await this.projectRepository.findOne(id);
   }
 
-  async findByAppKey(appKey: string): Promise<ProjectEntity> {
-    return await this.projectRepository.findOne({ appKey });
-  }
-
   async delete(id: number): Promise<DeleteResult> {
     return await this.projectRepository.delete(id);
   }
 
-  async update(id: number): Promise<void> {
+  async update(
+    id: number,
+    { ruleMinute, ruleCount }: UpdateProjectDto
+  ): Promise<ProjectEntity> {
+    const project = await this.findById(id);
+    project.ruleMinute = ruleMinute;
+    project.ruleCount = ruleCount;
+    return await this.projectRepository.save(project);
+  }
+
+  async subscribe(id: number): Promise<void> {
     const project = await this.projectRepository.findOne(id, {
       relations: ["users"],
     });

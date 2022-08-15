@@ -1,5 +1,5 @@
-import { addProject, delProject, getProjectList } from "@/api";
-import { AddProjectForm } from "@/types";
+import { addProject, delProject, getProjectList, updateProject } from "@/api";
+import { AddProjectForm, UpdateProjectForm } from "@/types";
 import { FormInstance } from "antd";
 import { useState } from "react";
 import { useAsyncRetry } from "react-use";
@@ -37,6 +37,32 @@ export const useDelProject = () => {
     onOpen,
     onClose,
     onDelete,
+    visible,
+    loading,
+  };
+};
+
+export const useNotifySetting = (form?: FormInstance<UpdateProjectForm>) => {
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const onOpen = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
+  };
+  const onNotifySet = async (id: number) => {
+    await form!.validateFields();
+    setLoading(true);
+    await updateProject(id, form!.getFieldsValue());
+    setLoading(false);
+    form!.resetFields();
+  };
+  return {
+    onOpen,
+    onClose,
+    onNotifySet,
     visible,
     loading,
   };

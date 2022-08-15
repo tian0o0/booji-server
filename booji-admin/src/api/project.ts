@@ -1,4 +1,9 @@
-import { AddProjectForm, Pagination, ProjectData } from "@/types";
+import {
+  AddProjectForm,
+  Pagination,
+  ProjectData,
+  UpdateProjectForm,
+} from "@/types";
 import request from "@/utils/request";
 
 export const getProjectList = (page: number, perPage: number) =>
@@ -16,3 +21,6 @@ export const addProject = (data: AddProjectForm) =>
 
 export const subscribeProject = (id: number) =>
   request({ url: `/project/${id}/subscribe`, method: "PATCH" });
+
+export const updateProject = (id: number, data: UpdateProjectForm) =>
+  request({ url: `/project/${id}`, method: "PATCH", data });

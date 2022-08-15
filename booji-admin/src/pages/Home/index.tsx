@@ -1,4 +1,9 @@
-import { useAddProject, useDelProject, useProjectList } from "@/hooks/project";
+import {
+  useAddProject,
+  useDelProject,
+  useProjectList,
+  useNotifySetting,
+} from "@/hooks/project";
 import { ProjectData } from "@/types";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
@@ -7,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import AddProject from "./AddProject";
 import DelProject from "./DelProject";
 import ProjectList from "./ProjectList";
+import NotifySetting from "./NotifySetting";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -19,11 +25,22 @@ const Home = () => {
     onClose: onCloseDel,
   } = useDelProject();
 
+  const {
+    visible: visibleNotify,
+    onOpen: onOpenNotify,
+    onClose: onCloseNotify,
+  } = useNotifySetting();
+
   const [curProject, setCurProject] = useState<ProjectData>();
 
   const onDelete = (project: ProjectData) => {
     setCurProject(project);
     onOpenDel();
+  };
+
+  const onNotifySet = (project: ProjectData) => {
+    setCurProject(project);
+    onOpenNotify();
   };
 
   return (
@@ -38,6 +55,7 @@ const Home = () => {
         value={value}
         loading={loading}
         onDelete={onDelete}
+        onNotifySet={onNotifySet}
         onChange={setPage}
         onUpdate={retry}
       />
@@ -47,6 +65,14 @@ const Home = () => {
           project={curProject}
           visible={visibleDel}
           onClose={onCloseDel}
+          onSuccess={retry}
+        />
+      )}
+      {curProject && (
+        <NotifySetting
+          project={curProject}
+          visible={visibleNotify}
+          onClose={onCloseNotify}
           onSuccess={retry}
         />
       )}

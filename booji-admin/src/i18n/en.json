@@ -64,5 +64,13 @@
 
     "url": "URL",
     "average": "Average Load Time",
-    "realTime": "RealTime Load"
+    "realTime": "RealTime Load",
+
+    "notifySetting": "Notify Setting",
+    "notifyTip": "Once subscribed to this project, you will receive the notify message when an error occurs",
+    "subscribed": "Subscribed",
+    "unsubscribed": "Unsubscribe",
+    "ruleMinute": "Notify Rule (minute)",
+    "ruleCount": "Notify Rule (count)",
+    "ruleTip": "In {{ minute }} minute, the error occurs count >= {{ count }}"
 }

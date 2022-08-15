@@ -2,7 +2,7 @@ import { lang } from "@/config/constant";
 import { userState } from "@/store";
 import { Pagination, Platform, ProjectData, UserData } from "@/types";
 import { timeFormat } from "@/utils/common";
-import { Button, Space, Switch, Table, Typography, Tooltip } from "antd";
+import { Button, Switch, Table, Typography, Tooltip } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -13,12 +13,14 @@ const ProjectList = ({
   value,
   loading,
   onDelete,
+  onNotifySet,
   onChange,
   onUpdate,
 }: {
   value: Pagination<ProjectData> | undefined;
   loading: boolean;
   onDelete: (project: ProjectData) => void;
+  onNotifySet: (project: ProjectData) => void;
   onChange: (page: number) => void;
   onUpdate: () => void;
 }) => {
@@ -67,8 +69,9 @@ const ProjectList = ({
       title: t("operation"),
       key: "action",
       align: "center",
+      width: 300,
       render: (_, record) => (
-        <Space size="middle">
+        <>
           <Button type="link" onClick={() => toUsage(record.platform)}>
             {t("usage")}
           </Button>
@@ -77,15 +80,18 @@ const ProjectList = ({
               {t("delete")}
             </Button>
           )}
-          <Tooltip title="订阅项目后您将在该项目报错后收到通知">
+          <Button type="link" onClick={() => onNotifySet(record)}>
+            {t("notifySetting")}
+          </Button>
+          <Tooltip title={t("notifyTip")}>
             <Switch
-              checkedChildren="已订阅"
-              unCheckedChildren="未订阅"
+              checkedChildren={t("subscribed")}
+              unCheckedChildren={t("unsubscribed")}
               checked={isSubscribed(record.users)}
               onChange={() => onSubscribeChange(record)}
             />
           </Tooltip>
-        </Space>
+        </>
       ),
     },
   ];

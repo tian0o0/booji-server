@@ -1,7 +1,6 @@
 import { ProjectEntity } from "@modules/Project/project.entity";
-import { ProjectModule } from "@modules/Project/project.module";
 import { SearchModule } from "@modules/Search/search.module";
-import { Global, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { NotifyService } from "./notify.service";
 

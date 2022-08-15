@@ -1,10 +1,8 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
-import {
-  PerformanceEntity,
-  UrlEntity,
-} from "@modules/Performance/performance.entity";
+import { UrlEntity } from "@modules/Performance/performance.entity";
 import { SmEntity } from "@modules/SourceMap/sm.entity";
 import { UserEntity } from "@modules/User/user.entity";
+import { Platform } from "@type/index";
 import {
   Column,
   CreateDateColumn,
@@ -15,14 +13,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-
-enum Platform {
-  JavaScript = "js",
-  Vue = "vue",
-  Angular = "angular",
-  React = "react",
-  Mp = "mp",
-}
 
 @Entity("project")
 export class ProjectEntity {
@@ -51,6 +41,18 @@ export class ProjectEntity {
     nullable: true,
   })
   desc: string;
+
+  @Column({
+    comment: "告警规则（分钟）",
+    default: 1,
+  })
+  ruleMinute: number;
+
+  @Column({
+    comment: "告警规则（频率）",
+    default: 1,
+  })
+  ruleCount: number;
 
   @OneToMany(() => IssueEntity, (issue) => issue.project)
   issues: IssueEntity[];

@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
 import { Pagination } from "@type/index";
+import { AddProjectDto, UpdateProjectDto } from "./dto";
 import { ProjectEntity } from "./project.entity";
 import { ProjectService } from "./project.service";
 
@@ -31,7 +32,7 @@ export class ProjectController {
 
   @ApiOperation({ title: "新建项目" })
   @Post()
-  async create(@Body() data: any): Promise<ProjectEntity> {
+  async create(@Body() data: AddProjectDto): Promise<ProjectEntity> {
     return await this.projectService.create(data);
   }
 
@@ -41,10 +42,19 @@ export class ProjectController {
     return await this.projectService.delete(id);
   }
 
+  @ApiOperation({ title: "更新项目" })
+  @Patch(":id")
+  async update(
+    @Param("id") id: number,
+    @Body() data: UpdateProjectDto
+  ): Promise<ProjectEntity> {
+    return await this.projectService.update(id, data);
+  }
+
   @ApiOperation({ title: "订阅/取消订阅项目" })
   @Patch(":id/subscribe")
   @HttpCode(204)
   async subscribe(@Param("id") id: number) {
-    await this.projectService.update(id);
+    await this.projectService.subscribe(id);
   }
 }

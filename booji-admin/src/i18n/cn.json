@@ -64,5 +64,13 @@
 
     "url": "页面",
     "average": "平均加载耗时",
-    "realTime": "分时图"
+    "realTime": "分时图",
+
+    "notifySetting": "告警设置",
+    "notifyTip": "订阅项目后您将在该项目报错后收到告警通知",
+    "subscribed": "已订阅",
+    "unsubscribed": "未订阅",
+    "ruleMinute": "告警规则（分钟）",
+    "ruleCount": "告警规则（频次）",
+    "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上"
 }
