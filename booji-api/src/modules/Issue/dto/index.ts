@@ -1,5 +1,5 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { Status } from "../issue.entity";
+import { Status } from "@type/Issue";
 
 export class ReportDto {
   @ApiModelProperty()

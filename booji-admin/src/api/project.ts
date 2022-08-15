@@ -8,8 +8,11 @@ export const getProjectList = (page: number, perPage: number) =>
     params: { page, perPage },
   });
 
-export const delProject = (appKey: string) =>
-  request({ url: `/project/${appKey}`, method: "DELETE" });
+export const delProject = (id: number) =>
+  request({ url: `/project/${id}`, method: "DELETE" });
 
 export const addProject = (data: AddProjectForm) =>
   request({ url: "/project", method: "POST", data });
+
+export const subscribeProject = (id: number) =>
+  request({ url: `/project/${id}/subscribe`, method: "PATCH" });

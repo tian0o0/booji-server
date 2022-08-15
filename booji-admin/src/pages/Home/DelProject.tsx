@@ -19,7 +19,7 @@ const DelProject = ({
   const { loading, onDelete } = useDelProject();
 
   const onOk = async () => {
-    await onDelete(project.appKey);
+    await onDelete(project.id);
     onClose();
     onSuccess();
   };

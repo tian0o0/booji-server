@@ -8,4 +8,8 @@ export default () => ({
   },
   esNode: `http://${process.env.ES_HOST}:${process.env.ES_PORT}`,
   kafkaBroker: process.env.KAFKA_BROKER,
+  email: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_CODE,
+  },
 });

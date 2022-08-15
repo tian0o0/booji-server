@@ -25,6 +25,7 @@ const Home = () => {
     setCurProject(project);
     onOpenDel();
   };
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -38,6 +39,7 @@ const Home = () => {
         loading={loading}
         onDelete={onDelete}
         onChange={setPage}
+        onUpdate={retry}
       />
       <AddProject visible={visible} onClose={onClose} onSuccess={retry} />
       {curProject && (

@@ -1,9 +1,13 @@
+import { UserData } from ".";
+
 export interface ProjectData {
+  id: number;
   appKey: string;
   createdAt: string;
   desc: string;
   name: string;
   platform: Platform;
+  users: UserData[];
   updatedAt: string;
 }
 

@@ -8,28 +8,11 @@ import {
   OneToMany,
   JoinColumn,
   PrimaryGeneratedColumn,
-  PrimaryColumn,
 } from "typeorm";
 import { UserEntity } from "@modules/User/user.entity";
 import { ProjectEntity } from "@modules/Project/project.entity";
 import { TagEntity } from "@modules/Tag/tag.entity";
-
-export enum Status {
-  ToBeHandled,
-  Handling,
-  Handled,
-  Closed,
-  Reopened,
-  Ignored,
-}
-
-export enum Severity {
-  Critical = "critical",
-  Error = "error",
-  Warn = "warn",
-  Info = "info",
-  Log = "log",
-}
+import { Severity, Status } from "@type/Issue";
 
 @Entity("issue")
 export class IssueEntity {

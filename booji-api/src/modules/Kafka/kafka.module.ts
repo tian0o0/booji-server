@@ -1,4 +1,5 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
+import { NotifyModule } from "@modules/Notify/notify.module";
 import { ProjectEntity } from "@modules/Project/project.entity";
 import { ProjectModule } from "@modules/Project/project.module";
 import { SearchModule } from "@modules/Search/search.module";
@@ -14,6 +15,7 @@ import { KafkaService } from "./kafka.service";
     ProjectModule,
     SearchModule,
     TagModule,
+    NotifyModule,
   ],
   providers: [KafkaService],
   exports: [KafkaService],

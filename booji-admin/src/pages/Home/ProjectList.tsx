@@ -1,23 +1,26 @@
 import { lang } from "@/config/constant";
 import { userState } from "@/store";
-import { Pagination, Platform, ProjectData } from "@/types";
+import { Pagination, Platform, ProjectData, UserData } from "@/types";
 import { timeFormat } from "@/utils/common";
-import { Button, Space, Table, Typography } from "antd";
+import { Button, Space, Switch, Table, Typography, Tooltip } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { subscribeProject } from "@/api";
 
 const ProjectList = ({
   value,
   loading,
   onDelete,
   onChange,
+  onUpdate,
 }: {
   value: Pagination<ProjectData> | undefined;
   loading: boolean;
   onDelete: (project: ProjectData) => void;
   onChange: (page: number) => void;
+  onUpdate: () => void;
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -25,6 +28,13 @@ const ProjectList = ({
     navigate(`/${lang}/usage/${platform}`);
   };
   const user = useRecoilValue(userState);
+  const isSubscribed = (users: UserData[]): boolean => {
+    return users.findIndex((user) => user.id === user?.id) > -1;
+  };
+  const onSubscribeChange = async (project: ProjectData) => {
+    await subscribeProject(project.id);
+    onUpdate();
+  };
 
   const columns: ColumnsType<ProjectData> = [
     {
@@ -67,6 +77,14 @@ const ProjectList = ({
               {t("delete")}
             </Button>
           )}
+          <Tooltip title="订阅项目后您将在该项目报错后收到通知">
+            <Switch
+              checkedChildren="已订阅"
+              unCheckedChildren="未订阅"
+              checked={isSubscribed(record.users)}
+              onChange={() => onSubscribeChange(record)}
+            />
+          </Tooltip>
         </Space>
       ),
     },

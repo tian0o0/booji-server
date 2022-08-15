@@ -36,21 +36,24 @@ export class SearchService {
             },
           },
           // mappings: {
-          //   properties: {
-          //     title: {
+          // properties: {
+          // timestamp: {
+          //   type: "date",
+          // },
+          // title: {
+          //   type: "text",
+          //   fields: {
+          //     complete: {
           //       type: "text",
-          //       fields: {
-          //         complete: {
-          //           type: "text",
-          //           analyzer: "autocomplete_analyzer",
-          //           search_analyzer: "autocomplete_search_analyzer",
-          //         },
-          //       },
+          //       analyzer: "autocomplete_analyzer",
+          //       search_analyzer: "autocomplete_search_analyzer",
           //     },
-          //     year: { type: "integer" },
-          //     genres: { type: "nested" },
-          //     actors: { type: "nested" },
           //   },
+          // },
+          // year: { type: "integer" },
+          // genres: { type: "nested" },
+          // actors: { type: "nested" },
+          // },
           // },
         },
       },
@@ -84,6 +87,35 @@ export class SearchService {
     });
 
     return { data, count: body.hits.total.value };
+  }
+
+  // 获取最近 minute 内某个 event 出现的次数，用于匹配告警规则
+  async searchEventCount(issueId: string, minute: number): Promise<number> {
+    const gte = Date.now() - minute * 60 * 1000;
+    const { body } = await this.esService.count({
+      index: "booji",
+      body: {
+        query: {
+          bool: {
+            must: [
+              {
+                match: {
+                  issueId: issueId,
+                },
+              },
+            ],
+            filter: {
+              range: {
+                timestamp: {
+                  gte: gte,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return body.count;
   }
 
   async save(data: any): Promise<void> {

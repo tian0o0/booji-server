@@ -8,6 +8,7 @@ import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CompressionTypes, Consumer, Kafka, Producer } from "kafkajs";
 import { Repository } from "typeorm";
+import { NotifyService } from "@modules/Notify/notify.service";
 
 const MYSQL_TOPIC = "mysql";
 
@@ -26,7 +27,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     private readonly projectRepository: Repository<ProjectEntity>,
     private configService: ConfigService,
     private searchService: SearchService,
-    private tagService: TagService
+    private tagService: TagService,
+    private notifyService: NotifyService
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -34,6 +36,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
       clientId: "booji-server",
       brokers: [this.configService.get("kafkaBroker")],
     });
+
     this.producer = this.kafka.producer({
       allowAutoTopicCreation: false,
     });
@@ -52,6 +55,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
         try {
           await this.writeToMysql(event);
           await this.writeToES(event);
+          this.notifyService.notify(event);
         } catch (e) {
           console.error("数据写入失败", e);
         }

@@ -3,7 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
+  Patch,
   Post,
   Query,
 } from "@nestjs/common";
@@ -35,7 +37,14 @@ export class ProjectController {
 
   @ApiOperation({ title: "删除项目" })
   @Delete(":id")
-  async delete(@Param("id") id: string) {
+  async delete(@Param("id") id: number) {
     return await this.projectService.delete(id);
+  }
+
+  @ApiOperation({ title: "订阅/取消订阅项目" })
+  @Patch(":id/subscribe")
+  @HttpCode(204)
+  async subscribe(@Param("id") id: number) {
+    await this.projectService.update(id);
   }
 }

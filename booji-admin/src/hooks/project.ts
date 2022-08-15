@@ -28,9 +28,9 @@ export const useDelProject = () => {
   const onClose = () => {
     setVisible(false);
   };
-  const onDelete = async (appKey: string) => {
+  const onDelete = async (id: number) => {
     setLoading(true);
-    await delProject(appKey);
+    await delProject(id);
     setLoading(false);
   };
   return {
