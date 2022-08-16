@@ -17,14 +17,12 @@ import NotifySetting from "./NotifySetting";
 const Home = () => {
   const { t } = useTranslation();
   const { value, loading, setPage, retry } = useProjectList();
-
   const { visible, onOpen, onClose } = useAddProject();
   const {
     visible: visibleDel,
     onOpen: onOpenDel,
     onClose: onCloseDel,
   } = useDelProject();
-
   const {
     visible: visibleNotify,
     onOpen: onOpenNotify,
@@ -60,22 +58,18 @@ const Home = () => {
         onUpdate={retry}
       />
       <AddProject visible={visible} onClose={onClose} onSuccess={retry} />
-      {curProject && (
-        <DelProject
-          project={curProject}
-          visible={visibleDel}
-          onClose={onCloseDel}
-          onSuccess={retry}
-        />
-      )}
-      {curProject && (
-        <NotifySetting
-          project={curProject}
-          visible={visibleNotify}
-          onClose={onCloseNotify}
-          onSuccess={retry}
-        />
-      )}
+      <DelProject
+        project={curProject}
+        visible={visibleDel}
+        onClose={onCloseDel}
+        onSuccess={retry}
+      />
+      <NotifySetting
+        project={curProject}
+        visible={visibleNotify}
+        onClose={onCloseNotify}
+        onSuccess={retry}
+      />
     </>
   );
 };

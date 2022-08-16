@@ -12,7 +12,7 @@ const Auth = () => {
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-gray-100">
       <div className="flex flex-col items-center p-6 w-3/12 bg-white shadow rounded">
-        <img src={VITE_APP_LOGO} className="h-12 mb-6" />
+        <img src={VITE_APP_LOGO} className="h-20 mb-6" />
         {isLogin ? <Login /> : <Register />}
         <Button type="link" onClick={() => setIsLogin(!isLogin)}>
           {isLogin ? t("toRegister") : t("toLogin")}

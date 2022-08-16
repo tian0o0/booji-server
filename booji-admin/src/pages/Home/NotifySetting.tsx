@@ -9,7 +9,7 @@ const NotifySetting = ({
   onClose,
   onSuccess,
 }: {
-  project: ProjectData;
+  project?: ProjectData;
   visible: boolean;
   onClose: () => void;
   onSuccess: () => void;
@@ -18,6 +18,15 @@ const NotifySetting = ({
   const [form] = Form.useForm<UpdateProjectForm>();
 
   const { loading, onNotifySet } = useNotifySetting(form);
+
+  // Internal React error: Expected static flag was missing
+  // should return after hooks
+  if (!project) return null;
+
+  form.setFieldsValue({
+    ruleMinute: project.ruleMinute,
+    ruleCount: project.ruleCount,
+  });
 
   const onOk = async () => {
     await onNotifySet(project.id);
@@ -34,22 +43,26 @@ const NotifySetting = ({
       onOk={onOk}
       confirmLoading={loading}
     >
-      <Form form={form}>
+      <Form
+        form={form}
+        initialValues={{
+          ruleMinute: project.ruleMinute,
+          ruleCount: project.ruleCount,
+        }}
+      >
         <Form.Item
           label={t("ruleMinute")}
           name={"ruleMinute"}
-          initialValue={project.ruleMinute}
           rules={[{ required: true, message: t("ruleMinute") }]}
         >
-          <InputNumber placeholder={t("ruleMinute")} id={"minute"} min={1} />
+          <InputNumber id={"ruleMinute"} min={1} />
         </Form.Item>
         <Form.Item
           label={t("ruleCount")}
           name={"ruleCount"}
-          initialValue={project.ruleCount}
           rules={[{ required: true, message: t("ruleCount") }]}
         >
-          <InputNumber placeholder={t("ruleCount")} id={"count"} min={1} />
+          <InputNumber id={"ruleCount"} min={1} />
         </Form.Item>
       </Form>
     </Modal>

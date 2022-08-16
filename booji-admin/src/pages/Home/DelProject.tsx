@@ -9,14 +9,17 @@ const DelProject = ({
   onClose,
   onSuccess,
 }: {
-  project: ProjectData;
+  project?: ProjectData;
   visible: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }) => {
   const { t } = useTranslation();
-
   const { loading, onDelete } = useDelProject();
+
+  // Internal React error: Expected static flag was missing
+  // should return after hooks
+  if (!project) return null;
 
   const onOk = async () => {
     await onDelete(project.id);
@@ -27,6 +30,7 @@ const DelProject = ({
   return (
     <Modal
       title={t("tip")}
+      destroyOnClose
       visible={visible}
       onOk={onOk}
       confirmLoading={loading}

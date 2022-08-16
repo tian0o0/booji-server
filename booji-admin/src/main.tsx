@@ -1,4 +1,4 @@
-import "./wdyr";
+// import "./wdyr";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "./i18n";

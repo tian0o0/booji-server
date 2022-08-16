@@ -30,7 +30,7 @@ const AuthLayout = () => {
         className="bg-white"
       >
         <div className="h-16 flex justify-center items-center">
-          <img src={VITE_APP_LOGO} className="h-8" />
+          <img src={VITE_APP_LOGO} className="h-12" />
           {!collapsed && (
             <h2 className="text-slate-600 text-xl font-bold ml-1">
               {t("title")}

@@ -50,6 +50,7 @@ const ProjectList = ({
       dataIndex: "platform",
       key: "platform",
       align: "center",
+      width: 80,
     },
     {
       title: t("appKey"),
@@ -63,13 +64,14 @@ const ProjectList = ({
       key: "createdAt",
       align: "center",
       dataIndex: "createdAt",
+      width: 120,
       render: (text) => timeFormat(text),
     },
     {
       title: t("operation"),
       key: "action",
       align: "center",
-      width: 300,
+      width: 360,
       render: (_, record) => (
         <>
           <Button type="link" onClick={() => toUsage(record.platform)}>
