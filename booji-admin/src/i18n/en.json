@@ -72,5 +72,5 @@
     "unsubscribed": "Unsubscribe",
     "ruleMinute": "Notify Rule (minute)",
     "ruleCount": "Notify Rule (count)",
-    "ruleTip": "In {{ minute }} minute, the error occurs count >= {{ count }}"
+    "ruleTip": "It'll send warning message while the error occurs count >= {{ count }} in {{ minute }} minute"
 }

@@ -58,18 +58,22 @@ const Home = () => {
         onUpdate={retry}
       />
       <AddProject visible={visible} onClose={onClose} onSuccess={retry} />
-      <DelProject
-        project={curProject}
-        visible={visibleDel}
-        onClose={onCloseDel}
-        onSuccess={retry}
-      />
-      <NotifySetting
-        project={curProject}
-        visible={visibleNotify}
-        onClose={onCloseNotify}
-        onSuccess={retry}
-      />
+      {curProject && (
+        <DelProject
+          project={curProject}
+          visible={visibleDel}
+          onClose={onCloseDel}
+          onSuccess={retry}
+        />
+      )}
+      {curProject && (
+        <NotifySetting
+          project={curProject}
+          visible={visibleNotify}
+          onClose={onCloseNotify}
+          onSuccess={retry}
+        />
+      )}
     </>
   );
 };

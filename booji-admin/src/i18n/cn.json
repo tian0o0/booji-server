@@ -72,5 +72,5 @@
     "unsubscribed": "未订阅",
     "ruleMinute": "告警规则（分钟）",
     "ruleCount": "告警规则（频次）",
-    "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上"
+    "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上将会告警"
 }
