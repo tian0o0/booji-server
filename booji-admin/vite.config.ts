@@ -42,6 +42,9 @@ export default defineConfig(async ({ command, mode }) => {
       preprocessorOptions: {
         less: {
           javascriptEnabled: true,
+          modifyVars: {
+            "primary-color": "#2c9b75",
+          },
         },
       },
     },

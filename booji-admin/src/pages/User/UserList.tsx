@@ -26,7 +26,7 @@ const UserList = ({
       align: "center",
     },
     {
-      title: t("na me"),
+      title: t("name"),
       dataIndex: "name",
       align: "center",
     },

@@ -7,14 +7,14 @@ export interface IssueData {
   createdAt: string;
   eventCount: number;
   issueId: string;
-  level: string;
+  level: Severity;
   message: string;
   release: string;
   row: number;
   source: string;
   stack: string;
   status: number;
-  type: string;
+  type: BrowserBreadcrumbType;
   updatedAt: string;
   users: string[];
 }
@@ -75,4 +75,21 @@ export interface Event {
   };
   url: string;
   user: { id: string };
+}
+
+export enum BrowserBreadcrumbType {
+  Http = "Http Request",
+  User = "User Action",
+  Route = "Route",
+  Debug = "Debug",
+  Error = "Error",
+  Custom = "Custom",
+}
+
+export enum Severity {
+  Critical = "critical",
+  Error = "error",
+  Warn = "warn",
+  Info = "info",
+  Log = "log",
 }

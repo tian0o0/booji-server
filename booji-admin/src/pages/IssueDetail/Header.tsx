@@ -1,7 +1,7 @@
 import { useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
 import { IssueDetail } from "@/types/issue";
-import { timeFormat } from "@/utils/common";
+import { timeFormat, mapTypeColor, mapLevelColor } from "@/utils/common";
 import { Divider, Select, Space, Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import { statusList } from "../Issue/StatusTab";
@@ -16,7 +16,7 @@ const Header = ({ detail }: { detail: IssueDetail }) => {
       <div className="flex justify-between items-center">
         <div className="flex flex-col w-2/4">
           <Space>
-            <Tag>{detail.type}</Tag>
+            <Tag color={mapTypeColor(detail.type)}>{detail.type}</Tag>
             <span className="leading-5">{detail.message}</span>
           </Space>
           <Space className="text-xs text-gray-400 mt-3">
@@ -36,7 +36,7 @@ const Header = ({ detail }: { detail: IssueDetail }) => {
           <Divider type="vertical" />
           <div>
             <div className="text-gray-400 mb-2">{t("level")}</div>
-            <Tag>{detail.level}</Tag>
+            <Tag color={mapLevelColor(detail.level)}>{detail.level}</Tag>
           </div>
           <Divider type="vertical" />
           <div>

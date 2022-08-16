@@ -1,10 +1,9 @@
 import { lang } from "@/config/constant";
 import { useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
-import { Pagination } from "@/types";
-import { IssueData } from "@/types/issue";
-import { timeFormat } from "@/utils/common";
-import { Button, Select, Table } from "antd";
+import { Pagination, IssueData } from "@/types";
+import { timeFormat, mapTypeColor, mapLevelColor } from "@/utils/common";
+import { Button, Select, Table, Tag } from "antd";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +30,7 @@ const List = ({
       dataIndex: "action",
       width: 80,
       align: "center",
+      fixed: "left",
       render: (_, record) => (
         <Button
           type="link"
@@ -51,16 +51,20 @@ const List = ({
       dataIndex: "type",
       width: 110,
       align: "center",
+      render: (_, record) => (
+        <Tag color={mapTypeColor(record.type)}>{record.type}</Tag>
+      ),
     },
     {
       title: t("category"),
       dataIndex: "category",
-      width: 80,
+      width: 120,
       align: "center",
     },
     {
       title: t("info"),
       dataIndex: "message",
+      width: 300,
     },
     {
       title: t("eventCount"),
@@ -81,6 +85,9 @@ const List = ({
       width: 80,
       align: "center",
       sorter: true,
+      render: (_, record) => (
+        <Tag color={mapLevelColor(record.level)}>{record.level}</Tag>
+      ),
     },
     {
       title: t("createdAt"),
@@ -98,6 +105,7 @@ const List = ({
       title: t("assignee"),
       width: 120,
       align: "center",
+      fixed: "right",
       render: (_, { issueId, assigneeId }) => (
         <Select
           className="w-full"
@@ -114,6 +122,7 @@ const List = ({
       title: t("status"),
       width: 120,
       align: "center",
+      fixed: "right",
       render: (_, { issueId, status }) => (
         <Select
           className="w-full"
