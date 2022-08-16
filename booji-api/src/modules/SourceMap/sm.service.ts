@@ -19,7 +19,7 @@ export class SmService {
   ) {}
 
   async upload(body: any): Promise<SmEntity> {
-    const { release, url, dist } = body;
+    const { release, cdn, dist } = body;
     // 1.如果release下已存在dist，清空dist重新上传
     // 2.如果release下不存在dist，直接上传dist
     const sm = await this.smRepository.findOne({ release });
@@ -31,7 +31,7 @@ export class SmService {
     let newSm = new SmEntity();
     newSm.project = this.req.project;
     newSm.release = release;
-    newSm.url = url;
+    newSm.cdn = cdn;
     newSm.dist = dist;
 
     return await this.smRepository.save(newSm);
@@ -61,7 +61,7 @@ export class SmService {
     if (!sm?.dist.length) return "";
 
     const promises = sm.dist.map(async (file) => {
-      const fileUrl = sm.url + file;
+      const fileUrl = sm.cdn + file;
       const res = await axios.get(fileUrl);
       const fileContent = res.data;
       const consumer = await new SourceMapConsumer(fileContent);

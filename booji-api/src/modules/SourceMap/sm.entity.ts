@@ -20,9 +20,9 @@ export class SmEntity {
   release: string;
 
   @Column({
-    comment: "文件baseURL",
+    comment: "CDN baseURL",
   })
-  url: string;
+  cdn: string;
 
   @Column("simple-array", {
     comment: "打包后的.js和.map文件",
