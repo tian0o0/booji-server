@@ -1,6 +1,6 @@
 import { useUpdateIssue } from "@/hooks/issue";
 import { useUserList } from "@/hooks/user";
-import { IssueDetail } from "@/types/issue";
+import { IssueDetail } from "@/types";
 import { timeFormat, mapTypeColor, mapLevelColor } from "@/utils/common";
 import { Divider, Select, Space, Tag } from "antd";
 import { useTranslation } from "react-i18next";

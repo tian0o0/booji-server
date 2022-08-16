@@ -1,5 +1,5 @@
 import { getIssueList, updateIssue } from "@/api/issue";
-import { IssueData, IssueParams, Order, UpdateIssueData } from "@/types/issue";
+import { IssueData, IssueParams, Order, UpdateIssueData } from "@/types";
 import { TableProps } from "antd";
 import { SorterResult } from "antd/lib/table/interface";
 import { useEffect, useMemo, useState } from "react";

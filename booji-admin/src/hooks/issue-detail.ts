@@ -1,5 +1,5 @@
 import { getIssueDetail, getIssueEvents } from "@/api/issue";
-import { Event, IssueDetail } from "@/types/issue";
+import { Event, IssueDetail } from "@/types";
 import { TableProps } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useAsyncRetry } from "react-use";

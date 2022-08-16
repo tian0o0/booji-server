@@ -1,5 +1,5 @@
 import momentMini from "moment-mini";
-import { BrowserBreadcrumbType, Severity } from "@/types/issue";
+import { BrowserBreadcrumbType, Severity } from "@/types";
 
 export const timeFormat = (time: string): string => {
   return momentMini(time).format("YYYY-MM-DD hh:mm:ss");

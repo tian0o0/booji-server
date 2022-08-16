@@ -1,11 +1,11 @@
-import { Pagination } from "@/types";
 import {
   Event,
   IssueData,
   IssueDetail,
   IssueParams,
   UpdateIssueData,
-} from "@/types/issue";
+  Pagination,
+} from "@/types";
 import request from "@/utils/request";
 
 export const getIssueList = (params: IssueParams) =>

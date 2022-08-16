@@ -1,4 +1,4 @@
-import { Tag } from "@/types/issue";
+import { Tag } from "@/types";
 import { useEffect, useRef } from "react";
 import { Col, Row } from "antd";
 import initEcharts from "@/utils/echarts";

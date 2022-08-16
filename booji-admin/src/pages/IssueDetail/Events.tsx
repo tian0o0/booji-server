@@ -1,4 +1,4 @@
-import { Event } from "@/types/issue";
+import { Event } from "@/types";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import { Table } from "antd";
 
