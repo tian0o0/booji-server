@@ -1,9 +1,16 @@
-import { Breadcrumb, Event, IssueDetail } from "@/types";
-import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
-import { Button, Divider, Space, Table, Tag } from "antd";
+import { useRef, useEffect, useState } from "react";
+import { Breadcrumb, Event, IssueDetail, Playback } from "@/types";
+import {
+  StepBackwardOutlined,
+  StepForwardOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
+import { Button, Divider, Space, Table, Tag, Modal } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
+import rrwebPlayer from "rrweb-player";
+import "rrweb-player/dist/style.css";
 
 const Brief = ({
   detail,
@@ -41,13 +48,22 @@ const Brief = ({
           />
         </Space>
       </div>
-      <Breadcrumbs breadcrumbs={currentEvent.breadcrumbs} />
+      <Breadcrumbs
+        breadcrumbs={currentEvent.breadcrumbs}
+        playbacks={currentEvent.playbacks}
+      />
       <Tags currentEvent={currentEvent} />
     </>
   );
 };
 
-const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) => {
+const Breadcrumbs = ({
+  breadcrumbs,
+  playbacks = [],
+}: {
+  breadcrumbs: Breadcrumb[];
+  playbacks: Playback[];
+}) => {
   const { t } = useTranslation();
   const columns: ColumnsType<Breadcrumb> = [
     {
@@ -76,17 +92,55 @@ const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Breadcrumb[] }) => {
       dataIndex: "timestamp",
     },
   ];
+  const [visible, setVisible] = useState<boolean>(false);
   return (
     <>
-      <Divider orientation="left">{`👋 ${t("breadcrumbs")}`}</Divider>
+      <Divider orientation="left">
+        {`👋 ${t("breadcrumbs")}`}{" "}
+        {playbacks.length > 0 && (
+          <Button
+            type="primary"
+            icon={<PlayCircleOutlined />}
+            onClick={() => setVisible(true)}
+          ></Button>
+        )}
+      </Divider>
       <Table
         rowKey="timestamp"
         columns={columns}
         dataSource={breadcrumbs}
         pagination={false}
       />
+      <Modal
+        destroyOnClose
+        visible={visible}
+        footer={null}
+        onCancel={() => setVisible(false)}
+      >
+        <Player playbacks={playbacks} />
+      </Modal>
     </>
   );
+};
+
+const Player = ({ playbacks = [] }: { playbacks: Playback[] }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current || !playbacks.length) return;
+
+    new rrwebPlayer({
+      target: ref.current,
+      props: {
+        width: 472,
+        height: 260,
+        autoPlay: false,
+        events: playbacks,
+      },
+    });
+  }, [ref, playbacks]);
+
+  return <div ref={ref}></div>;
 };
 
 const Tags = ({ currentEvent }: { currentEvent: Event }) => {

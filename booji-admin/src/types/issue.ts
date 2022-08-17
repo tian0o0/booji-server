@@ -53,9 +53,16 @@ export interface Breadcrumb {
   timestamp: number;
   type: string;
 }
+
+export interface Playback {
+  data: { [key: string]: any };
+  timestamp: number;
+  type: number;
+}
 export interface Event {
   appKey: string;
   breadcrumbs: Breadcrumb[];
+  playbacks: Playback[];
   category: string;
   eventHash: string;
   eventId: string;
