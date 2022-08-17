@@ -1,33 +1,12 @@
-import { delUser, getUserList } from "@/api";
-import { UserData } from "@/types";
-import { useEffect, useState } from "react";
+import { delUser, getUserList, loginGithub } from "@/api";
+import { useState } from "react";
 import { useAsyncRetry } from "react-use";
+import { setToken } from "@/utils/token";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/store";
+import { useNavigate } from "react-router-dom";
 
 export const useUserList = (perPage: number = 10) => {
-  // const [loading, setLoading] = useState(false);
-  // const [value, setValue] = useState<UserData[]>([]);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   getUserList()
-  //     .then((res) => {
-  //       setValue(res);
-  //     })
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // }, []);
-
-  // const options = value.map((item) => ({
-  //   label: item.name,
-  //   value: item.id,
-  // }));
-
-  // return {
-  //   loading,
-  //   value,
-  //   options,
-  // };
   const [page, setPage] = useState(1);
 
   const res = useAsyncRetry(async () => {
@@ -68,5 +47,23 @@ export const useDelUser = () => {
     onDelete,
     visible,
     loading,
+  };
+};
+
+export const useLoginGithub = () => {
+  const navigate = useNavigate();
+  const setUser = useSetRecoilState(userState);
+
+  const login = async (code: string) => {
+    const res = await loginGithub(code);
+    if (!res.error) {
+      setUser(res);
+      setToken(res.token);
+      navigate("/");
+    }
+  };
+
+  return {
+    login,
   };
 };

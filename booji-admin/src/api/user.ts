@@ -11,6 +11,12 @@ import request from "@/utils/request";
 export const login = (data: LoginForm) =>
   request<User & ApiError>({ url: "/user/login", method: "POST", data });
 
+export const loginGithub = (code: string) =>
+  request<User & ApiError>({
+    url: `/user/oauth/github?code=${code}`,
+    method: "GET",
+  });
+
 export const register = (data: RegisterForm) =>
   request<User & ApiError>({ url: "/user", method: "POST", data });
 

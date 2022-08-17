@@ -40,7 +40,7 @@ export class UserController {
   @Post("login")
   async login(@Body() loginUserDto: LoginUserDto): Promise<UserRO> {
     const _user = await this.userService.findOne(loginUserDto);
-    if (!_user) throw new BadRequestException("邮箱或密码不正确");
+    if (!_user) throw new BadRequestException("用户名或密码不正确");
 
     const token = await this.userService.generateJWT(_user);
 
@@ -58,5 +58,11 @@ export class UserController {
   @Delete(":id")
   async delete(@Param("id") id: number) {
     return await this.userService.delete(id);
+  }
+
+  @ApiOperation({ title: "Github登录" })
+  @Get("oauth/github")
+  async github(@Query("code") code: string) {
+    return await this.userService.github(code);
   }
 }

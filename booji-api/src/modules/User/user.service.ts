@@ -3,10 +3,11 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, getRepository, Repository } from "typeorm";
-const jwt = require("jsonwebtoken");
+import axios from "axios";
 import { validate } from "class-validator";
 import { verify } from "@utils/crypto";
 
@@ -14,7 +15,9 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UserEntity } from "./user.entity";
 import { LoginUserDto, UpdateUserDto } from "./dto";
 import { Pagination } from "@type/index";
+import { ConfigService } from "@nestjs/config";
 
+const jwt = require("jsonwebtoken");
 export interface UserRO {
   id: number;
   name: string;
@@ -27,7 +30,8 @@ export interface UserRO {
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: Repository<UserEntity>,
+    private configService: ConfigService
   ) {}
   async findAll(
     perPage: number,
@@ -49,13 +53,12 @@ export class UserService {
     const { name, email, password } = dto;
     const qb = await getRepository(UserEntity)
       .createQueryBuilder("user")
-      .where("user.name = :name", { name })
-      .orWhere("user.email = :email", { email });
+      .where("user.name = :name", { name });
 
     const user = await qb.getOne();
 
     if (user) {
-      throw new ConflictException("用户名或邮箱已存在");
+      throw new ConflictException("用户名已存在");
     }
 
     // create new user
@@ -79,10 +82,10 @@ export class UserService {
     return await this.userRepository.save(updated);
   }
 
-  async findOne({ email, password }: LoginUserDto): Promise<UserEntity> {
+  async findOne({ name, password }: LoginUserDto): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       select: ["id", "name", "email", "isAdmin", "password"], // 这里要加id，不然报错
-      where: { email },
+      where: { name },
     });
     if (!user) {
       return null;
@@ -108,6 +111,41 @@ export class UserService {
     }
 
     return res;
+  }
+
+  async github(code: string) {
+    const { clientId, clientSecret } = this.configService.get("github");
+
+    const tokenResponse = await axios({
+      method: "post",
+      url:
+        "https://github.com/login/oauth/access_token?" +
+        `client_id=${clientId}&` +
+        `client_secret=${clientSecret}&` +
+        `code=${code}`,
+      headers: {
+        accept: "application/json",
+      },
+    });
+
+    const accessToken = tokenResponse.data.access_token;
+    if (!accessToken) {
+      throw new UnauthorizedException("Github OAuth code已过期");
+    }
+
+    const res = await axios({
+      method: "get",
+      url: `https://api.github.com/user`,
+      headers: {
+        accept: "application/json",
+        Authorization: `token ${accessToken}`,
+      },
+    });
+    return this.create({
+      name: res.data.name,
+      email: res.data.email,
+      password: "666",
+    });
   }
 
   public generateJWT(user) {

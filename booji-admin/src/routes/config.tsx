@@ -6,6 +6,7 @@ import { withLoading } from "./utils";
 import { lang } from "@/config/constant";
 
 const Auth = lazy(() => import("@/pages/Auth"));
+const OAuthRedirect = lazy(() => import("@/pages/Auth/OAuthRedirect"));
 const Home = lazy(() => import("@/pages/Home"));
 const Issue = lazy(() => import("@/pages/Issue"));
 const Performance = lazy(() => import("@/pages/Performance"));
@@ -17,6 +18,10 @@ export const routes: RouteObject[] = [
   {
     path: "/auth",
     element: <Auth />,
+  },
+  {
+    path: "/oauth/redirect",
+    element: <OAuthRedirect />,
   },
   {
     path: "/",

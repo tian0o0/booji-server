@@ -9,10 +9,10 @@ const Login = () => {
   return (
     <Form onFinish={login}>
       <Form.Item
-        name={"email"}
-        rules={[{ required: true, message: t("enterEmail") }]}
+        name={"name"}
+        rules={[{ required: true, message: t("enterName") }]}
       >
-        <Input placeholder={t("email")} type="text" id={"email"} />
+        <Input placeholder={t("name")} type="text" id={"name"} />
       </Form.Item>
       <Form.Item
         name={"password"}

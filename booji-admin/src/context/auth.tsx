@@ -10,6 +10,7 @@ const AuthContext = React.createContext<
   | {
       loading: boolean;
       login: (data: LoginForm) => Promise<void>;
+      loginGithub: (code: string) => Promise<void>;
       register: (data: RegisterForm) => Promise<void>;
       logout: () => void;
       hasLogin: boolean;
@@ -25,6 +26,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (form: LoginForm) => {
     setLoading(true);
     const res = await api.login(form);
+    setLoading(false);
+    if (!res.error) {
+      setUser(res);
+      setToken(res.token);
+      navigate("/");
+    }
+  };
+  const loginGithub = async (code: string) => {
+    setLoading(true);
+    const res = await api.loginGithub(code);
     setLoading(false);
     if (!res.error) {
       setUser(res);
@@ -50,7 +61,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       children={children}
-      value={{ loading, login, register, logout, hasLogin: !!getToken() }}
+      value={{
+        loading,
+        login,
+        loginGithub,
+        register,
+        logout,
+        hasLogin: !!getToken(),
+      }}
     />
   );
 };

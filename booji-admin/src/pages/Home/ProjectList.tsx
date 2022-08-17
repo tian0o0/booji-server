@@ -30,8 +30,9 @@ const ProjectList = ({
     navigate(`/${lang}/usage/${platform}`);
   };
   const user = useRecoilValue(userState);
+
   const isSubscribed = (users: UserData[]): boolean => {
-    return users.findIndex((user) => user.id === user?.id) > -1;
+    return users.findIndex((u) => u.id === user?.id) > -1;
   };
   const onSubscribeChange = async (project: ProjectData) => {
     await subscribeProject(project.id);

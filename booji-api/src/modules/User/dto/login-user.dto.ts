@@ -4,7 +4,7 @@ import { IsNotEmpty } from "class-validator";
 export class LoginUserDto {
   @IsNotEmpty()
   @ApiModelProperty()
-  readonly email: string;
+  readonly name: string;
 
   @IsNotEmpty()
   @ApiModelProperty()

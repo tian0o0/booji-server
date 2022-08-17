@@ -1,16 +1,19 @@
 import { RecoilRoot } from "recoil";
-import { HashRouter } from "react-router-dom";
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import CustomRoutes from "@/routes";
 import { AuthProvider } from "@/context/auth";
+
+const history = createBrowserHistory({ window });
 
 const App = () => {
   return (
     <RecoilRoot>
-      <HashRouter>
+      <HistoryRouter history={history}>
         <AuthProvider>
           <CustomRoutes />
         </AuthProvider>
-      </HashRouter>
+      </HistoryRouter>
     </RecoilRoot>
   );
 };

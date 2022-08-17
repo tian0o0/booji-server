@@ -24,7 +24,8 @@ export class UserModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: "api/user/login", method: RequestMethod.POST },
-        { path: "api/user", method: RequestMethod.POST }
+        { path: "api/user", method: RequestMethod.POST },
+        { path: "api/user/oauth/github", method: RequestMethod.GET }
       )
       .forRoutes(UserController)
       .apply(CheckOwnMiddleware)
