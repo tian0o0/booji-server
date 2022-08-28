@@ -59,6 +59,10 @@ export class ProjectService {
     return await this.projectRepository.findOne(id);
   }
 
+  async findByAppKey(appKey: string): Promise<ProjectEntity> {
+    return await this.projectRepository.findOne({ appKey });
+  }
+
   async delete(id: number): Promise<DeleteResult> {
     return await this.projectRepository.delete(id);
   }

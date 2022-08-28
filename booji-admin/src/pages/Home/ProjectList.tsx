@@ -51,7 +51,7 @@ const ProjectList = ({
       dataIndex: "platform",
       key: "platform",
       align: "center",
-      width: 80,
+      width: 100,
     },
     {
       title: t("appKey"),
@@ -69,15 +69,25 @@ const ProjectList = ({
       render: (text) => timeFormat(text),
     },
     {
-      title: t("operation"),
+      title: t("usage"),
       key: "action",
       align: "center",
-      width: 360,
+      width: 100,
       render: (_, record) => (
         <>
           <Button type="link" onClick={() => toUsage(record.platform)}>
-            {t("usage")}
+            {t("check")}
           </Button>
+        </>
+      ),
+    },
+    {
+      title: t("operation"),
+      key: "action",
+      align: "center",
+      width: 260,
+      render: (_, record) => (
+        <>
           {user?.isAdmin && (
             <Button type="link" danger onClick={() => onDelete(record)}>
               {t("delete")}

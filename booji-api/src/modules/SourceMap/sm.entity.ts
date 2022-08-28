@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -30,10 +29,10 @@ export class SmEntity {
   dist: string[];
 
   @ManyToOne(() => ProjectEntity, (project) => project.sourcemaps)
-  @JoinColumn({
-    name: "appKey",
-  })
   project: ProjectEntity;
+
+  @Column()
+  appKey: string;
 
   @CreateDateColumn({ type: "datetime" })
   createdAt: Date;

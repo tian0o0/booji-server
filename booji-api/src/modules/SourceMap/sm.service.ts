@@ -19,7 +19,7 @@ export class SmService {
   ) {}
 
   async upload(body: any): Promise<SmEntity> {
-    const { release, cdn, dist } = body;
+    const { appKey, release, cdn, dist } = body;
     // 1.如果release下已存在dist，清空dist重新上传
     // 2.如果release下不存在dist，直接上传dist
     const sm = await this.smRepository.findOne({ release });
@@ -30,6 +30,7 @@ export class SmService {
 
     let newSm = new SmEntity();
     newSm.project = this.req.project;
+    newSm.appKey = appKey;
     newSm.release = release;
     newSm.cdn = cdn;
     newSm.dist = dist;
@@ -40,7 +41,7 @@ export class SmService {
   async list(appKey: string) {
     const [data, count] = await getRepository(SmEntity)
       .createQueryBuilder("sm")
-      .where("sm.project = :appKey", { appKey })
+      .where("sm.appKey = :appKey", { appKey })
       .getManyAndCount();
 
     return {
@@ -53,7 +54,7 @@ export class SmService {
     if (!stack) return "";
 
     // 找到当前appKey/release(默认取最新的release, 如果booji SDK初始化时传了release，那么根据传入的release寻找)
-    const smList = await this.smRepository.find({ project: appKey });
+    const smList = await this.smRepository.find({ appKey });
 
     const sm =
       smList.find((sm) => sm.release === release) || smList[smList.length - 1];

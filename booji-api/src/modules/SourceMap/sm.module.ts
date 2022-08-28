@@ -20,6 +20,6 @@ export class SmModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(SmController)
       .apply(CheckProjectExistMiddleware)
-      .forRoutes(SmController);
+      .forRoutes("api/booji/sourcemap");
   }
 }
