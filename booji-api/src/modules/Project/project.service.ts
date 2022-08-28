@@ -1,6 +1,5 @@
 import { ConflictException, Inject, Injectable } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
-import { Request } from "express";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Pagination } from "@type/index";
 import { DeleteResult, getRepository, Repository } from "typeorm";
@@ -13,7 +12,7 @@ export class ProjectService {
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
     @Inject(REQUEST)
-    private readonly req: Request
+    private readonly req: any
   ) {}
 
   async findAll(

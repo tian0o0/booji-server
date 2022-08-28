@@ -2,7 +2,7 @@ import { ForbiddenException } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 
 export function CheckOwnMiddleware(
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ) {

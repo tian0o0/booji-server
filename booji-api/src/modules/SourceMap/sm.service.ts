@@ -2,8 +2,14 @@ import { Inject, Injectable } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
-import { Request } from "express";
 import axios from "axios";
+import {
+  ensureFileSync,
+  writeFileSync,
+  readdirSync,
+  existsSync,
+} from "fs-extra";
+import * as path from "path";
 import { SmEntity } from "./sm.entity";
 const StackTracey = require("stacktracey");
 const sourceMap = require("source-map");
@@ -15,39 +21,60 @@ export class SmService {
     @InjectRepository(SmEntity)
     private readonly smRepository: Repository<SmEntity>,
     @Inject(REQUEST)
-    private readonly req: Request
+    private readonly req: any
   ) {}
 
-  async upload(body: any): Promise<SmEntity> {
-    const { appKey, release, cdn, dist } = body;
-    // 1.如果release下已存在dist，清空dist重新上传
-    // 2.如果release下不存在dist，直接上传dist
-    const sm = await this.smRepository.findOne({ release });
-    if (sm) {
-      sm.dist = dist;
-      return await this.smRepository.save(sm);
-    }
+  // async upload(body: any): Promise<SmEntity> {
+  //   const { appKey, release, cdn, dist } = body;
+  //   // 1.如果release下已存在dist，清空dist重新上传
+  //   // 2.如果release下不存在dist，直接上传dist
+  //   const sm = await this.smRepository.findOne({ release });
+  //   if (sm) {
+  //     sm.dist = dist;
+  //     return await this.smRepository.save(sm);
+  //   }
 
-    let newSm = new SmEntity();
-    newSm.project = this.req.project;
-    newSm.appKey = appKey;
-    newSm.release = release;
-    newSm.cdn = cdn;
-    newSm.dist = dist;
+  //   let newSm = new SmEntity();
+  //   newSm.project = this.req.project;
+  //   newSm.appKey = appKey;
+  //   newSm.release = release;
+  //   newSm.cdn = cdn;
+  //   newSm.dist = dist;
 
-    return await this.smRepository.save(newSm);
+  //   return await this.smRepository.save(newSm);
+  // }
+
+  async upload(files: Array<Express.Multer.File>, { appKey, release }: any) {
+    files.forEach((file) => {
+      const filepath = path.join(
+        __dirname,
+        "../../..",
+        `static/${appKey}/${release}/${file.originalname}`
+      );
+      ensureFileSync(filepath);
+      writeFileSync(filepath, file.buffer);
+    });
   }
 
-  async list(appKey: string) {
-    const [data, count] = await getRepository(SmEntity)
-      .createQueryBuilder("sm")
-      .where("sm.appKey = :appKey", { appKey })
-      .getManyAndCount();
+  async list(appKey: string, release: string): Promise<string[]> {
+    const filepath = path.join(
+      __dirname,
+      "../../..",
+      `static/${appKey}/${release}`
+    );
+    if (!existsSync(filepath)) return [];
+    const res = readdirSync(filepath);
+    return res;
 
-    return {
-      data,
-      count,
-    };
+    // const [data, count] = await getRepository(SmEntity)
+    //   .createQueryBuilder("sm")
+    //   .where("sm.appKey = :appKey", { appKey })
+    //   .getManyAndCount();
+
+    // return {
+    //   data,
+    //   count,
+    // };
   }
 
   async parseSourceMap({ appKey, stack, release }: any): Promise<string> {

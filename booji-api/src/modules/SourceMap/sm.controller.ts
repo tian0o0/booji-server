@@ -6,7 +6,11 @@ import {
   Param,
   Post,
   Query,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
 } from "@nestjs/common";
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
 import { SmService } from "./sm.service";
 
@@ -17,16 +21,20 @@ export class SmController {
   constructor(private smService: SmService) {}
 
   @ApiOperation({ title: "上传sourcemap" })
-  @Post()
+  @Post("upload")
+  @UseInterceptors(FilesInterceptor("files"))
   @HttpCode(204)
-  report(@Body() body: any): void {
-    this.smService.upload(body);
+  report(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: any
+  ): void {
+    this.smService.upload(files, body);
   }
 
   @ApiOperation({ title: "获取sourcemap列表" })
   @Get("list")
-  list(@Query("appKey") appKey: string) {
-    return this.smService.list(appKey);
+  list(@Query("appKey") appKey: string, @Query("release") release: string) {
+    return this.smService.list(appKey, release);
   }
 
   @ApiOperation({ title: "解析sourcemap", deprecated: true })

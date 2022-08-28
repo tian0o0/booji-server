@@ -11,7 +11,8 @@ import { SmModule } from "@modules/SourceMap/sm.module";
 import { KafkaModule } from "@modules/Kafka/kafka.module";
 import config from "./config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
-
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
@@ -29,9 +30,9 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
     PerformanceModule,
     SmModule,
     // ClientsModule.register(microserviceConfig),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, "..", "static"),
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "static"),
+    }),
   ],
   controllers: [AppController],
   providers: [],
