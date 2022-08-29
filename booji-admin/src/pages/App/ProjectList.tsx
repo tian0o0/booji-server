@@ -26,9 +26,6 @@ const ProjectList = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const toUsage = (platform: Platform) => {
-    navigate(`/${lang}/usage/${platform}`);
-  };
   const toProjectDetail = (appKey: string, platform: Platform) => {
     navigate(`/${lang}/app/${appKey}?platform=${platform}`);
   };
@@ -70,19 +67,6 @@ const ProjectList = ({
       dataIndex: "createdAt",
       width: 120,
       render: (text) => timeFormat(text),
-    },
-    {
-      title: t("usage"),
-      key: "action",
-      align: "center",
-      width: 100,
-      render: (_, record) => (
-        <>
-          <Button type="link" onClick={() => toUsage(record.platform)}>
-            {t("check")}
-          </Button>
-        </>
-      ),
     },
     {
       title: t("operation"),

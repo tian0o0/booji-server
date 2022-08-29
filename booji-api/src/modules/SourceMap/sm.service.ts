@@ -9,9 +9,11 @@ import {
   readdirSync,
   existsSync,
 } from "fs-extra";
+import { createReadStream } from "fs";
 import * as path from "path";
 import { compare } from "compare-versions";
 import { SmEntity } from "./sm.entity";
+import { ConfigService } from "@nestjs/config";
 const StackTracey = require("stacktracey");
 const sourceMap = require("source-map");
 const SourceMapConsumer = sourceMap.SourceMapConsumer;
@@ -22,8 +24,13 @@ export class SmService {
     @InjectRepository(SmEntity)
     private readonly smRepository: Repository<SmEntity>,
     @Inject(REQUEST)
-    private readonly req: any
+    private readonly req: any,
+    private configService: ConfigService
   ) {}
+
+  get staticUrl() {
+    return this.configService.get("static");
+  }
 
   // async upload(body: any): Promise<SmEntity> {
   //   const { appKey, release, cdn, dist } = body;
@@ -80,8 +87,10 @@ export class SmService {
       `static/${appKey}/${release}`
     );
     if (!existsSync(filepath)) return [];
-    const res = readdirSync(filepath);
-    return res;
+    const files = readdirSync(filepath);
+    return files.map(
+      (file) => `${this.staticUrl}/${appKey}/${release}/${file}`
+    );
 
     // const [data, count] = await getRepository(SmEntity)
     //   .createQueryBuilder("sm")
@@ -92,6 +101,12 @@ export class SmService {
     //   data,
     //   count,
     // };
+  }
+
+  download(url: string) {
+    const p = url.split("static")[1];
+    const filepath = path.join(__dirname, "../../../static", p);
+    return createReadStream(filepath);
   }
 
   async parseSourceMap({ appKey, stack, release }: any): Promise<string> {

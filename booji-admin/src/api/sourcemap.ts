@@ -13,3 +13,10 @@ export const getSourceMapList = (params: SourceMapParams) =>
     method: "GET",
     params,
   });
+
+export const downloadFile = (url: string) =>
+  request({
+    url: `/file/download?url=${url}`,
+    method: "GET",
+    responseType: "arraybuffer",
+  });

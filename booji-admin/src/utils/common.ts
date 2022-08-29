@@ -40,3 +40,13 @@ export const mapLevelColor = (level: Severity) => {
       break;
   }
 };
+
+export function download(arrayBuffer: any, name: string) {
+  let url = window.URL.createObjectURL(new Blob([arrayBuffer]));
+  let link = document.createElement("a");
+  link.style.display = "none";
+  link.href = url;
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+}

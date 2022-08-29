@@ -16,4 +16,5 @@ export default () => ({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
   },
+  static: `http://${process.env.HOST}:${process.env.PORT}/static`,
 });

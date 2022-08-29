@@ -2,16 +2,17 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
-  Param,
   Post,
   Query,
-  UploadedFile,
+  Res,
   UploadedFiles,
   UseInterceptors,
 } from "@nestjs/common";
-import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
+import { FilesInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiOperation, ApiUseTags } from "@nestjs/swagger";
+import { Response } from "express";
 import { SmService } from "./sm.service";
 
 @ApiBearerAuth()
@@ -44,6 +45,13 @@ export class SmController {
     @Query("release") release: string
   ) {
     return this.smService.listSourceMap(appKey, release);
+  }
+
+  @ApiOperation({ title: "下载文件" })
+  @Get("file/download")
+  download(@Query("url") url: string, @Res() res: Response) {
+    const file = this.smService.download(url);
+    file.pipe(res);
   }
 
   @ApiOperation({ title: "解析sourcemap", deprecated: true })
