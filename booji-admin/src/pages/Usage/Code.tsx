@@ -13,7 +13,7 @@ const Code = ({
   const icons = ["🚀", "👻", "🤕"];
   return (
     <div className="mb-4">
-      <h3 className="text-gray-400">
+      <h3 className="text-gray-400 mb-4">
         {icons[index]} {title}
       </h3>
       <SyntaxHighlighter

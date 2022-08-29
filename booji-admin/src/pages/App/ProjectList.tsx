@@ -29,6 +29,9 @@ const ProjectList = ({
   const toUsage = (platform: Platform) => {
     navigate(`/${lang}/usage/${platform}`);
   };
+  const toProjectDetail = (appKey: string, platform: Platform) => {
+    navigate(`/${lang}/app/${appKey}?platform=${platform}`);
+  };
   const user = useRecoilValue(userState);
 
   const isSubscribed = (users: UserData[]): boolean => {
@@ -104,6 +107,22 @@ const ProjectList = ({
               onChange={() => onSubscribeChange(record)}
             />
           </Tooltip>
+        </>
+      ),
+    },
+    {
+      title: t("detail"),
+      key: "action",
+      align: "center",
+      width: 100,
+      render: (_, record) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => toProjectDetail(record.appKey, record.platform)}
+          >
+            {t("check")}
+          </Button>
         </>
       ),
     },

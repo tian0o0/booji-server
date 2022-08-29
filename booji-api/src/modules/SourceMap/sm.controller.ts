@@ -16,12 +16,12 @@ import { SmService } from "./sm.service";
 
 @ApiBearerAuth()
 @ApiUseTags("sourcemap")
-@Controller("sourcemap")
+@Controller()
 export class SmController {
   constructor(private smService: SmService) {}
 
   @ApiOperation({ title: "上传sourcemap" })
-  @Post("upload")
+  @Post("booji/sourcemap")
   @UseInterceptors(FilesInterceptor("files"))
   @HttpCode(204)
   report(
@@ -31,14 +31,23 @@ export class SmController {
     this.smService.upload(files, body);
   }
 
+  @ApiOperation({ title: "获取archive列表" })
+  @Get("archive/list")
+  listArchive(@Query("appKey") appKey: string) {
+    return this.smService.listArchive(appKey);
+  }
+
   @ApiOperation({ title: "获取sourcemap列表" })
-  @Get("list")
-  list(@Query("appKey") appKey: string, @Query("release") release: string) {
-    return this.smService.list(appKey, release);
+  @Get("sourcemap/list")
+  listSourceMap(
+    @Query("appKey") appKey: string,
+    @Query("release") release: string
+  ) {
+    return this.smService.listSourceMap(appKey, release);
   }
 
   @ApiOperation({ title: "解析sourcemap", deprecated: true })
-  @Get("parse")
+  @Get("sourcemap/parse")
   parse() {
     const STACK = `
       ReferenceError: noerror is not defined

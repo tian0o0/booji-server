@@ -1,14 +1,15 @@
 import { lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "@/layouts/AuthLayout";
-import IssueDetail from "@/pages/IssueDetail";
 import { withLoading } from "./utils";
 import { lang } from "@/config/constant";
 
 const Auth = lazy(() => import("@/pages/Auth"));
 const OAuthRedirect = lazy(() => import("@/pages/Auth/OAuthRedirect"));
-const Home = lazy(() => import("@/pages/Home"));
+const App = lazy(() => import("@/pages/App"));
+const AppDetail = lazy(() => import("@/pages/AppDetail"));
 const Issue = lazy(() => import("@/pages/Issue"));
+const IssueDetail = lazy(() => import("@/pages/IssueDetail"));
 const Performance = lazy(() => import("@/pages/Performance"));
 const User = lazy(() => import("@/pages/User"));
 const Usage = lazy(() => import("@/pages/Usage"));
@@ -36,7 +37,11 @@ export const routes: RouteObject[] = [
         children: [
           {
             path: "app",
-            element: <Home />,
+            element: <App />,
+          },
+          {
+            path: "app/:appKey",
+            element: <AppDetail />,
           },
           {
             path: "issue",
@@ -54,10 +59,10 @@ export const routes: RouteObject[] = [
             path: "user",
             element: <User />,
           },
-          {
-            path: "usage/:platform",
-            element: <Usage />,
-          },
+          // {
+          //   path: "usage/:platform",
+          //   element: <Usage />,
+          // },
         ],
       },
     ],

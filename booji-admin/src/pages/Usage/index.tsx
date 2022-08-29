@@ -1,12 +1,11 @@
 import { Divider } from "antd";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 import Code from "./Code";
 import { ConfigItem, js, react, vue, angular } from "./config";
 
-const Usage = () => {
+const Usage = ({ platform }: { platform: string }) => {
   const { t } = useTranslation();
-  const { platform } = useParams();
+
   let config: ConfigItem[];
   switch (platform) {
     case "react":
@@ -24,7 +23,7 @@ const Usage = () => {
   }
   return (
     <div className="h-full overflow-scroll">
-      <h2 className="mb-6 font-bold">📌 {t("usage")}</h2>
+      <h2 className="font-bold leading-10">📌 {t("usage")}</h2>
       <Divider />
       {config!.map((item: ConfigItem, index: number) => (
         <Code key={index} index={index} title={item.title} code={item.code} />

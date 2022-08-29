@@ -42,6 +42,7 @@
     "Reopened": "重新打开",
     "Ignored": "已忽略",
 
+    "detail": "详情",
     "check": "查看",
     "type": "类型",
     "category": "分类",
@@ -72,5 +73,7 @@
     "unsubscribed": "未订阅",
     "ruleMinute": "告警规则（分钟）",
     "ruleCount": "告警规则（频次）",
-    "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上将会告警"
+    "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上将会告警",
+
+    "archive": "存档"
 }

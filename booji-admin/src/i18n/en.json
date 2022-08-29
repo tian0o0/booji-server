@@ -42,6 +42,7 @@
     "Reopened": "Reopened",
     "Ignored": "Ignored",
 
+    "detail": "Detail",
     "check": "Check",
     "type": "Type",
     "category": "Category",
@@ -72,5 +73,7 @@
     "unsubscribed": "Unsubscribe",
     "ruleMinute": "Notify Rule (minute)",
     "ruleCount": "Notify Rule (count)",
-    "ruleTip": "It'll send warning message while the error occurs count >= {{ count }} in {{ minute }} minute"
+    "ruleTip": "It'll send warning message while the error occurs count >= {{ count }} in {{ minute }} minute",
+
+    "archive": "Archive"
 }
