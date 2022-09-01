@@ -75,5 +75,6 @@
     "ruleCount": "告警规则（频次）",
     "ruleTip": "在 {{ minute }} 分钟内某一错误出现 {{ count }} 次及以上将会告警",
 
-    "archive": "存档"
+    "archive": "存档",
+    "fileName": "文件名"
 }

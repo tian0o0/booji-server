@@ -12,7 +12,7 @@ const Issue = lazy(() => import("@/pages/Issue"));
 const IssueDetail = lazy(() => import("@/pages/IssueDetail"));
 const Performance = lazy(() => import("@/pages/Performance"));
 const User = lazy(() => import("@/pages/User"));
-const Usage = lazy(() => import("@/pages/Usage"));
+const Usage = lazy(() => import("@/pages/AppDetail/Usage"));
 const NotFound = lazy(() => import("@/pages/404"));
 
 export const routes: RouteObject[] = [

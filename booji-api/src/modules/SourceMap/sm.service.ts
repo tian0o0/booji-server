@@ -118,6 +118,7 @@ export class SmService {
       "../../..",
       `static/${appKey}/${latestRelease}`
     );
+    if (!existsSync(dirpath)) return "";
     const smList = readdirSync(dirpath);
 
     // 找到当前appKey/release(默认取最新的release, 如果booji SDK初始化时传了release，那么根据传入的release寻找)

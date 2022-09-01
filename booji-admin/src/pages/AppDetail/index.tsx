@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
-import Usage from "../Usage";
+import Usage from "./Usage";
 import SourceMaps from "./SourceMaps";
 const { TabPane } = Tabs;
 

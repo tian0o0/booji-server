@@ -75,5 +75,6 @@
     "ruleCount": "Notify Rule (count)",
     "ruleTip": "It'll send warning message while the error occurs count >= {{ count }} in {{ minute }} minute",
 
-    "archive": "Archive"
+    "archive": "Archive",
+    "fileName": "FileName"
 }

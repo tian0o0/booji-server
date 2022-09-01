@@ -91,12 +91,14 @@ const List = ({
     },
     {
       title: t("createdAt"),
+      dataIndex: "createdAt",
       width: 160,
       align: "center",
       render: (text) => timeFormat(text),
     },
     {
       title: t("updatedAt"),
+      dataIndex: "updatedAt",
       width: 160,
       align: "center",
       render: (text) => timeFormat(text),

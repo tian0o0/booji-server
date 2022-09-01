@@ -7,6 +7,7 @@ import { downloadFile } from "@/api/sourcemap";
 import { download } from "@/utils/common";
 
 const SourceMaps = ({ appKey }: { appKey: string }) => {
+  const { t } = useTranslation();
   const { options, selectedArchive, onChange } = useArchiveSelect(appKey);
   const { loading, value } = useSourceMapList(appKey, selectedArchive);
 
@@ -19,11 +20,11 @@ const SourceMaps = ({ appKey }: { appKey: string }) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: "文件名",
+      title: t("fileName"),
       render: (_, record) => record,
     },
     {
-      title: "操作",
+      title: t("operation"),
       align: "center",
       width: 100,
       render: (_, record) => (

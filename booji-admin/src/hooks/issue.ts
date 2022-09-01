@@ -2,7 +2,7 @@ import { getIssueList, updateIssue } from "@/api/issue";
 import { IssueData, IssueParams, Order, UpdateIssueData } from "@/types";
 import { TableProps } from "antd";
 import { SorterResult } from "antd/lib/table/interface";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAsyncRetry } from "react-use";
 import { useProjectList } from "./project";
 
@@ -49,18 +49,14 @@ export const useIssueList = (appKey: string, status: string) => {
   const [page, setPage] = useState(1);
   const [state, setState] = useState<Pick<IssueParams, "sort" | "order">>();
 
-  const params = useMemo<IssueParams>(() => {
-    return {
+  const res = useAsyncRetry(async () => {
+    return await getIssueList({
       appKey,
       status,
       page,
       ...state,
-    };
+    });
   }, [appKey, status, page, state]);
-
-  const res = useAsyncRetry(async () => {
-    return await getIssueList(params);
-  }, [params]);
 
   // tabel改变
   const onChange: TableProps<IssueData>["onChange"] = (
