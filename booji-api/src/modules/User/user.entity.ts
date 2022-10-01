@@ -33,6 +33,7 @@ export class UserEntity {
 
   @Column({
     default: false,
+    comment: "是否为管理员",
   })
   isAdmin: boolean;
 

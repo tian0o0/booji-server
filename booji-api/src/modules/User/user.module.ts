@@ -31,6 +31,6 @@ export class UserModule implements NestModule {
       .apply(CheckOwnMiddleware)
       .forRoutes({ path: "api/user/:id(\\d+)", method: RequestMethod.ALL })
       .apply(CheckAdminMiddleware)
-      .forRoutes({ path: "api/user/:email", method: RequestMethod.DELETE });
+      .forRoutes({ path: "api/user/:id(\\d+)", method: RequestMethod.DELETE });
   }
 }

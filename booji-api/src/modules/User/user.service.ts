@@ -49,13 +49,11 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<UserRO> {
-    // check uniqueness of username/email
+    // check uniqueness of username
     const { name, email, password } = dto;
-    const qb = await getRepository(UserEntity)
-      .createQueryBuilder("user")
-      .where("user.name = :name", { name });
-
-    const user = await qb.getOne();
+    const user = await this.userRepository.findOne({
+      where: { name },
+    });
 
     if (user) {
       throw new ConflictException("用户名已存在");
@@ -76,6 +74,15 @@ export class UserService {
     }
   }
 
+  async login(dto: LoginUserDto): Promise<UserRO> {
+    const user = await this.findOne(dto);
+    if (!user) throw new BadRequestException("用户名或密码不正确");
+
+    const token = await this.generateJWT(user.id);
+    const { id, email, name, isAdmin } = user;
+    return { id, email, token, name, isAdmin };
+  }
+
   async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
     let toUpdate = await this.userRepository.findOne(id);
     let updated = Object.assign(toUpdate, dto);
@@ -84,7 +91,7 @@ export class UserService {
 
   async findOne({ name, password }: LoginUserDto): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
-      select: ["id", "name", "email", "isAdmin", "password"], // 这里要加id，不然报错
+      select: ["id", "name", "email", "isAdmin", "password"],
       where: { name },
     });
     if (!user) {
@@ -148,16 +155,14 @@ export class UserService {
     });
   }
 
-  public generateJWT(user) {
+  public generateJWT(userId: number) {
     let today = new Date();
     let exp = new Date(today);
     exp.setDate(today.getDate() + 60);
 
     return jwt.sign(
       {
-        id: user.id,
-        username: user.username,
-        email: user.email,
+        id: userId,
         exp: exp.getTime() / 1000,
       },
       process.env.JWT_SECRET
@@ -165,6 +170,6 @@ export class UserService {
   }
 
   private buildUserRO(user: UserEntity): UserRO {
-    return { ...user, token: this.generateJWT(user) };
+    return { ...user, token: this.generateJWT(user.id) };
   }
 }

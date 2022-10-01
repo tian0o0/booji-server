@@ -1,12 +1,12 @@
 import { ForbiddenException } from "@nestjs/common";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
+import { CustomRequest } from "./auth.middleware";
 
 export function CheckOwnMiddleware(
-  req: any,
-  res: Response,
+  req: CustomRequest,
+  _: Response,
   next: NextFunction
 ) {
-  // req.user is set in auth.middleware
   if (req.user.id === Number(req.params.id)) {
     next();
   } else {

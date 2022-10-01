@@ -32,20 +32,14 @@ export class UserController {
 
   @ApiOperation({ title: "注册" })
   @Post()
-  async create(@Body() userData: CreateUserDto) {
+  async create(@Body() userData: CreateUserDto): Promise<UserRO> {
     return await this.userService.create(userData);
   }
 
   @ApiOperation({ title: "登录" })
   @Post("login")
   async login(@Body() loginUserDto: LoginUserDto): Promise<UserRO> {
-    const _user = await this.userService.findOne(loginUserDto);
-    if (!_user) throw new BadRequestException("用户名或密码不正确");
-
-    const token = await this.userService.generateJWT(_user);
-
-    const { id, email, name, isAdmin } = _user;
-    return { id, email, token, name, isAdmin };
+    return await this.userService.login(loginUserDto);
   }
 
   @ApiOperation({ title: "更新用户" })

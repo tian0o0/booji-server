@@ -1,6 +1,9 @@
 import { Injectable, NestMiddleware, NotFoundException } from "@nestjs/common";
 import { UserService } from "../user.service";
 
+/**
+ * @deprecated
+ */
 @Injectable()
 export class CheckUserExistMiddleware implements NestMiddleware {
   constructor(private readonly userService: UserService) {}
