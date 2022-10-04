@@ -1,4 +1,4 @@
-import { ProjectEntity } from "@modules/Project/project.entity";
+import { ProjectEntity } from "@modules/Project/project.entity"; // DELETE
 import {
   Column,
   CreateDateColumn,
@@ -28,8 +28,9 @@ export class SmEntity {
   })
   dist: string[];
 
-  @ManyToOne(() => ProjectEntity, (project) => project.sourcemaps)
-  project: ProjectEntity;
+  // DELETE
+  // @ManyToOne(() => ProjectEntity, (project) => project.sourcemaps)
+  // project: ProjectEntity;
 
   @Column()
   appKey: string;

@@ -1,8 +1,9 @@
 import { ConflictException, Inject, Injectable } from "@nestjs/common";
-import { REQUEST } from "@nestjs/core";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Pagination } from "@type/index";
 import { DeleteResult, getRepository, Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { REQUEST } from "@nestjs/core";
+import { Pagination } from "@type/index";
+import { CustomRequest } from "@modules/User/middleware/auth.middleware";
 import { ProjectEntity } from "./project.entity";
 import { AddProjectDto, UpdateProjectDto } from "./dto";
 
@@ -12,7 +13,7 @@ export class ProjectService {
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
     @Inject(REQUEST)
-    private readonly req: any
+    private readonly req: CustomRequest
   ) {}
 
   async findAll(
@@ -35,11 +36,9 @@ export class ProjectService {
   async create(dto: AddProjectDto): Promise<ProjectEntity> {
     // check uniqueness of username/email
     const { name, platform, desc } = dto;
-    const qb = await getRepository(ProjectEntity)
-      .createQueryBuilder("project")
-      .where("project.name = :name", { name });
-
-    const project = await qb.getOne();
+    const project = await this.projectRepository.findOne({
+      where: { name },
+    });
 
     if (project) {
       throw new ConflictException("项目名重复");

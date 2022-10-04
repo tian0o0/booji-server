@@ -1,6 +1,6 @@
 import { IssueEntity } from "@modules/Issue/issue.entity";
 import { UrlEntity } from "@modules/Performance/performance.entity";
-import { SmEntity } from "@modules/SourceMap/sm.entity";
+import { SmEntity } from "@modules/SourceMap/sm.entity"; // DELETE
 import { UserEntity } from "@modules/User/user.entity";
 import { Platform } from "@type/index";
 import {
@@ -63,8 +63,9 @@ export class ProjectEntity {
   @OneToMany(() => UrlEntity, (url) => url.project)
   urls: UrlEntity[];
 
-  @OneToMany(() => SmEntity, (sm) => sm.project)
-  sourcemaps?: SmEntity[];
+  // DELETE
+  // @OneToMany(() => SmEntity, (sm) => sm.project)
+  // sourcemaps?: SmEntity[];
 
   @CreateDateColumn({ type: "datetime" })
   createdAt: Date;

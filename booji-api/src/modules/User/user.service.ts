@@ -78,9 +78,7 @@ export class UserService {
     const user = await this.findOne(dto);
     if (!user) throw new BadRequestException("用户名或密码不正确");
 
-    const token = await this.generateJWT(user.id);
-    const { id, email, name, isAdmin } = user;
-    return { id, email, token, name, isAdmin };
+    return this.buildUserRO(user);
   }
 
   async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
@@ -155,7 +153,7 @@ export class UserService {
     });
   }
 
-  public generateJWT(userId: number) {
+  private generateJWT(userId: number) {
     let today = new Date();
     let exp = new Date(today);
     exp.setDate(today.getDate() + 60);
@@ -170,6 +168,7 @@ export class UserService {
   }
 
   private buildUserRO(user: UserEntity): UserRO {
-    return { ...user, token: this.generateJWT(user.id) };
+    const { password, ...res } = user;
+    return { ...res, token: this.generateJWT(user.id) };
   }
 }
