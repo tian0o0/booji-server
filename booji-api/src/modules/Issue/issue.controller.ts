@@ -75,6 +75,6 @@ export class IssueController {
   @Post("booji")
   @HttpCode(204)
   report(@Body() body: ReportDto, @Headers() headers) {
-    this.issueService.beforeProduce(body, headers);
+    this.issueService.report(body, headers);
   }
 }

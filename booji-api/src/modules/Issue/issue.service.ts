@@ -7,7 +7,7 @@ import { getRepository, Repository } from "typeorm";
 import { UserEntity } from "@modules/User/user.entity";
 import { SearchService } from "@modules/Search/search.service";
 import { SmService } from "@modules/SourceMap/sm.service";
-import { KafkaService } from "@modules/Kafka/kafka.service";
+import { ISSUE_REPORT_TOPIC, KafkaService } from "@modules/Kafka/kafka.service";
 import { Pagination } from "@type/index";
 interface Headers {
   "x-real-ip": string;
@@ -94,7 +94,7 @@ export class IssueService {
     return await this.issueRepository.save(issue);
   }
 
-  beforeProduce(body: ReportDto, headers: Headers) {
+  report(body: ReportDto, headers: Headers) {
     const ip = headers["x-real-ip"];
     const userAgent = headers["user-agent"];
 
@@ -108,7 +108,7 @@ export class IssueService {
       ua,
     };
 
-    this.kafkaService.send("mysql", event);
+    this.kafkaService.send(ISSUE_REPORT_TOPIC, event);
     // this.kafkaService.writeToMysql(event);
   }
 }

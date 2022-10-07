@@ -10,9 +10,9 @@ import { CompressionTypes, Consumer, Kafka, Producer } from "kafkajs";
 import { Repository } from "typeorm";
 import { NotifyService } from "@modules/Notify/notify.service";
 
-const MYSQL_TOPIC = "mysql";
+export const ISSUE_REPORT_TOPIC = "issue_report";
 
-type Topic = typeof MYSQL_TOPIC;
+type Topic = typeof ISSUE_REPORT_TOPIC;
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
@@ -45,7 +45,10 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     });
     await this.connect();
 
-    await this.consumer.subscribe({ topic: MYSQL_TOPIC, fromBeginning: false });
+    await this.consumer.subscribe({
+      topic: ISSUE_REPORT_TOPIC,
+      fromBeginning: false,
+    });
 
     this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
